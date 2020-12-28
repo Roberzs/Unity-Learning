@@ -151,7 +151,7 @@ Transform:
   m_GameObject: {fileID: 37013033}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.5, y: 0, z: 0.5}
-  m_LocalScale: {x: 1, y: 1, z: 9}
+  m_LocalScale: {x: 1, y: 2, z: 9}
   m_Children: []
   m_Father: {fileID: 1808506945}
   m_RootOrder: 0
@@ -246,7 +246,7 @@ Transform:
   m_GameObject: {fileID: 77154919}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.5, y: 0, z: -4.5}
-  m_LocalScale: {x: 9, y: 1, z: 1}
+  m_LocalScale: {x: 9, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 1808506945}
   m_RootOrder: 2
@@ -673,7 +673,7 @@ Transform:
   m_GameObject: {fileID: 967854955}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.5, y: 0, z: 4.5}
-  m_LocalScale: {x: 9, y: 1, z: 1}
+  m_LocalScale: {x: 9, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 1808506945}
   m_RootOrder: 3
@@ -966,6 +966,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
+  maxAirAcceleration: 1
+  jumpHeight: 2
+  maxAirJumps: 0
 --- !u!1 &1713413726
 GameObject:
   m_ObjectHideFlags: 0
@@ -994,7 +997,7 @@ Transform:
   m_GameObject: {fileID: 1713413726}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.5, y: 0, z: -0.5}
-  m_LocalScale: {x: 1, y: 1, z: 9}
+  m_LocalScale: {x: 1, y: 2, z: 9}
   m_Children: []
   m_Father: {fileID: 1808506945}
   m_RootOrder: 1
