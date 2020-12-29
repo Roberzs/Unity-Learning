@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 
-public abstract class IGameSystem
+public abstract class IBaseUI
 {
     public virtual void Init() { }
     public virtual void Update() { }

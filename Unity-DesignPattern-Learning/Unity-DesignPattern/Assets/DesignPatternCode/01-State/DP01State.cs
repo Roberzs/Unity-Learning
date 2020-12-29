@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DM01State: MonoBehaviour
+public class DP01State: MonoBehaviour
 {
     private void Start()
     {
