@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 753584436}
+  m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -668,8 +668,8 @@ GameObject:
   - component: {fileID: 129209784}
   - component: {fileID: 129209783}
   - component: {fileID: 129209782}
-  - component: {fileID: 129209781}
   - component: {fileID: 129209780}
+  - component: {fileID: 129209781}
   m_Layer: 0
   m_Name: Sphere (5)
   m_TagString: Untagged
@@ -716,14 +716,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 129209778}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &129209782
 TrailRenderer:
   serializedVersion: 2
@@ -897,8 +898,8 @@ GameObject:
   - component: {fileID: 200192542}
   - component: {fileID: 200192541}
   - component: {fileID: 200192540}
-  - component: {fileID: 200192539}
   - component: {fileID: 200192538}
+  - component: {fileID: 200192539}
   m_Layer: 0
   m_Name: Sphere (19)
   m_TagString: Untagged
@@ -945,14 +946,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 200192536}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &200192540
 TrailRenderer:
   serializedVersion: 2
@@ -1126,8 +1128,8 @@ GameObject:
   - component: {fileID: 246615449}
   - component: {fileID: 246615448}
   - component: {fileID: 246615447}
-  - component: {fileID: 246615446}
   - component: {fileID: 246615445}
+  - component: {fileID: 246615446}
   m_Layer: 0
   m_Name: Sphere (16)
   m_TagString: Untagged
@@ -1174,14 +1176,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 246615443}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &246615447
 TrailRenderer:
   serializedVersion: 2
@@ -1355,8 +1358,8 @@ GameObject:
   - component: {fileID: 252469849}
   - component: {fileID: 252469848}
   - component: {fileID: 252469847}
-  - component: {fileID: 252469846}
   - component: {fileID: 252469845}
+  - component: {fileID: 252469846}
   m_Layer: 0
   m_Name: Sphere (10)
   m_TagString: Untagged
@@ -1403,14 +1406,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 252469843}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &252469847
 TrailRenderer:
   serializedVersion: 2
@@ -1912,8 +1916,8 @@ GameObject:
   - component: {fileID: 282039728}
   - component: {fileID: 282039727}
   - component: {fileID: 282039726}
-  - component: {fileID: 282039725}
   - component: {fileID: 282039724}
+  - component: {fileID: 282039725}
   m_Layer: 0
   m_Name: Sphere (18)
   m_TagString: Untagged
@@ -1960,14 +1964,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 282039722}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &282039726
 TrailRenderer:
   serializedVersion: 2
@@ -2191,8 +2196,8 @@ GameObject:
   - component: {fileID: 351774524}
   - component: {fileID: 351774523}
   - component: {fileID: 351774522}
-  - component: {fileID: 351774521}
   - component: {fileID: 351774520}
+  - component: {fileID: 351774521}
   m_Layer: 0
   m_Name: Sphere (1)
   m_TagString: Untagged
@@ -2239,14 +2244,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 351774518}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &351774522
 TrailRenderer:
   serializedVersion: 2
@@ -3284,8 +3290,8 @@ GameObject:
   - component: {fileID: 529451131}
   - component: {fileID: 529451130}
   - component: {fileID: 529451129}
-  - component: {fileID: 529451128}
   - component: {fileID: 529451127}
+  - component: {fileID: 529451128}
   m_Layer: 0
   m_Name: Sphere (11)
   m_TagString: Untagged
@@ -3332,14 +3338,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 529451125}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &529451129
 TrailRenderer:
   serializedVersion: 2
@@ -3513,8 +3520,8 @@ GameObject:
   - component: {fileID: 536456547}
   - component: {fileID: 536456546}
   - component: {fileID: 536456545}
-  - component: {fileID: 536456544}
   - component: {fileID: 536456543}
+  - component: {fileID: 536456544}
   m_Layer: 0
   m_Name: Sphere (2)
   m_TagString: Untagged
@@ -3561,14 +3568,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 536456541}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &536456545
 TrailRenderer:
   serializedVersion: 2
@@ -4018,8 +4026,8 @@ GameObject:
   - component: {fileID: 653991830}
   - component: {fileID: 653991829}
   - component: {fileID: 653991828}
-  - component: {fileID: 653991827}
   - component: {fileID: 653991826}
+  - component: {fileID: 653991827}
   m_Layer: 0
   m_Name: Sphere (7)
   m_TagString: Untagged
@@ -4066,14 +4074,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 653991824}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &653991828
 TrailRenderer:
   serializedVersion: 2
@@ -4398,67 +4407,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!850595691 &753584436
-LightingSettings:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 2
-  m_GIWorkflowMode: 1
-  m_EnableBakedLightmaps: 1
-  m_EnableRealtimeLightmaps: 0
-  m_RealtimeEnvironmentLighting: 1
-  m_BounceScale: 1
-  m_AlbedoBoost: 1
-  m_IndirectOutputScale: 1
-  m_UsingShadowmask: 1
-  m_BakeBackend: 1
-  m_LightmapMaxSize: 1024
-  m_BakeResolution: 40
-  m_Padding: 2
-  m_TextureCompression: 1
-  m_AO: 0
-  m_AOMaxDistance: 1
-  m_CompAOExponent: 1
-  m_CompAOExponentDirect: 0
-  m_ExtractAO: 0
-  m_MixedBakeMode: 2
-  m_LightmapsBakeMode: 1
-  m_FilterMode: 1
-  m_LightmapParameters: {fileID: 0}
-  m_ExportTrainingData: 0
-  m_TrainingDataDestination: TrainingData
-  m_RealtimeResolution: 2
-  m_ForceWhiteAlbedo: 0
-  m_ForceUpdates: 0
-  m_FinalGather: 0
-  m_FinalGatherRayCount: 256
-  m_FinalGatherFiltering: 1
-  m_PVRCulling: 1
-  m_PVRSampling: 1
-  m_PVRDirectSampleCount: 32
-  m_PVRSampleCount: 512
-  m_PVREnvironmentSampleCount: 256
-  m_PVREnvironmentReferencePointCount: 2048
-  m_LightProbeSampleCountMultiplier: 4
-  m_PVRBounces: 2
-  m_PVRRussianRouletteStartBounce: 2
-  m_PVREnvironmentMIS: 1
-  m_PVRFilteringMode: 1
-  m_PVRDenoiserTypeDirect: 1
-  m_PVRDenoiserTypeIndirect: 1
-  m_PVRDenoiserTypeAO: 1
-  m_PVRFilterTypeDirect: 0
-  m_PVRFilterTypeIndirect: 0
-  m_PVRFilterTypeAO: 0
-  m_PVRFilteringGaussRadiusDirect: 1
-  m_PVRFilteringGaussRadiusIndirect: 5
-  m_PVRFilteringGaussRadiusAO: 2
-  m_PVRFilteringAtrousPositionSigmaDirect: 0.5
-  m_PVRFilteringAtrousPositionSigmaIndirect: 2
-  m_PVRFilteringAtrousPositionSigmaAO: 1
 --- !u!1 &819932078
 GameObject:
   m_ObjectHideFlags: 0
@@ -5464,8 +5412,8 @@ GameObject:
   - component: {fileID: 995610289}
   - component: {fileID: 995610288}
   - component: {fileID: 995610287}
-  - component: {fileID: 995610286}
   - component: {fileID: 995610285}
+  - component: {fileID: 995610286}
   m_Layer: 0
   m_Name: Sphere (12)
   m_TagString: Untagged
@@ -5512,14 +5460,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 995610283}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &995610287
 TrailRenderer:
   serializedVersion: 2
@@ -5693,8 +5642,8 @@ GameObject:
   - component: {fileID: 1038522496}
   - component: {fileID: 1038522495}
   - component: {fileID: 1038522494}
-  - component: {fileID: 1038522493}
   - component: {fileID: 1038522492}
+  - component: {fileID: 1038522493}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -5727,14 +5676,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1038522491}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &1038522494
 TrailRenderer:
   serializedVersion: 2
@@ -7190,8 +7140,8 @@ GameObject:
   - component: {fileID: 1263200575}
   - component: {fileID: 1263200574}
   - component: {fileID: 1263200573}
-  - component: {fileID: 1263200572}
   - component: {fileID: 1263200571}
+  - component: {fileID: 1263200572}
   m_Layer: 0
   m_Name: Sphere (3)
   m_TagString: Untagged
@@ -7238,14 +7188,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1263200569}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &1263200573
 TrailRenderer:
   serializedVersion: 2
@@ -8072,8 +8023,8 @@ GameObject:
   - component: {fileID: 1391746599}
   - component: {fileID: 1391746598}
   - component: {fileID: 1391746597}
-  - component: {fileID: 1391746596}
   - component: {fileID: 1391746595}
+  - component: {fileID: 1391746596}
   m_Layer: 0
   m_Name: Sphere (9)
   m_TagString: Untagged
@@ -8120,14 +8071,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1391746593}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &1391746597
 TrailRenderer:
   serializedVersion: 2
@@ -9345,8 +9297,8 @@ GameObject:
   - component: {fileID: 1573994740}
   - component: {fileID: 1573994739}
   - component: {fileID: 1573994738}
-  - component: {fileID: 1573994737}
   - component: {fileID: 1573994736}
+  - component: {fileID: 1573994737}
   m_Layer: 0
   m_Name: Sphere (6)
   m_TagString: Untagged
@@ -9393,14 +9345,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1573994734}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &1573994738
 TrailRenderer:
   serializedVersion: 2
@@ -10066,8 +10019,8 @@ GameObject:
   - component: {fileID: 1743648745}
   - component: {fileID: 1743648744}
   - component: {fileID: 1743648743}
-  - component: {fileID: 1743648742}
   - component: {fileID: 1743648741}
+  - component: {fileID: 1743648742}
   m_Layer: 0
   m_Name: Sphere (13)
   m_TagString: Untagged
@@ -10114,14 +10067,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1743648739}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &1743648743
 TrailRenderer:
   serializedVersion: 2
@@ -10295,8 +10249,8 @@ GameObject:
   - component: {fileID: 1768707236}
   - component: {fileID: 1768707235}
   - component: {fileID: 1768707234}
-  - component: {fileID: 1768707233}
   - component: {fileID: 1768707232}
+  - component: {fileID: 1768707233}
   m_Layer: 0
   m_Name: Sphere (14)
   m_TagString: Untagged
@@ -10343,14 +10297,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1768707230}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &1768707234
 TrailRenderer:
   serializedVersion: 2
@@ -10524,8 +10479,8 @@ GameObject:
   - component: {fileID: 1782623674}
   - component: {fileID: 1782623673}
   - component: {fileID: 1782623672}
-  - component: {fileID: 1782623671}
   - component: {fileID: 1782623670}
+  - component: {fileID: 1782623671}
   m_Layer: 0
   m_Name: Sphere (8)
   m_TagString: Untagged
@@ -10572,14 +10527,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1782623668}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &1782623672
 TrailRenderer:
   serializedVersion: 2
@@ -10775,8 +10731,8 @@ Camera:
   m_GameObject: {fileID: 1806018614}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.40000004, g: 0.38431376, b: 0.35686275, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -11388,8 +11344,8 @@ GameObject:
   - component: {fileID: 1889728963}
   - component: {fileID: 1889728962}
   - component: {fileID: 1889728961}
-  - component: {fileID: 1889728960}
   - component: {fileID: 1889728959}
+  - component: {fileID: 1889728960}
   m_Layer: 0
   m_Name: Sphere (15)
   m_TagString: Untagged
@@ -11436,14 +11392,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1889728957}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &1889728961
 TrailRenderer:
   serializedVersion: 2
@@ -11893,8 +11850,8 @@ GameObject:
   - component: {fileID: 1927271041}
   - component: {fileID: 1927271040}
   - component: {fileID: 1927271039}
-  - component: {fileID: 1927271038}
   - component: {fileID: 1927271037}
+  - component: {fileID: 1927271038}
   m_Layer: 0
   m_Name: Sphere (17)
   m_TagString: Untagged
@@ -11941,14 +11898,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1927271035}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &1927271039
 TrailRenderer:
   serializedVersion: 2
@@ -12726,8 +12684,8 @@ GameObject:
   - component: {fileID: 2042137484}
   - component: {fileID: 2042137483}
   - component: {fileID: 2042137482}
-  - component: {fileID: 2042137481}
   - component: {fileID: 2042137480}
+  - component: {fileID: 2042137481}
   m_Layer: 0
   m_Name: Sphere (4)
   m_TagString: Untagged
@@ -12774,14 +12732,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2042137478}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761a6e66ba18945098564a720c7462cb, type: 3}
+  m_Script: {fileID: 11500000, guid: b23f90c32a18a4972bc2da0165568ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
   maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAirAcceleration: 0
   jumpHeight: 2
   maxAirJumps: 0
+  maxGroundAngle: 25
 --- !u!96 &2042137482
 TrailRenderer:
   serializedVersion: 2
