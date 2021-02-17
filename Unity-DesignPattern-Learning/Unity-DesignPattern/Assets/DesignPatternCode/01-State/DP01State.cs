@@ -75,6 +75,11 @@ public interface IState
 public class ConcreteStateA: IState
 {
     public Context mContext;
+
+    public ConcreteStateA()
+    {
+    }
+
     public ConcreteStateA(Context context)
     {
         mContext = context;

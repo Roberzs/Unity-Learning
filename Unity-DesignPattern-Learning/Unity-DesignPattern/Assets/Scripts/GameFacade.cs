@@ -87,4 +87,10 @@ public class GameFacade
         mCampInfoUI.Release();
         mSoldierInfoUI.Release();
     }
+
+    // 敌人最终目标的位置
+    public Vector3 GetEnemyTargetPosition()
+    {
+        return Vector3.zero;
+    }
 }
