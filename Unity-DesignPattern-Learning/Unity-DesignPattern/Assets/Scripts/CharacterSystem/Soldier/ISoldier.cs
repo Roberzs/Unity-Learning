@@ -1,6 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
+public enum SoldierType
+{
+    Rookie = 0,
+    Sergeant = 1,
+    Captain = 2,
+    MAX = 3
+}
 
 public abstract class ISoldier : ICharacter
 {
