@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class CampInfoUI : IBaseUI
 {
+    private ICamp mCamp;        // 当前选中的兵营
+
     private Image mCampIcon;
     private Text mCampName;
     private Text mCampLevel;
@@ -38,5 +40,54 @@ public class CampInfoUI : IBaseUI
         mAliveCount = UITool.FindChild<Text>(mRootUI, "AliveCount");
         mTrainingCount = UITool.FindChild<Text>(mRootUI, "TrainingCount");
         mTrainTime = UITool.FindChild<Text>(mRootUI, "TrainTime");
+
+        mTrainBtn.onClick.AddListener(OnTrainClick);
+        mCancelTrainBtn.onClick.AddListener(OnCancelTrainClick);
+
+        Hide();
+    }
+
+    public void ShowCampInfo(ICamp camp)
+    {
+        Show();
+        mCamp = camp;
+
+        mCampIcon.sprite = FactoryManager.AssetFactory.LoadSprite(camp.IconSprite);
+        mCampName.text = camp.Name;
+        mCampLevel.text = camp.Lv.ToString();
+        ShowWeaponLevel(camp.WeaponType);
+    }
+
+    // 根据武器类型显示名称
+    private void ShowWeaponLevel(WeaponType weaponType)
+    {
+        switch (weaponType)
+        {
+            case WeaponType.Gun:
+                mWeaponLevel.text = "短枪";
+                break;
+            case WeaponType.Rifle:
+                mWeaponLevel.text = "长枪";
+                break;
+            case WeaponType.Rocket:
+                mWeaponLevel.text = "火箭";
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void OnTrainClick()
+    {
+        // 判断能量是否足够
+
+        mCamp.Train();
+    }
+
+    public void OnCancelTrainClick()
+    {
+        // 能量回收
+
+        mCamp.CancelTrain();
     }
 }

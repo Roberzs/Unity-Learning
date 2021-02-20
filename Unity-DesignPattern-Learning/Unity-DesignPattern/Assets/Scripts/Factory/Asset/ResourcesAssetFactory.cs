@@ -19,11 +19,6 @@ public class ResourcesAssetFactory : IAssetFactory
     private const string AudioPath = "Audio/";
     private const string SpritePath = "Sprites/";
 
-    public AudioClip LoadAudioClip(string name)
-    {
-        return LoadAsset(AudioPath + name) as AudioClip;
-    }
-
     public GameObject LoadEffect(string name)
     {
         return InstantiateGameObject(EffectPath + name);
@@ -36,7 +31,12 @@ public class ResourcesAssetFactory : IAssetFactory
 
     public Sprite LoadSprite(string name)
     {
-        return LoadSprite(SpritePath + name) as Sprite;
+        return Resources.Load(SpritePath + name,typeof(Sprite)) as Sprite;
+    }
+
+    public AudioClip LoadAudioClip(string name)
+    {
+        return Resources.Load(SpritePath + name, typeof(AudioClip)) as AudioClip;
     }
 
     public GameObject LoadWeapon(string name)

@@ -15,6 +15,11 @@ public static class UnityTool
     // 获取父物体下指定子物体
     public static GameObject FindChild(GameObject parent, string childName)
     {
+        if (parent == null)
+        {
+            Debug.LogError("查找" + childName + "时，父物体为空");
+            return null;
+        }
         Transform[] children = parent.transform.GetComponentsInChildren<Transform>();
         bool isFinded = false;
         Transform child = null;
@@ -30,7 +35,8 @@ public static class UnityTool
                 child = t;
             }
         }
-        return child.gameObject;
+        if (isFinded) return child.gameObject;
+        return null;
     }
 
     // 将子物体挂载到指定物体上

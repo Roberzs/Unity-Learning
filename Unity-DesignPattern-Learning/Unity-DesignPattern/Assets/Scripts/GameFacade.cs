@@ -93,4 +93,10 @@ public class GameFacade
     {
         return Vector3.zero;
     }
+
+    // 设置显示兵营信息
+    public void ShowCampInfo(ICamp camp)
+    {
+        mCampInfoUI.ShowCampInfo(camp);
+    }
 }

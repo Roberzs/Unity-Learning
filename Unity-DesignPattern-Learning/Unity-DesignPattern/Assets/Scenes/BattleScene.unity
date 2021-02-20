@@ -829,7 +829,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &323452260
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1534,7 +1534,7 @@ GameObject:
   m_Component:
   - component: {fileID: 509753724}
   m_Layer: 5
-  m_Name: GameStateUI
+  m_Name: GameStateInfoUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2500,7 +2500,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 791827542}
   m_HandleRect: {fileID: 0}
@@ -3794,7 +3794,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1225814282
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4350,7 +4350,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 171252, guid: efe30b54343a2f54aa0df9ba2cf93965, type: 3}
       propertyPath: m_Name
-      value: SoldierCamp2
+      value: SoldierCamp_Sergeant
       objectReference: {fileID: 0}
     - target: {fileID: 471252, guid: efe30b54343a2f54aa0df9ba2cf93965, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5392,7 +5392,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 171252, guid: efe30b54343a2f54aa0df9ba2cf93965, type: 3}
       propertyPath: m_Name
-      value: SoldierCamp1
+      value: SoldierCamp_Rookie
       objectReference: {fileID: 0}
     - target: {fileID: 471252, guid: efe30b54343a2f54aa0df9ba2cf93965, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6278,7 +6278,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 171252, guid: efe30b54343a2f54aa0df9ba2cf93965, type: 3}
       propertyPath: m_Name
-      value: SoldierCamp3
+      value: SoldierCamp_Captain
       objectReference: {fileID: 0}
     - target: {fileID: 471252, guid: efe30b54343a2f54aa0df9ba2cf93965, type: 3}
       propertyPath: m_LocalPosition.x

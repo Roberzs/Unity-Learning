@@ -32,5 +32,7 @@ public class SoldierInfoUI : IBaseUI
         mAtk = UITool.FindChild<Text>(mRootUI, "Atk");
         mAtkRange = UITool.FindChild<Text>(mRootUI, "AtkRange");
         mMoveSpeed = UITool.FindChild<Text>(mRootUI, "MoveSpeed");
+
+        Hide();
     }
 }

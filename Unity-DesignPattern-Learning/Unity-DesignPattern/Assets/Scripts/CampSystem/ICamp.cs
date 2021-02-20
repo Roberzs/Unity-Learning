@@ -12,18 +12,40 @@ using UnityEngine;
 
 public abstract class ICamp
 {
+
     protected GameObject mGameObject;
     protected string mName;
     protected string mIconSprite;
     protected SoldierType mSoldierType;
     protected Vector3 mPosition;
+    protected float mTrainTime;
 
-    public ICamp(GameObject gameObject, string name, string iconSprite, SoldierType soldierType, Vector3 position)
+    protected List<ITrainCommand> mCommands;
+    private float mTrainTimer = 0f;
+
+    public ICamp(GameObject gameObject, string name, string iconSprite, SoldierType soldierType, Vector3 position, float trainTime)
     {
         mGameObject = gameObject;
         mName = name;
         mIconSprite = iconSprite;
         mSoldierType = soldierType;
         mPosition = position;
+        mTrainTime = trainTime;
+
+        mCommands = new List<ITrainCommand>();
     }
+
+    public virtual void Update()
+    {
+
+    }
+
+    public string Name { get { return mName; } }
+    public string IconSprite { get { return mIconSprite; } }
+
+    public abstract int Lv { get; }
+    public abstract WeaponType WeaponType { get; }
+
+    public abstract void Train();
+    public abstract void CancelTrain();
 }

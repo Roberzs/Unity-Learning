@@ -24,8 +24,9 @@ public class GameStateInfoUI : IBaseUI
 
         // 获取Canvas  在Canvas获取状态信息显示UI
         GameObject canvas = GameObject.Find("Canvas");
-        mRootUI = UnityTool.FindChild(canvas, "GamePauseUI");
+        mRootUI = UnityTool.FindChild(canvas, "GameStateInfoUI");
 
+        mHearts = new List<GameObject>();
         GameObject heart1 = UnityTool.FindChild(mRootUI, "Heart1");
         GameObject heart2 = UnityTool.FindChild(mRootUI, "Heart2");
         GameObject heart3 = UnityTool.FindChild(mRootUI, "Heart3");
@@ -42,5 +43,8 @@ public class GameStateInfoUI : IBaseUI
         mMessage = UITool.FindChild<Text>(mRootUI, "Message");
         mEnergySlider = UITool.FindChild<Slider>(mRootUI, "EnergySlider");
         mEnergyText = UITool.FindChild<Text>(mRootUI, "EnergyText");
+
+        mGameOverUI.SetActive(false);
+        mMessage.gameObject.SetActive(false);
     }
 }
