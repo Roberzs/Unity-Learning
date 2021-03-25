@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 public class EnemyElf : IEnemy
 {
-    public override void PlayEffect()
+    protected override void PlayEffect()
     {
         DoPlayEffect("ElfHitEffect");
     }

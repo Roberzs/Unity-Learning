@@ -27,6 +27,6 @@ public class WeaponBaseAttr
 
     public string Name { get { return mName; } }
     public int Atk { get { return mAtk; } }
-    public float AtkRange { get { return mAtkRange; } }
+    public float AtkRange { get { return AtkRange; } }
     public string AssetName { get { return mAssetName; } }
 }

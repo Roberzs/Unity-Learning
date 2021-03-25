@@ -33,11 +33,6 @@ public class SoldierBuilder : ICharacterBuilder
         mCharacter.GameObject = characterGO;
     }
 
-    public override void AddInCharacterSystem()
-    {
-        GameFacade.Instance.AddSoldier(mCharacter as ISoldier);
-    }
-
     public override void AddWeapon()
     {
         // 添加武器

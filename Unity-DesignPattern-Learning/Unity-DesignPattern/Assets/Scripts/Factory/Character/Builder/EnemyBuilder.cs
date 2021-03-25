@@ -28,14 +28,9 @@ public class EnemyBuilder : ICharacterBuilder
     public override void AddGameObject()
     {
         // 创建角色游戏物体（加载与实例化）
-        GameObject characterGO = FactoryManager.AssetFactory.LoadEnemy(mPrefabName);   // 加载
+        GameObject characterGO = FactoryManager.AssetFactory.LodaSoldier(mPrefabName);   // 加载
         characterGO.transform.position = mSpawnPosition;
         mCharacter.GameObject = characterGO;
-    }
-
-    public override void AddInCharacterSystem()
-    {
-        GameFacade.Instance.AddEnemy(mCharacter as IEnemy);
     }
 
     public override void AddWeapon()

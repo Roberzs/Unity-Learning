@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 public class EnemyTroll : IEnemy
 {
-    public override void PlayEffect()
+    protected override void PlayEffect()
     {
         DoPlayEffect("TrollHitEffect");
     }

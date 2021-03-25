@@ -13,7 +13,6 @@ using UnityEngine;
 public class CampSystem : IGameSystem
 {
     private Dictionary<SoldierType, SoldierCamp> mSoldierCamps = new Dictionary<SoldierType, SoldierCamp>();
-    private Dictionary<EnemyType, CaptiveCamp> mCaptiveCamps = new Dictionary<EnemyType, CaptiveCamp>();
 
     public override void Init()
     {
@@ -22,19 +21,12 @@ public class CampSystem : IGameSystem
         InitCamp(SoldierType.Rookie);
         InitCamp(SoldierType.Sergeant);
         InitCamp(SoldierType.Captain);
-
-        InitCaptiveCamp(EnemyType.Elf);
     }
 
     public override void Update()
     {
         // 更新所有兵营状态
         foreach (var camp in mSoldierCamps.Values)
-        {
-            camp.Update();
-        }
-
-        foreach (var camp in mCaptiveCamps.Values)
         {
             camp.Update();
         }
@@ -80,34 +72,5 @@ public class CampSystem : IGameSystem
         gameObject.AddComponent<CampOnClick>().Camp = camp;
 
         mSoldierCamps.Add(soldierType, camp);
-    }
-
-    private void InitCaptiveCamp(EnemyType enemyType)
-    {
-        string gameObjectName = null;
-        string name = null;
-        string iconSprite = null;
-        float trainTime = 0f;
-        switch (enemyType)
-        {
-            case EnemyType.Elf:
-                gameObjectName = "CaptiveCamp_Elf";
-                name = "俘兵营";
-                iconSprite = "RookieCamp";
-                trainTime = 3f;
-                break;
-            default:
-                Debug.LogError("无法根据敌人类型" + enemyType + "初始化俘兵营");
-                break;
-        }
-
-        GameObject gameObject = GameObject.Find(gameObjectName);
-        Vector3 position = UnityTool.FindChild(gameObject, "TrainPoint").transform.position;
-        CaptiveCamp camp = new CaptiveCamp(gameObject, name, iconSprite, enemyType, position, trainTime);
-
-        // 添加并设置点击脚本
-        gameObject.AddComponent<CampOnClick>().Camp = camp;
-
-        mCaptiveCamps.Add(enemyType, camp);
     }
 }

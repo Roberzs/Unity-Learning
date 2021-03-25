@@ -17,8 +17,7 @@ public class SoldierAttackState : ISoldierState
 
     public override void Act(List<ICharacter> targets)
     {
-        if (targets == null || targets.Count == 0 || targets[0].IsKilled == true) return;
-
+        if (targets == null || targets.Count == 0) return;
         mAttackTimer += Time.deltaTime;
         if (mAttackTimer >= mAttackTime)
         {

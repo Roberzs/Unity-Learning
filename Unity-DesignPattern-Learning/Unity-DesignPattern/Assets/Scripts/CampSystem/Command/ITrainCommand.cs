@@ -12,5 +12,5 @@ using UnityEngine;
 
 public abstract class ITrainCommand
 {
-    public abstract void Execude();
+    protected abstract void Execude();
 }

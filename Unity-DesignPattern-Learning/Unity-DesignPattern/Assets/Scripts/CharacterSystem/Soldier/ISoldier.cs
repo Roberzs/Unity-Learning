@@ -6,7 +6,7 @@ public enum SoldierType
     Rookie = 0,
     Sergeant = 1,
     Captain = 2,
-    Captive = 3,
+    MAX = 3
 }
 
 public abstract class ISoldier : ICharacter
@@ -21,15 +21,8 @@ public abstract class ISoldier : ICharacter
     // 刷新状态机
     public override void UpdateFSMAI(List<ICharacter> targets)
     {
-        if (mIsKilled) return;
-
         mFSMSystem.CurrentState.Reason(targets);
         mFSMSystem.CurrentState.Act(targets);
-    }
-
-    public override void RunVisitor(ICharacterVisitor visitor)
-    {
-        visitor.VisitSoldier(this);
     }
 
     private void MakeFSM()
@@ -52,8 +45,6 @@ public abstract class ISoldier : ICharacter
 
     public override void UnderAttack(int damage)
     {
-        if (mIsKilled) return;
-
         base.UnderAttack(damage);
 
         if (mAttr.CurrentHP <= 0)
@@ -66,11 +57,5 @@ public abstract class ISoldier : ICharacter
 
     protected abstract void PlayEffect();
     protected abstract void PlaySound();
-
-    public override void Killed()
-    {
-        base.Killed();
-        GameFacade.Instance.NotifySubject(GameEventType.SoldierKilled);
-    }
 }
 
