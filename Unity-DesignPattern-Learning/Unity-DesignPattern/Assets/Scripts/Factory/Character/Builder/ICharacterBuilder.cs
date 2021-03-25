@@ -35,4 +35,6 @@ public abstract class ICharacterBuilder
     public abstract void AddWeapon();
 
     public abstract ICharacter GetResult();
+
+    public abstract void AddInCharacterSystem();    // 将创建好的角色添加到角色管理系统统一管理
 }

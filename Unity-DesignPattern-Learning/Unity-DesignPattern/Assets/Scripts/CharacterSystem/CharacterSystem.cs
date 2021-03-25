@@ -27,6 +27,9 @@ public class CharacterSystem : IGameSystem
     {
         UpdateEnemys();
         UpdateSoldiers();
+
+        RemoveCharacterIsKilled(mEnemys);
+        RemoveCharacterIsKilled(mSoldiers);
     }
 
     private void UpdateEnemys()
@@ -43,6 +46,36 @@ public class CharacterSystem : IGameSystem
         {
             s.Update();
             s.UpdateFSMAI(mEnemys);
+        }
+    }
+
+    private void RemoveCharacterIsKilled(List<ICharacter> characters)
+    {
+        List<ICharacter> canDestroys = new List<ICharacter>();
+        foreach (var character in characters)
+        {
+            if (character.CanDestroy)
+            {
+                canDestroys.Add(character);
+            }
+        }
+
+        foreach (var character in canDestroys)
+        {
+            character.Release();
+            characters.Remove(character);
+        }
+    }
+
+    public void RunVisitor(ICharacterVisitor visitor)
+    {
+        foreach (var character in mEnemys)
+        {
+            character.RunVisitor(visitor);
+        }
+        foreach (var character in mSoldiers)
+        {
+            character.RunVisitor(visitor);
         }
     }
 }

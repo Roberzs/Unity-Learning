@@ -25,7 +25,7 @@ public class TrainSoldierCommand : ITrainCommand
         mLv = lv;
     }
 
-    protected override void Execude()
+    public override void Execude()
     {
         switch (mSoldierType)
         {

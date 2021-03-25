@@ -18,6 +18,11 @@ public class GameStateInfoUI : IBaseUI
     private Slider mEnergySlider;
     private Text mEnergyText;
 
+    private float mMsgTimer = 0;        // 提示信息计时器
+    private float mMsgTime = 2;
+
+    private AliveCountVisitor mAliveCountVisitor = new AliveCountVisitor();
+
     public override void Init()
     {
         base.Init();
@@ -46,5 +51,50 @@ public class GameStateInfoUI : IBaseUI
 
         mGameOverUI.SetActive(false);
         mMessage.gameObject.SetActive(false);
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        UpdateAliveCount();
+
+        // 提示信息计时
+        if (mMsgTimer > 0)
+        {
+            mMsgTimer -= Time.deltaTime;
+            if (mMsgTimer <= 0)
+            {
+                mMessage.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    public void ShowMsg(string msg)
+    {
+        mMessage.gameObject.SetActive(true);
+        mMessage.text = msg;
+        mMsgTimer = mMsgTime;
+    }
+
+    // 更新能量条
+    public void UpdateEnergySlider(int nowEnergy,int maxEnergy)
+    {
+        mEnergySlider.value = (float)nowEnergy / maxEnergy;
+        mEnergyText.text = "(" + nowEnergy + "/" + maxEnergy + ")";
+    }
+
+    // 更新战士与敌人的存活数量
+    public void UpdateAliveCount()
+    {
+        mAliveCountVisitor.Reset();
+        mFacade.RunVisitor(mAliveCountVisitor);
+        mSoldierCount.text = mAliveCountVisitor.soldierCount.ToString();
+        mEnemyCount.text = mAliveCountVisitor.enemyCount.ToString();
+    }
+
+    public void UpdateCurrentStage(int stageCount)
+    {
+        mCurrentStage.text = stageCount.ToString();
     }
 }

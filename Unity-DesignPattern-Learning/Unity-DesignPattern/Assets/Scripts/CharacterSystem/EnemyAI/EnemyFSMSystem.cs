@@ -28,6 +28,7 @@ public class EnemyFSMSystem
         {
             mStates.Add(state);
             mCurrentState = state;
+            mCurrentState.DoBeforeEntering();
             return;
         }
         foreach (IEnemyState s in mStates)

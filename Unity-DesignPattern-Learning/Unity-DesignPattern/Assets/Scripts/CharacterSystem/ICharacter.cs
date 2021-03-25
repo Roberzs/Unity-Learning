@@ -15,6 +15,13 @@ public abstract class ICharacter
     protected AudioSource mAudio;       // 播放音效
     protected IWeapon mWeapon;      // 角色武器
 
+    protected bool mIsKilled = false;       // 是否已被杀死
+    protected bool mCanDestroy = false;     // 是否可以移除
+    public bool CanDestroy { get { return mCanDestroy; } }
+    public bool IsKilled { get { return mIsKilled; } }
+    protected float mDestroyTimer = 2f;
+
+
     public GameObject GameObject        // 设置物体
     {
         set
@@ -24,9 +31,13 @@ public abstract class ICharacter
             mAudio = mGameObject.GetComponent<AudioSource>();
             mAnim = mGameObject.GetComponentInChildren<Animation>();
         }
+        get
+        {
+            return mGameObject;
+        }
     }
 
-    public ICharacterAttr Attr { set { mAttr = value; } }       // 设置属性
+    public ICharacterAttr Attr { set { mAttr = value; } get { return mAttr; } }       // 设置属性
 
     public IWeapon Weapon       // 设置武器以及武器拥有者
     {
@@ -37,12 +48,17 @@ public abstract class ICharacter
 
             GameObject child = UnityTool.FindChild(mGameObject, "weapon-point");
             UnityTool.Attach(child, mWeapon.GameObject);
-        } 
+        }
+        get
+        {
+            return mWeapon;
+        }
     }     
 
     public float AtkRang { get { return mWeapon.AtkRange; } }
 
     public abstract void UpdateFSMAI(List<ICharacter> targets);
+    public abstract void RunVisitor(ICharacterVisitor visitor);
 
     public Vector3 Position
     {
@@ -58,6 +74,16 @@ public abstract class ICharacter
 
     public void Update()
     {
+        if (mIsKilled)
+        {
+            mDestroyTimer -= Time.deltaTime;
+            if (mDestroyTimer <= 0)
+            {
+                mCanDestroy = true;
+            }
+            return;
+        }
+
         mWeapon.Update();
     }
 
@@ -72,15 +98,21 @@ public abstract class ICharacter
     // 掉血效果
     public virtual void UnderAttack(int damage)
     {
+        if (mIsKilled) return;
+        
         mAttr.TakeDamage(damage);
-
-
     }
 
     // 死亡处理
-    public void Killed()
+    public virtual void Killed()
     {
-        // TODO
+        mIsKilled = true;
+        mNavAgent.isStopped = true;
+    }
+
+    public void Release()
+    {
+        GameObject.Destroy(mGameObject);
     }
 
     public void PlayAnim(string animName)
@@ -97,6 +129,7 @@ public abstract class ICharacter
     // 播放特效
     protected void DoPlayEffect(string effectName)
     {
+        Debug.Log("加载特效");
         // 加载特效 TODO
         GameObject effectGO = FactoryManager.AssetFactory.LoadEffect(effectName);
         effectGO.transform.position = Position;

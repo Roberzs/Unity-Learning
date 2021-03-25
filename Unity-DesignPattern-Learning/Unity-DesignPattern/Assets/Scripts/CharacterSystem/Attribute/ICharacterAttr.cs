@@ -28,10 +28,14 @@ public class ICharacterAttr
     public int CritValue { get { return mStrategy.GetCritDmg(mBaseAttr.CritRate); } }        // 返回暴击伤害
     public int CurrentHP { get { return mCurrentHP; } }     // 返回当前血量
 
+    public IAttrStrategy Strategy { get { return mStrategy; } }
+
+    public CharacterBaseAttr BaseAttr { get { return mBaseAttr; } }
+
     public void TakeDamage(int damage)
     {
         damage -= mDmgDescValue;
-        if (damage < 5) damage = 5;     // 至少造成5点上海
+        if (damage < 5) damage = 5;     // 至少造成5点伤害
         mCurrentHP -= damage;
     }
 }
