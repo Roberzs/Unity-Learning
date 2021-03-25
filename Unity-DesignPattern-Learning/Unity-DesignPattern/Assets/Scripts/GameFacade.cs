@@ -56,6 +56,8 @@ public class GameFacade
         mGamePauseUI.Init();
         mCampInfoUI.Init();
         mSoldierInfoUI.Init();
+
+        LoadMemento();
     }
 
     public void Update()
@@ -86,17 +88,104 @@ public class GameFacade
         mGamePauseUI.Release();
         mCampInfoUI.Release();
         mSoldierInfoUI.Release();
+
+        CreateMemento();
     }
 
-    // 敌人最终目标的位置
-    public Vector3 GetEnemyTargetPosition()
+    /** 关卡系统 */
+
+    
+    public Vector3 GetEnemyTargetPosition()     // 敌人最终目标的位置
     {
-        return Vector3.zero;
+        return mStageSystem.GetEnemyTargetPosition;
     }
 
-    // 设置显示兵营信息
-    public void ShowCampInfo(ICamp camp)
+    /** 角色系统 */
+
+    public void AddSoldier(ISoldier soldier)
+    {
+        mCharacterSystem.AddSoldier(soldier);
+    }
+
+    public void AddEnemy(IEnemy enemy)
+    {
+        mCharacterSystem.AddEnemy(enemy);
+    }
+
+    public void RemoveEnemy(IEnemy enemy)
+    {
+        mCharacterSystem.RemoveEnemy(enemy);
+    }
+
+    public void RunVisitor(ICharacterVisitor visitor)
+    {
+        mCharacterSystem.RunVisitor(visitor);
+    }
+
+    /** 能量系统 */
+
+    public bool TakeEnergy(int value)
+    {
+        return mEnergySystem.TakeEnergy(value);
+    }
+
+    public void RecycleEnery(int value)
+    {
+        mEnergySystem.RecycleEnery(value);
+    }
+
+    /** UI系统 */
+
+    public void ShowMsg(string msg)
+    {
+        mGameStateInfoUI.ShowMsg(msg);
+    }
+
+    public void UpdateEnergySlider(int nowEnergy, int maxEnergy)
+    {
+        mGameStateInfoUI.UpdateEnergySlider(nowEnergy, maxEnergy);
+    }
+
+    
+    public void ShowCampInfo(ICamp camp)        // 设置显示兵营信息
     {
         mCampInfoUI.ShowCampInfo(camp);
+    }
+
+    public void UpdateCurrentStage(int stageCount)
+    {
+        mGameStateInfoUI.UpdateCurrentStage(stageCount);
+    }
+
+    /** 游戏事件系统 */
+
+    public void RegisterObserver(GameEventType eventType, IGameEventObserver observer)
+    {
+        mGameEventSystem.RegisterObserver(eventType, observer);
+    }
+
+    public void RemoveObserver(GameEventType eventType, IGameEventObserver observer)
+    {
+        mGameEventSystem.RemoveObserver(eventType, observer);
+    }
+
+    public void NotifySubject(GameEventType eventType)
+    {
+        mGameEventSystem.NotifySubject(eventType);
+    }
+
+    /** 成就系统 */
+
+    private void LoadMemento()
+    {
+        AchievementMemento memento = new AchievementMemento();
+        memento.LoadData();
+        mAchievementSystem.SetMemento(memento);
+    }
+
+    private void CreateMemento()
+    {
+        AchievementMemento memento = mAchievementSystem.CreateMemento();
+        memento.SaveData();
     }
 }

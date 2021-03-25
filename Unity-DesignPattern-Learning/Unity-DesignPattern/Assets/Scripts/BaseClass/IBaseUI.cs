@@ -4,8 +4,13 @@ using UnityEngine;
 
 public abstract class IBaseUI
 {
+    protected GameFacade mFacade;
+
     public GameObject mRootUI;        // 根UI
-    public virtual void Init() { }
+    public virtual void Init() 
+    {
+        mFacade = GameFacade.Instance;
+    }
     public virtual void Update() { }
     public virtual void Release() { }
 
