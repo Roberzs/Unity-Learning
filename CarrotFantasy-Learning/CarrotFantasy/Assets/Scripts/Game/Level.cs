@@ -41,11 +41,14 @@ public class Level
         if (currentRound >= totalRound)
         {
             // 胜利处理
+            currentRound--;
+            GameController.Instance.normalModelPanel.ShowGameWinPage();
         }
         else if (currentRound == totalRound - 1)
         {
             // 最后一波怪物的具体处理（UI等）
             HandleLastRound();
+            GameController.Instance.normalModelPanel.ShowFinalWaveUI();
         }
         else
         {

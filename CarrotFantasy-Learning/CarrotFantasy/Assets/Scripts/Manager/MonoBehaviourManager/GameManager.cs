@@ -13,7 +13,10 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     public static GameManager Instance { get => _instance; }
 
-    public Stage currentStage;
+    public bool initPlayerManager;      // 是否重置游戏
+
+    public LevelType levelType;
+    public Stage currentStage;  
 
     public PlayerManager playerManager;
     public FactoryManager factoryManager;
@@ -26,11 +29,13 @@ public class GameManager : MonoBehaviour
         _instance = this;
 
         playerManager = new PlayerManager();
+        //playerManager.SaveData();
+        playerManager.ReadData();
         factoryManager = new FactoryManager();
         audioSourceManager = new AudioSourceManager();
         // 注释 用以方便测试
-        //uIManager = new UIManager();
-        //uIManager.mUIFacade.currentSceneState.EnterScene();
+        uIManager = new UIManager();
+        uIManager.mUIFacade.currentSceneState.EnterScene();
     }
 
     public GameObject CreateItem(GameObject itemGo)

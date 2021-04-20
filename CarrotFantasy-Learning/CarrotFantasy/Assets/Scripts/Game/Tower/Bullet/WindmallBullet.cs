@@ -21,9 +21,9 @@ public class WindmallBullet : Bullet
         timeVal = 0;
     }
 
-    private void Update()
+    protected override void Update()
     {
-        if (GameController.Instance.gameOver || timeVal >= 2.5)
+        if (GameController.Instance.gameOver || timeVal >= 2.5f)
         {
             DestoryBullet();
         }

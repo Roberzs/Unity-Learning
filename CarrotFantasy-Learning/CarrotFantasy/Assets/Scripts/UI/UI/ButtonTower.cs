@@ -13,25 +13,25 @@ using UnityEngine.UI;
 
 public class ButtonTower : MonoBehaviour
 {
+#if GameRuning
+
     public int towerID;
     public int price;
     private Button button;
     private Sprite canClickSprite;
     private Sprite cantClickSprite;
     private Image image;
-    private GameController gameController;
 
     private void Start()
     {
-        gameController = GameController.Instance;
 
         image = GetComponent<Image>();
         button = GetComponent<Button>();
 
-        canClickSprite = gameController.GetSprite("NormalMordel/Game/Tower/" + towerID.ToString() + "/CanClick1");
-        cantClickSprite = gameController.GetSprite("NormalMordel/Game/Tower/" + towerID.ToString() + "/CanClick0");
+        canClickSprite = GameController.Instance.GetSprite("NormalMordel/Game/Tower/" + towerID.ToString() + "/CanClick1");
+        cantClickSprite = GameController.Instance.GetSprite("NormalMordel/Game/Tower/" + towerID.ToString() + "/CanClick0");
 
-        price = gameController.towerPriceDict[towerID];
+        price = GameController.Instance.towerPriceDict[towerID];
 
         UpdateIcon();
 
@@ -50,7 +50,7 @@ public class ButtonTower : MonoBehaviour
     // 更新图标显示
     private void UpdateIcon()
     {
-        if (gameController.coin > price)
+        if (GameController.Instance.coin > price)
         {
             image.sprite = canClickSprite;
             button.interactable = true;
@@ -62,28 +62,34 @@ public class ButtonTower : MonoBehaviour
         }
     }
 
+
+
     // 建塔
     private void BuildTower()
     {
-        gameController.towerBuilder.m_TowerID = towerID;
-        gameController.towerBuilder.m_TowerLevel = 1;
-        GameObject towerGo = gameController.towerBuilder.GetProduct();
-        towerGo.transform.SetParent(gameController.selectGrid.transform);
-        towerGo.transform.position = gameController.selectGrid.transform.position;
+        GameController.Instance.PlayEffectMusic("NormalMordel/Tower/TowerBulid");
+
+
+        GameController.Instance.towerBuilder.m_TowerID = towerID;
+        GameController.Instance.towerBuilder.m_TowerLevel = 1;
+        GameObject towerGo = GameController.Instance.towerBuilder.GetProduct();
+        towerGo.transform.SetParent(GameController.Instance.selectGrid.transform);
+        towerGo.transform.position = GameController.Instance.selectGrid.transform.position;
 
         // 特效
-        GameObject effectGo = gameController.GetGameObjectResource("BuildEffect");
-        effectGo.transform.SetParent(gameController.transform);
-        effectGo.transform.position = gameController.selectGrid.transform.position;
+        GameObject effectGo = GameController.Instance.GetGameObjectResource("BuildEffect");
+        effectGo.transform.SetParent(GameController.Instance.transform);
+        effectGo.transform.position = GameController.Instance.selectGrid.transform.position;
 
         // 建塔完成后 网格的后续操作
-        gameController.selectGrid.AfterBuild();
-        gameController.selectGrid.HideGrid();
-        gameController.selectGrid.hasTower = true;
-        gameController.ChangeCoin(-price);
+        GameController.Instance.selectGrid.AfterBuild();
+        GameController.Instance.selectGrid.HideGrid();
+        GameController.Instance.selectGrid.hasTower = true;
+        GameController.Instance.ChangeCoin(-price);
 
-        gameController.selectGrid = null;
-        gameController.handleTowerCanvasGo.SetActive(false);
+        GameController.Instance.selectGrid = null;
+        GameController.Instance.handleTowerCanvasGo.SetActive(false);
 
     }
+#endif
 }

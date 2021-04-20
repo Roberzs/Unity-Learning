@@ -57,11 +57,15 @@ public class Carrot : MonoBehaviour
         if (GameController.Instance.carrotHp >= 10)
         {
             animator.Play("Touch");
+            int randomNum = UnityEngine.Random.Range(1, 4);
+            GameController.Instance.PlayEffectMusic("NormalMordel/Carrot/" + randomNum.ToString());
         }
     }
 
     public void UpdateCarrotUI()
     {
+        if (GameController.Instance.gameOver) return;
+
         int hp = GameController.Instance.carrotHp;
         hpText.text = hp.ToString();
         if (hp>=7 && hp < 10)
@@ -75,6 +79,8 @@ public class Carrot : MonoBehaviour
         else
         {
             // 游戏结束
+            GameController.Instance.normalModelPanel.ShowGameOverPage();
+            GameController.Instance.gameOver = true;
         }
     }
 }

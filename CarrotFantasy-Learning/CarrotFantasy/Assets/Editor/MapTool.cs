@@ -27,6 +27,8 @@ public class MapTool : Editor
     // 当前编辑关卡的索引
     private int selectIndex = -1;
 
+    private LevelType levelType;
+
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
@@ -52,7 +54,12 @@ public class MapTool : Editor
 
             if (GUILayout.Button("读取关卡列表"))
             {
-                LoadLevelFile();
+                LoadLevelFile(LevelType.None);
+            }
+
+            if (GUILayout.Button("读取Boss关卡列表"))
+            {
+                LoadLevelFile(LevelType.Boss);
             }
 
             EditorGUILayout.EndHorizontal();
@@ -78,10 +85,11 @@ public class MapTool : Editor
     }
 
     // 加载关卡数据文件
-    private void LoadLevelFile()
+    private void LoadLevelFile(LevelType levelType)
     {
         ClearList();
-        fileList = GetLevelFiles();
+        this.levelType = levelType;
+        fileList = GetLevelFiles(levelType);
     }
 
 
@@ -93,9 +101,24 @@ public class MapTool : Editor
     }
 
     // 读取关卡列表
-    private List<FileInfo> GetLevelFiles()
+    private List<FileInfo> GetLevelFiles(LevelType levelType)
     {
-        string[] files = Directory.GetFiles(Application.dataPath + "/Resources/Json/Level/", "*.json");
+        string path = "";
+        switch (levelType)
+        {
+            case LevelType.None:
+                path = Application.streamingAssetsPath + "/Json/Level/";
+                break;
+            case LevelType.Boss:
+                path = Application.streamingAssetsPath + "/Json/BossLevel/"; ;
+                break;
+            default:
+                Debug.LogError("使用了不识别的关卡类别:" + levelType);
+                break;
+        }
+
+        string[] files = Directory.GetFiles(path, "*.json");
+
         List<FileInfo> list = new List<FileInfo>();
         for (int i = 0; i < files.Length; i++)
         {
@@ -111,7 +134,8 @@ public class MapTool : Editor
         List<string> names = new List<string>();
         foreach (var file in files)
         {
-            names.Add(file.Name);
+            string fileName = file.Name.Replace(".json", "");
+            names.Add(fileName);
         }
         return names.ToArray();
     }
@@ -122,4 +146,5 @@ public class MapTool : Editor
 #if GameRuning
 
 #endif
+
 

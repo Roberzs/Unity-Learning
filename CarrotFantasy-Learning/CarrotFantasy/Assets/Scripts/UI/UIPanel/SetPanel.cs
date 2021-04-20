@@ -55,6 +55,7 @@ public class SetPanel : BasePanel
 
     public override void ExitPanel()
     {
+        mUIFacade.PlayButtonAudioClip();
         setPanelTween.PlayBackwards();
         mUIFacade.currentScenePanelDict[StringManager.MainPanel].EnterPanel();
         InitPanel();
@@ -68,6 +69,10 @@ public class SetPanel : BasePanel
     /** 页面的显示 */
     public void ShowOptionPage()
     {
+        if (!optionPageGo.activeSelf)
+        {
+            mUIFacade.PlayButtonAudioClip();
+        }
         optionPageGo.SetActive(true);
         statisticsPageGo.SetActive(false);
         producerPageGo.SetActive(false);
@@ -75,6 +80,7 @@ public class SetPanel : BasePanel
 
     public void ShowStatisicsPage()
     {
+        mUIFacade.PlayButtonAudioClip();
         optionPageGo.SetActive(false);
         statisticsPageGo.SetActive(true);
         producerPageGo.SetActive(false);
@@ -83,6 +89,7 @@ public class SetPanel : BasePanel
 
     public void ShowProducerPage()
     {
+        mUIFacade.PlayButtonAudioClip();
         optionPageGo.SetActive(false);
         statisticsPageGo.SetActive(false);
         producerPageGo.SetActive(true);
@@ -92,6 +99,7 @@ public class SetPanel : BasePanel
 
     public void CloseOrOpenEffectMusic()
     {
+        mUIFacade.PlayButtonAudioClip();
         playEffectMusic = !playEffectMusic;
         mUIFacade.CloseOrOpenEffectMusic();
         if (playEffectMusic)
@@ -106,6 +114,7 @@ public class SetPanel : BasePanel
 
     public void CloseOrOpenBGMusic()
     {
+        mUIFacade.PlayButtonAudioClip();
         playBGMusic = !playBGMusic;
         mUIFacade.CloseOrOpenBGMusic();
         if (playBGMusic)
@@ -135,7 +144,12 @@ public class SetPanel : BasePanel
     // 游戏重置
     public void ResetGame()
     {
-
+        mUIFacade.PlayButtonAudioClip();
+        panel_ResetGo.SetActive(false);
+        GameManager.Instance.initPlayerManager = true;
+        GameManager.Instance.playerManager.ReadData();
+        ShowStatisicsPage();
+        CloseOrOpenEffectMusic();
     }
 
     public void ShowResetPanel()
@@ -145,6 +159,7 @@ public class SetPanel : BasePanel
 
     public void CloseResetPanel()
     {
+        mUIFacade.PlayButtonAudioClip();
         panel_ResetGo.SetActive(false);
     }
 }

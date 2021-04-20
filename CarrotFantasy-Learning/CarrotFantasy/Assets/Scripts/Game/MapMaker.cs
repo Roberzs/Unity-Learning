@@ -205,10 +205,22 @@ public class MapMaker : MonoBehaviour
     }
 
     // 保存当前关卡的数据文件
-    public void SaveLevelFileByJson()
+    public void SaveLevelFileByJson(LevelType levelType = LevelType.None)
     {
         LevelInfo levelInfoGo = CreateLevelInfoGo();
-        string filePath = Application.dataPath + "/Resources/Json/Level/" + "Level" +  bigLevelID.ToString() + "_" + levelID.ToString() + ".json";
+        string filePath = "";
+        switch (levelType)
+        {
+            case LevelType.None:
+                filePath = Application.streamingAssetsPath + "/Json/Level/" + "Level" + bigLevelID.ToString() + "_" + levelID.ToString() + ".json";
+                break;
+            case LevelType.Boss:
+                filePath = Application.streamingAssetsPath + "/Json/Level/" + "BossLevel" + ".json";
+                break;
+            default:
+                Debug.LogError("使用了不识别的关卡类别:" + levelType);
+                break;
+        }
         string saveJsonStr = JsonMapper.ToJson(levelInfoGo);
         StreamWriter sw = new StreamWriter(filePath);
         sw.Write(saveJsonStr);
@@ -219,11 +231,24 @@ public class MapMaker : MonoBehaviour
 
 
     // 读取关卡数据文件并转换为LevelInfo对象
-    public LevelInfo LoadLevelInfoFile(string fileName)
+    public LevelInfo LoadLevelInfoFile(string fileName, LevelType levelType = LevelType.None)
     {
         LevelInfo levelInfo = new LevelInfo();
 
-        string filePath = Application.dataPath + "/Resources/Json/Level/" + fileName + ".json";
+        string filePath = "";
+        switch (levelType)
+        {
+            case LevelType.None:
+                filePath = Application.streamingAssetsPath + "/Json/Level/" + fileName + ".json";
+                break;
+            case LevelType.Boss:
+                filePath = Application.streamingAssetsPath + "/Json/BossLevel/" + fileName + ".json";
+                break;
+            default:
+                Debug.LogError("使用了不识别的关卡类别:" + levelType);
+                break;
+        }
+        
         if (File.Exists(filePath)){
             StreamReader sr = new StreamReader(filePath);
             string jsonStr = sr.ReadToEnd();

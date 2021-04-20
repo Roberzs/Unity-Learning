@@ -89,7 +89,7 @@ public class JsonTest : MonoBehaviour
     // Json文件存储
     private void SaveByJson()
     {
-        string filePath = Application.dataPath + "/Resources/Json/" + "AppOfPhone.json";
+        string filePath = Application.streamingAssetsPath + "/Json/" + "AppOfPhone.json";
 
         // 利用JsonMapper将信息类转换成Json类型字符串
         string saveJsonStr = JsonMapper.ToJson(appOfPhone);
@@ -104,7 +104,7 @@ public class JsonTest : MonoBehaviour
     private AppOfPhone LoadByJson()
     {
         AppOfPhone appGo = new AppOfPhone();
-        string filePath = Application.dataPath + "/Resources/Json/" + "AppOfPhone.json";
+        string filePath = Application.streamingAssetsPath + "/Json/" + "AppOfPhone.json";
 
         if (File.Exists(filePath))
         {

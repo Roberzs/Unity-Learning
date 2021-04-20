@@ -62,12 +62,14 @@ public class MainPanel : BasePanel
 
     public void MoveToRight()
     {
+        mUIFacade.PlayButtonAudioClip();
         exitTween = mainPanelTween[0];
         mUIFacade.currentScenePanelDict[StringManager.SetPanel].EnterPanel();
     }
 
     public void MoveToLeft()
     {
+        mUIFacade.PlayButtonAudioClip();
         exitTween = mainPanelTween[1];
         mUIFacade.currentScenePanelDict[StringManager.HelpPanel].EnterPanel();
     }
@@ -75,24 +77,29 @@ public class MainPanel : BasePanel
     /** 场景状态切换 */
     public void ToNormalModelScene()
     {
+        mUIFacade.PlayButtonAudioClip();
         mUIFacade.currentScenePanelDict[StringManager.GameLoadPanel].EnterPanel();
         mUIFacade.ChangeSceneState(new NormalGameOptionSceneState(mUIFacade));
     }
 
     public void ToBossModelScene()
     {
+        mUIFacade.PlayButtonAudioClip();
         mUIFacade.currentScenePanelDict[StringManager.GameLoadPanel].EnterPanel();
         mUIFacade.ChangeSceneState(new BosslGameOptionSceneState(mUIFacade));
     }
 
     public void ToMonsterNest()
     {
+        mUIFacade.PlayButtonAudioClip();
         mUIFacade.currentScenePanelDict[StringManager.GameLoadPanel].EnterPanel();
         mUIFacade.ChangeSceneState(new MonsterNestSceneState(mUIFacade));
     }
 
     public void ExitGame()
     {
+        mUIFacade.PlayButtonAudioClip();
+        GameManager.Instance.playerManager.SaveData();
         Application.Quit();
     }
 }

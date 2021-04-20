@@ -30,42 +30,103 @@ public class PlayerManager
     public int milk;
     public int nest;
     public int diamands;
+    public List<MonsterPetData> monsterPetDataList;     // 宠物的喂养信息
+
 
     // 用于测试
-    public PlayerManager()
-    {
-        adventrueModelNum = 100;
-        burriedLevelNum = 100;
-        bossModelNum = 100;
-        coin = 100;
-        killMonsterNum = 100;
-        clearItemNum = 100;
-        unLockedNormalModelLevelNum = new List<int>()
-        {
-            2, 2, 2
-        };
-        unLockedNormalModelBigLevelList = new List<bool>()
-        {
-            true, true, true
-        };
+    //public PlayerManager()
+    //{
+    //    adventrueModelNum = 0;
+    //    burriedLevelNum = 0;
+    //    bossModelNum = 0;
+    //    coin = 0;
+    //    killMonsterNum = 0;
+    //    killBossNum = 0;
+    //    clearItemNum = 0;
+    //    cookies = 100;
+    //    milk = 100;
+    //    nest = 1;
+    //    diamands = 1000;
+    //    unLockedNormalModelLevelNum = new List<int>()
+    //        {
+    //            1,0,0
+    //        };
+    //    unLockedNormalModelBigLevelList = new List<bool>()
+    //        {
+    //            true,false,false
+    //        };
+    //    unLockedNormalModelLevelList = new List<Stage>()
+    //        {
+    //               new Stage(10,1,new int[]{ 1},false,0,1,1,true,false),
+    //               new Stage(9,1,new int[]{ 2},false,0,2,1,false,false),
+    //               new Stage(8,2,new int[]{ 1,2},false,0,3,1,false,false),
+    //               new Stage(10,1,new int[]{ 3},false,0,4,1,false,false),
+    //               new Stage(9,3,new int[]{ 1,2,3},false,0,5,1,false,true),
+    //               new Stage(8,2,new int[]{ 2,3},false,0,1,2,true,false),
+    //               new Stage(10,2,new int[]{ 1,3},false,0,2,2,false,false),
+    //               new Stage(9,1,new int[]{ 4},false,0,3,2,false,false),
+    //               new Stage(8,2,new int[]{ 1,4},false,0,4,2,false,false),
+    //               new Stage(10,2,new int[]{ 2,4},false,0,5,2,false,true),
+    //               new Stage(9,2,new int[]{ 3,4},false,0,1,3,false,false),
+    //               new Stage(8,1,new int[]{ 5},false,0,2,3,false,false),
+    //               new Stage(7,2,new int[]{ 4,5},false,0,3,3,false,false),
+    //               new Stage(10,3,new int[]{ 1,3,5},false,0,4,3,false,false),
+    //               new Stage(10,3,new int[]{ 1,4,5},false,0,5,3,false,true)
+    //        };
+    //    monsterPetDataList = new List<MonsterPetData>()
+    //        {
+    //            new MonsterPetData()
+    //            {
+    //                monsterID=1,
+    //                monsterLevel=1,
+    //                remainCookies=0,
+    //                remainMilk=0
+    //            },
+    //            new MonsterPetData()
+    //            {
+    //                monsterID=2,
+    //                monsterLevel=1,
+    //                remainCookies=0,
+    //                remainMilk=0
+    //            },
+    //            new MonsterPetData()
+    //            {
+    //                monsterID=3,
+    //                monsterLevel=1,
+    //                remainCookies=0,
+    //                remainMilk=0
+    //            },
+    //        };
+    //}
 
-        unLockedNormalModelLevelList = new List<Stage>()
-        {
-            new Stage(10, 2, new int[]{1,2 },false, 1,1, 1,true,false),
-            new Stage(10, 2, new int[]{2,3 },false, 0,2, 1,true,false),
-            new Stage(10, 3, new int[]{5,2,6 },false, 0, 3, 1,true,false),
-            new Stage(10, 2, new int[]{1,2 },false, 0,4, 1,false,false),
-            new Stage(10, 2, new int[]{1,2 },false, 0,5, 1,false,true),
-            new Stage(10, 2, new int[]{1,2 },false, 0,1, 2,true,false),
-            new Stage(10, 2, new int[]{1,2 },false, 0,2, 2,true,false),
-            new Stage(10, 2, new int[]{1,2 },false, 0,3, 2,true,false),
-            new Stage(10, 2, new int[]{1,2 },false, 0,4, 2,true,false),
-            new Stage(10, 2, new int[]{1,2 },false, 0,5, 2,false,true),
-            new Stage(10, 2, new int[]{1,2 },false, 0,1, 3,true,false),
-            new Stage(10, 2, new int[]{1,2 },false, 0,2, 3,true,false),
-            new Stage(10, 2, new int[]{1,2 },false, 0,3, 3,true,false),
-            new Stage(10, 2, new int[]{1,2 },false, 0,4, 3,true,false),
-            new Stage(10, 2, new int[]{1,2 },false, 0,5, 3,false,true),
-        };
+    public void SaveData()
+    {
+        Memento memento = new Memento();
+        memento.SaveByJson();
+    }
+
+    public void ReadData()
+    {
+        Memento memento = new Memento();
+        PlayerManager playerManager = memento.LoadByJson();
+        //数据信息
+        adventrueModelNum = playerManager.adventrueModelNum;
+        burriedLevelNum = playerManager.burriedLevelNum;
+        bossModelNum = playerManager.bossModelNum;
+        coin = playerManager.coin;
+        killMonsterNum = playerManager.killMonsterNum;
+        killBossNum = playerManager.killBossNum;
+        clearItemNum = playerManager.clearItemNum;
+        cookies = playerManager.cookies;
+        milk = playerManager.milk;
+        nest = playerManager.nest;
+        diamands = playerManager.diamands;
+        //列表
+        unLockedNormalModelBigLevelList = playerManager.unLockedNormalModelBigLevelList;
+        unLockedNormalModelLevelList = playerManager.unLockedNormalModelLevelList;
+        unLockedNormalModelLevelNum = playerManager.unLockedNormalModelLevelNum;
+        monsterPetDataList = playerManager.monsterPetDataList;
+
+
     }
 }

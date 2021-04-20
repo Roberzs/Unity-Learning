@@ -162,6 +162,7 @@ GameObject:
   - component: {fileID: 7622524005617752513}
   - component: {fileID: 4931161440946053596}
   - component: {fileID: 7925418271164662850}
+  - component: {fileID: 1949699797370324665}
   m_Layer: 5
   m_Name: MonsterNestPanel
   m_TagString: Untagged
@@ -181,8 +182,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3683147734565724780}
-  - {fileID: 7185813150684458242}
   - {fileID: 6281050800986164783}
+  - {fileID: 7185813150684458242}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -229,6 +230,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1949699797370324665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001735473984766934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d251c7dbd30d49e429771a96d46d7bc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1992647637400932444
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,7 +360,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6643192564583157466}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1949699797370324665}
+        m_TargetAssemblyTypeName: MonsterNestPanel, Assembly-CSharp
+        m_MethodName: ShowShopPanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2038018876845514452
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,7 +407,7 @@ RectTransform:
   - {fileID: 1770945725660768078}
   - {fileID: 4358819594023725799}
   m_Father: {fileID: 7622524005617752513}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -545,7 +570,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 898600968811913712}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1949699797370324665}
+        m_TargetAssemblyTypeName: MonsterNestPanel, Assembly-CSharp
+        m_MethodName: ReturnToMain
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2163294164254102356
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,7 +780,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6479621940073721417}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1949699797370324665}
+        m_TargetAssemblyTypeName: MonsterNestPanel, Assembly-CSharp
+        m_MethodName: BuyNest
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3683591173114801298
 GameObject:
   m_ObjectHideFlags: 0
@@ -773,7 +822,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7622524005617752513}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1077,7 +1126,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7458814417736471098}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1949699797370324665}
+        m_TargetAssemblyTypeName: MonsterNestPanel, Assembly-CSharp
+        m_MethodName: BuyCookie
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5054548178841127376
 GameObject:
   m_ObjectHideFlags: 0
@@ -1489,7 +1550,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5575481357792330072}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1949699797370324665}
+        m_TargetAssemblyTypeName: MonsterNestPanel, Assembly-CSharp
+        m_MethodName: CloseShopPanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7202735243385451402
 GameObject:
   m_ObjectHideFlags: 0
@@ -1608,7 +1681,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3136552452935006268}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1949699797370324665}
+        m_TargetAssemblyTypeName: MonsterNestPanel, Assembly-CSharp
+        m_MethodName: BuyMilk
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8175100342720461313
 GameObject:
   m_ObjectHideFlags: 0
@@ -1702,7 +1787,7 @@ GameObject:
   - component: {fileID: 9206285278121201984}
   - component: {fileID: 3351824212047540570}
   m_Layer: 5
-  m_Name: Txt_Diamnds
+  m_Name: Txt_Diamands
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

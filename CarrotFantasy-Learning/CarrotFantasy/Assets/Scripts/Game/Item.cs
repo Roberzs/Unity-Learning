@@ -10,13 +10,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class Item : MonoBehaviour
 {
     public GridPoint gridPoint;
     public int itemID = -1;
-
-    private GameController gameController;
 
     private int prize;
     private int HP;
@@ -36,7 +35,11 @@ public class Item : MonoBehaviour
 
     private void Start()
     {
-        gameController = GameController.Instance;
+#if MapEditing
+        GetComponent<BoxCollider2D>().enabled = false;
+        transform.Find("Mask").GetComponent<BoxCollider>().enabled = false;
+#endif
+
         slider = transform.Find("ItemCanvas").Find("HpSlider").GetComponent<Slider>();
         slider.gameObject.SetActive(false);
         GetComponent<Rigidbody2D>().sleepMode = RigidbodySleepMode2D.NeverSleep;
@@ -60,8 +63,6 @@ public class Item : MonoBehaviour
         }
     }
 
-#if GameRuning
-
     // 初始化
     private void InitItem()
     {
@@ -70,6 +71,8 @@ public class Item : MonoBehaviour
         currentHP = HP;
         timeVal = 3;
     }
+
+#if GameRuning
 
     private void TakeDamage(int attackValue)
     {
@@ -88,46 +91,53 @@ public class Item : MonoBehaviour
 
     private void DestroyItem()
     {
-        if (gameController.targetTrans = transform)
+        if (GameController.Instance.targetTrans = transform)
         {
-            gameController.HideSignal();
+            GameController.Instance.HideSignal();
         }
 
         // 奖励
-        GameObject coinGo = gameController.GetGameObjectResource("CoinCanvas");
+        GameObject coinGo = GameController.Instance.GetGameObjectResource("CoinCanvas");
         coinGo.transform.Find("Emp_Coin").GetComponent<CoinMove>().prize = prize;
-        coinGo.transform.SetParent(gameController.transform);
+        coinGo.transform.SetParent(GameController.Instance.transform);
         coinGo.transform.position = transform.position;
         // 增加玩家金币数
-        gameController.ChangeCoin(prize);
+        GameController.Instance.ChangeCoin(prize);
         // 特效
-        GameObject effectGo = gameController.GetGameObjectResource("DestoryEffect");
-        effectGo.transform.SetParent(gameController.transform);
+        GameObject effectGo = GameController.Instance.GetGameObjectResource("DestoryEffect");
+        effectGo.transform.SetParent(GameController.Instance.transform);
         effectGo.transform.position = transform.position;
 
-        gameController.PushGameObjectToFactory(gameController.mapMaker.bigLevelID.ToString() + "/Item/" + itemID, gameObject);
+        GameController.Instance.PushGameObjectToFactory(GameController.Instance.mapMaker.bigLevelID.ToString() + "/Item/" + itemID, gameObject);
         gridPoint.gridState.hasItem = false;
         InitItem();
+
+        GameController.Instance.PlayEffectMusic("NormalMordel/Item");
     }
 
     private void OnMouseDown()
     {
-        if (gameController.targetTrans == null)
+        if (EventSystem.current.IsPointerOverGameObject())
         {
-            gameController.targetTrans = transform;
-            gameController.ShowSignal();
+            return;
         }
-        else if (gameController.targetTrans != transform)
+
+        if (GameController.Instance.targetTrans == null)
+        {
+            GameController.Instance.targetTrans = transform;
+            GameController.Instance.ShowSignal();
+        }
+        else if (GameController.Instance.targetTrans != transform)
         {
             // 更换目标
-            gameController.HideSignal();
-            gameController.targetTrans = transform;
-            gameController.ShowSignal();
+            GameController.Instance.HideSignal();
+            GameController.Instance.targetTrans = transform;
+            GameController.Instance.ShowSignal();
         }
-        else if (gameController.targetTrans == transform)
+        else if (GameController.Instance.targetTrans == transform)
         {
             // 取消目标
-            gameController.HideSignal();
+            GameController.Instance.HideSignal();
         }
     }
 #endif

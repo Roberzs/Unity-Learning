@@ -173,4 +173,15 @@ public class UIFacade
     {
         mAudioSourceManager.CloseOrOpenBGMusic();
     }
+
+    // 播放音效
+    public void PlayButtonAudioClip()
+    {
+        mAudioSourceManager.PlayButtonAudioClip();
+    }
+
+    public void PlayPagingAudioClip()
+    {
+        mAudioSourceManager.PlayPagingAudioClip();
+    }
 }

@@ -20,7 +20,7 @@ public class ButtonUpLevel : MonoBehaviour
     private Sprite cantUpLevelSprite;
     private Sprite reachHighestLevel;
 
-    private GameController gameController;
+#if GameRuning
 
     private void OnEnable()
     {
@@ -30,19 +30,18 @@ public class ButtonUpLevel : MonoBehaviour
 
     private void Start()
     {
-        gameController = GameController.Instance;
         button = GetComponent<Button>();
         button.onClick.AddListener(UpLevel);
-        canUpLevelSprite = gameController.GetSprite("NormalMordel/Game/Tower/Btn_CanUpLevel");
-        cantUpLevelSprite = gameController.GetSprite("NormalMordel/Game/Tower/Btn_CantUpLevel");
-        reachHighestLevel = gameController.GetSprite("NormalMordel/Game/Tower/Btn_ReachHighestLevel");
+        canUpLevelSprite = GameController.Instance.GetSprite("NormalMordel/Game/Tower/Btn_CanUpLevel");
+        cantUpLevelSprite = GameController.Instance.GetSprite("NormalMordel/Game/Tower/Btn_CantUpLevel");
+        reachHighestLevel = GameController.Instance.GetSprite("NormalMordel/Game/Tower/Btn_ReachHighestLevel");
         text = transform.Find("Text").GetComponent<Text>();
         image = GetComponent<Image>();
     }
 
     private void UpdateUIView()
     {
-        if (gameController.selectGrid.towerLevel >= 3)      // 塔已升至顶级
+        if (GameController.Instance.selectGrid.towerLevel >= 3)      // 塔已升至顶级
         {
             image.sprite = reachHighestLevel;
             button.interactable = false;
@@ -51,9 +50,9 @@ public class ButtonUpLevel : MonoBehaviour
         else
         {
             text.enabled = true;
-            price = gameController.selectGrid.towerPersonalProperty.upLevelPrice;
+            price = GameController.Instance.selectGrid.towerPersonalProperty.upLevelPrice;
             text.text = price.ToString();
-            if (gameController.coin >= price)
+            if (GameController.Instance.coin >= price)
             {
                 image.sprite = canUpLevelSprite;
                 button.interactable = true;
@@ -69,18 +68,19 @@ public class ButtonUpLevel : MonoBehaviour
     private void UpLevel()
     {
         // 给建造者赋值升级塔的属性
-        gameController.towerBuilder.m_TowerID = gameController.selectGrid.tower.towerID;
-        gameController.towerBuilder.m_TowerLevel = gameController.selectGrid.towerLevel + 1;
+        GameController.Instance.towerBuilder.m_TowerID = GameController.Instance.selectGrid.tower.towerID;
+        GameController.Instance.towerBuilder.m_TowerLevel = GameController.Instance.selectGrid.towerLevel + 1;
 
         // 销毁之前等级的塔
-        gameController.selectGrid.towerPersonalProperty.UpLevelTower();
+        GameController.Instance.selectGrid.towerPersonalProperty.UpLevelTower();
 
         // 生成升级塔以及后续处理
-        GameObject towerGo = gameController.towerBuilder.GetProduct();
-        towerGo.transform.SetParent(gameController.selectGrid.transform);
-        towerGo.transform.position = gameController.selectGrid.transform.position;
-        gameController.selectGrid.AfterBuild();
-        gameController.selectGrid.HideGrid();
-        gameController.selectGrid = null;
+        GameObject towerGo = GameController.Instance.towerBuilder.GetProduct();
+        towerGo.transform.SetParent(GameController.Instance.selectGrid.transform);
+        towerGo.transform.position = GameController.Instance.selectGrid.transform.position;
+        GameController.Instance.selectGrid.AfterBuild();
+        GameController.Instance.selectGrid.HideGrid();
+        GameController.Instance.selectGrid = null;
     }
+#endif
 }

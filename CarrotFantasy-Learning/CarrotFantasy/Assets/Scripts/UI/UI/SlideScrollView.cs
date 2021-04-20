@@ -99,6 +99,7 @@ public class SlideScrollView : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                     ).SetEase(Ease.OutQuint);     // 缓动函数
 
         currentContentLocalPos += new Vector3(moveDistance, 0, 0);
+        GameManager.Instance.audioSourceManager.PlayPagingAudioClip();
     }
 
     public void ToNextPage()

@@ -81,6 +81,9 @@ public class GameNormalBigLevelPanel : BasePanel
             if (!hasRigisterEvent)
             {
                 theBigLevelButtonCom.onClick.AddListener(() => {
+
+                    mUIFacade.PlayButtonAudioClip();
+
                     // 离开大关卡选择页面
                     mUIFacade.currentScenePanelDict[StringManager.GameNormalBigLevelPanel].ExitPanel();
                     GameNormalOptionPanel gameNormalOptionPanel = mUIFacade.currentScenePanelDict[StringManager.GameNormalOptionPanel] as GameNormalOptionPanel;
@@ -106,11 +109,13 @@ public class GameNormalBigLevelPanel : BasePanel
     // 翻页事件
     public void ToNextPage()
     {
+        mUIFacade.PlayButtonAudioClip();
         slideScrollView.ToNextPage();
     }
 
     public void ToLastPage()
     {
+        mUIFacade.PlayButtonAudioClip();
         slideScrollView.ToLastPage();
     }
 }

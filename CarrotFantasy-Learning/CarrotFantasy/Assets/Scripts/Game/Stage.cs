@@ -20,17 +20,18 @@ public class Stage
     public bool mIsRewardLevel;         // 是否为奖励关卡
     public int mTotalRound;             // 一共几波怪
 
-    public Stage(int totalRound, int towerIDListLength, int[] towerIDList,
-        bool allClear, int carrotState, int levelID, int bigLevelID, bool locked, bool isRewardLevel)
-    {
-        mTotalRound = totalRound;
-        mTowerIDListLength = towerIDListLength;
-        mTowerIDList = towerIDList;
-        mAllClear = allClear;
-        mCarrotState = carrotState;
-        mLevelID = levelID;
-        mBigLevelID = bigLevelID;
-        unLocked = locked;
-        mIsRewardLevel = isRewardLevel;
-    }
+    // 用于测试
+    //public Stage(int totalRound, int towerIDListLength, int[] towerIDList,
+    //    bool allClear, int carrotState, int levelID, int bigLevelID, bool locked, bool isRewardLevel)
+    //{
+    //    mTotalRound = totalRound;
+    //    mTowerIDListLength = towerIDListLength;
+    //    mTowerIDList = towerIDList;
+    //    mAllClear = allClear;
+    //    mCarrotState = carrotState;
+    //    mLevelID = levelID;
+    //    mBigLevelID = bigLevelID;
+    //    unLocked = locked;
+    //    mIsRewardLevel = isRewardLevel;
+    //}
 }

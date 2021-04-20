@@ -23,7 +23,6 @@ public class GridPoint : MonoBehaviour
     private Sprite startSprite;             // 网格最开始显示的图片
     private Sprite cantBuildSprite;         // 禁止建塔图片
 
-    private GameController gameController;
     private GameObject towerListGo;         // 建塔列表物体
     public GameObject handleTowerCanvasGo; // 有塔时需要使用的画布
 
@@ -84,10 +83,9 @@ public class GridPoint : MonoBehaviour
         InitGrid();
 
 #if GameRuning
-        gameController = GameController.Instance;
-        gridSprite = gameController.GetSprite("NormalMordel/Game/Grid");
-        startSprite = gameController.GetSprite("NormalMordel/Game/StartSprite");
-        cantBuildSprite = gameController.GetSprite("NormalMordel/Game/cantBuild");
+        gridSprite = GameController.Instance.GetSprite("NormalMordel/Game/Grid");
+        startSprite = GameController.Instance.GetSprite("NormalMordel/Game/StartSprite");
+        cantBuildSprite = GameController.Instance.GetSprite("NormalMordel/Game/cantBuild");
         spriteRenderer.sprite = startSprite;
         Tween tween = DOTween.To(
                     () =>
@@ -98,8 +96,8 @@ public class GridPoint : MonoBehaviour
                     3.0f                              // 完成动画所需的时间
                     );
         tween.OnComplete(ChangeSpriteToGrid);
-        towerListGo = gameController.towerListGo;
-        handleTowerCanvasGo = gameController.handleTowerCanvasGo;
+        towerListGo = GameController.Instance.towerListGo;
+        handleTowerCanvasGo = GameController.Instance.handleTowerCanvasGo;
         upLevelButtonTrans = handleTowerCanvasGo.transform.Find("Btn_UpLevel");
         sellTowerButtonTrans = handleTowerCanvasGo.transform.Find("Btn_SellTower");
         upLevelButtonInitPos = upLevelButtonTrans.localPosition;
@@ -116,7 +114,7 @@ public class GridPoint : MonoBehaviour
         {
             if (hasTower)
             {
-                if (towerPersonalProperty.upLevelPrice <= gameController.coin && towerLevel < 3)
+                if (towerPersonalProperty.upLevelPrice <= GameController.Instance.coin && towerLevel < 3)
                 {
                     levelUpSignalGo.SetActive(true);
                 }
@@ -323,7 +321,7 @@ public class GridPoint : MonoBehaviour
         // 如选择的是UI 不发生交互
         if (EventSystem.current.IsPointerOverGameObject()) return;
 
-        gameController.HandleGrid(this);
+        GameController.Instance.HandleGrid(this);
     }
 
     public void ShowGrid()
@@ -389,20 +387,20 @@ public class GridPoint : MonoBehaviour
         Vector3 correctPosition = Vector3.zero;
         if (gridIndex.xIndex <= 3 && gridIndex.xIndex >= 0)
         {
-            correctPosition += new Vector3(gameController.mapMaker.gridWidth, 0, 0);
+            correctPosition += new Vector3(GameController.Instance.mapMaker.gridWidth, 0, 0);
         }
         else if (gridIndex.xIndex <= 11 && gridIndex.xIndex >= 8)
         {
-            correctPosition -= new Vector3(gameController.mapMaker.gridWidth, 0, 0);
+            correctPosition -= new Vector3(GameController.Instance.mapMaker.gridWidth, 0, 0);
         }
         
         if (gridIndex.yIndex <= 3 && gridIndex.yIndex >= 0)
         {
-            correctPosition += new Vector3(0, gameController.mapMaker.gridHeight, 0);
+            correctPosition += new Vector3(0, GameController.Instance.mapMaker.gridHeight, 0);
         }
         else if (gridIndex.yIndex <= 7 && gridIndex.yIndex >= 4)
         {
-            correctPosition -= new Vector3(0, gameController.mapMaker.gridHeight, 0);
+            correctPosition -= new Vector3(0, GameController.Instance.mapMaker.gridHeight, 0);
         }
         correctPosition += transform.position;
         return correctPosition;
@@ -417,11 +415,11 @@ public class GridPoint : MonoBehaviour
         {
             if (gridIndex.xIndex == 0)
             {
-                sellTowerButtonTrans.position += new Vector3(gameController.mapMaker.gridWidth / 10 * 9, 0, 0);
+                sellTowerButtonTrans.position += new Vector3(GameController.Instance.mapMaker.gridWidth / 10 * 9, 0, 0);
             }
             else
             {
-                sellTowerButtonTrans.position -= new Vector3(gameController.mapMaker.gridWidth / 10 * 9, 0, 0);
+                sellTowerButtonTrans.position -= new Vector3(GameController.Instance.mapMaker.gridWidth / 10 * 9, 0, 0);
             }
             upLevelButtonTrans.localPosition = upLevelButtonInitPos;
         }
@@ -429,11 +427,11 @@ public class GridPoint : MonoBehaviour
         {
             if (gridIndex.xIndex == 0)
             {
-                upLevelButtonTrans.position += new Vector3(gameController.mapMaker.gridWidth / 10 * 9, 0, 0);
+                upLevelButtonTrans.position += new Vector3(GameController.Instance.mapMaker.gridWidth / 10 * 9, 0, 0);
             }
             else
             {
-                upLevelButtonTrans.position -= new Vector3(gameController.mapMaker.gridWidth / 10 * 9, 0, 0);
+                upLevelButtonTrans.position -= new Vector3(GameController.Instance.mapMaker.gridWidth / 10 * 9, 0, 0);
             }
             sellTowerButtonTrans.localPosition = sellTowerButtonInitPos;
         }

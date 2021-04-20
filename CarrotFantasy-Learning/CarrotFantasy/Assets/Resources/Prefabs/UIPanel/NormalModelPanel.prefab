@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 1283161553989288245}
   - component: {fileID: 1283161553989288244}
   m_Layer: 5
-  m_Name: Txt_RoundCount
+  m_Name: Txt_TotalCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -501,7 +501,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1283161554128807522}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8767436433922434309}
+        m_TargetAssemblyTypeName: MenuPage, Assembly-CSharp
+        m_MethodName: GoOn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1283161554147025403
 GameObject:
   m_ObjectHideFlags: 0
@@ -695,7 +707,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1283161554184118600}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1875135471222037098}
+        m_TargetAssemblyTypeName: PrizePage, Assembly-CSharp
+        m_MethodName: ClosePrizePage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1283161554214529349
 GameObject:
   m_ObjectHideFlags: 0
@@ -707,6 +731,7 @@ GameObject:
   - component: {fileID: 1283161554214529350}
   - component: {fileID: 1283161554214529400}
   - component: {fileID: 1283161554214529351}
+  - component: {fileID: 7555833964032899188}
   m_Layer: 5
   m_Name: GameOverPage
   m_TagString: Untagged
@@ -780,6 +805,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7555833964032899188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283161554214529349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27ceccb896ad72c48861f00e90777aff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1283161554294995405
 GameObject:
   m_ObjectHideFlags: 0
@@ -973,7 +1010,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1283161554315429651}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1530356164265298841}
+        m_TargetAssemblyTypeName: TopPage, Assembly-CSharp
+        m_MethodName: PauseGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1283161554385749311
 GameObject:
   m_ObjectHideFlags: 0
@@ -1092,7 +1141,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1283161554385749298}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7555833964032899188}
+        m_TargetAssemblyTypeName: GameOverPage, Assembly-CSharp
+        m_MethodName: ChooseOtherLevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1283161554504234239
 GameObject:
   m_ObjectHideFlags: 0
@@ -1179,13 +1240,14 @@ GameObject:
   - component: {fileID: 1283161554515227896}
   - component: {fileID: 1283161554515227898}
   - component: {fileID: 1283161554515227897}
+  - component: {fileID: 1530356164265298841}
   m_Layer: 5
   m_Name: Img_TopPage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1283161554515227896
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1249,6 +1311,24 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1530356164265298841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283161554515227847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf59b69ca5cd5154f9d275f095614fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  btn_gameSpeedSprites:
+  - {fileID: 21300000, guid: f0c6ac365dcb6c641b11998f1435f745, type: 3}
+  - {fileID: 21300000, guid: 8fba0d6ab564a064ba28020ae153932e, type: 3}
+  btn_pauseSprites:
+  - {fileID: 21300000, guid: 40361f78894d1c84a98e9a452d83cc70, type: 3}
+  - {fileID: 21300000, guid: 73408c617128e4f499704fbac0dd62e3, type: 3}
 --- !u!1 &1283161554542532911
 GameObject:
   m_ObjectHideFlags: 0
@@ -1359,7 +1439,7 @@ GameObject:
   - component: {fileID: 1283161554584077673}
   - component: {fileID: 1283161554584077672}
   m_Layer: 5
-  m_Name: Txt_RoundCount
+  m_Name: Txt_TotalCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1436,6 +1516,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1283161554701284753}
   - component: {fileID: 1283161554701284755}
+  - component: {fileID: 8418642977733505835}
   m_Layer: 5
   m_Name: NormalModelPanel
   m_TagString: Untagged
@@ -1460,6 +1541,7 @@ RectTransform:
   - {fileID: 1283161555955812630}
   - {fileID: 1283161555384477163}
   - {fileID: 1283161554542532896}
+  - {fileID: 7153718323185706273}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1476,6 +1558,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1283161554701284752}
   m_CullTransparentMesh: 0
+--- !u!114 &8418642977733505835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283161554701284752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f34129a6cfd07494d8373d2026af976c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalRound: 0
+  topPage: {fileID: 0}
 --- !u!1 &1283161554710125424
 GameObject:
   m_ObjectHideFlags: 0
@@ -1827,7 +1923,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1283161554807577518}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1530356164265298841}
+        m_TargetAssemblyTypeName: TopPage, Assembly-CSharp
+        m_MethodName: ShowMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1283161554856698091
 GameObject:
   m_ObjectHideFlags: 0
@@ -2100,7 +2208,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1283161554891969654}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2896031542950012630}
+        m_TargetAssemblyTypeName: GameWinPage, Assembly-CSharp
+        m_MethodName: Replay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1283161554919947641
 GameObject:
   m_ObjectHideFlags: 0
@@ -2294,7 +2414,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1283161554932847596}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1530356164265298841}
+        m_TargetAssemblyTypeName: TopPage, Assembly-CSharp
+        m_MethodName: ChangeGameSpeed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1283161554990318706
 GameObject:
   m_ObjectHideFlags: 0
@@ -2307,7 +2439,7 @@ GameObject:
   - component: {fileID: 1283161554990318709}
   - component: {fileID: 1283161554990318708}
   m_Layer: 5
-  m_Name: Txt_TotalCount
+  m_Name: Txt_RoundCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2619,6 +2751,7 @@ GameObject:
   - component: {fileID: 1283161555384477166}
   - component: {fileID: 1283161555384477165}
   - component: {fileID: 1283161555384477164}
+  - component: {fileID: 1875135471222037098}
   m_Layer: 5
   m_Name: PrizePage
   m_TagString: Untagged
@@ -2703,6 +2836,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1875135471222037098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283161555384477162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a8a9e10a0a8cb649a7fea4a550c5b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1283161555420183360
 GameObject:
   m_ObjectHideFlags: 0
@@ -3196,7 +3341,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1283161555669152409}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8767436433922434309}
+        m_TargetAssemblyTypeName: MenuPage, Assembly-CSharp
+        m_MethodName: chooseOtherLevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1283161555678388700
 GameObject:
   m_ObjectHideFlags: 0
@@ -3315,7 +3472,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1283161555678388703}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7555833964032899188}
+        m_TargetAssemblyTypeName: GameOverPage, Assembly-CSharp
+        m_MethodName: Replay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1283161555701965518
 GameObject:
   m_ObjectHideFlags: 0
@@ -3328,7 +3497,7 @@ GameObject:
   - component: {fileID: 1283161555701965505}
   - component: {fileID: 1283161555701965504}
   m_Layer: 5
-  m_Name: Txt_TotalCount
+  m_Name: Txt_RoundCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3513,7 +3682,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1283161555704929398}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2896031542950012630}
+        m_TargetAssemblyTypeName: GameWinPage, Assembly-CSharp
+        m_MethodName: ChooseOtherLevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1283161555766928741
 GameObject:
   m_ObjectHideFlags: 0
@@ -3600,6 +3781,7 @@ GameObject:
   - component: {fileID: 1283161555845664144}
   - component: {fileID: 1283161555845664146}
   - component: {fileID: 1283161555845664145}
+  - component: {fileID: 8767436433922434309}
   m_Layer: 5
   m_Name: MenuPage
   m_TagString: Untagged
@@ -3668,6 +3850,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8767436433922434309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283161555845664159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8675ee492baa8d2448994dc0cd615a96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1283161555851840601
 GameObject:
   m_ObjectHideFlags: 0
@@ -3944,7 +4138,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1283161555916850146}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8767436433922434309}
+        m_TargetAssemblyTypeName: MenuPage, Assembly-CSharp
+        m_MethodName: Replay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1283161555929950539
 GameObject:
   m_ObjectHideFlags: 0
@@ -4110,6 +4316,7 @@ GameObject:
   - component: {fileID: 1283161555955812630}
   - component: {fileID: 1283161555955812616}
   - component: {fileID: 1283161555955812631}
+  - component: {fileID: 2896031542950012630}
   m_Layer: 5
   m_Name: GameWinPage
   m_TagString: Untagged
@@ -4184,3 +4391,114 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2896031542950012630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283161555955812629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f11c3cac121977498d98a57d593ef70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carrotSprites:
+  - {fileID: 21300000, guid: 60eb4237c012b6f4ea695db2bf0da64d, type: 3}
+  - {fileID: 21300000, guid: cad46174b6b4a5841aa82fe9a94c5154, type: 3}
+  - {fileID: 21300000, guid: 80708329aa9fe2844853226f976371b7, type: 3}
+--- !u!1 &2114601974702304289
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7153718323185706273}
+  - component: {fileID: 7905209591791190734}
+  - component: {fileID: 2468668882627270336}
+  - component: {fileID: 2585124213651828102}
+  m_Layer: 5
+  m_Name: Img_FinalWave
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &7153718323185706273
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114601974702304289}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1283161554701284753}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 393, y: 172}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &7905209591791190734
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114601974702304289}
+  m_CullTransparentMesh: 0
+--- !u!114 &2468668882627270336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114601974702304289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 2cf06659e790764409f2fec72fd1a19d, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!95 &2585124213651828102
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114601974702304289}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d6641c46476476341a41b608177991cf, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

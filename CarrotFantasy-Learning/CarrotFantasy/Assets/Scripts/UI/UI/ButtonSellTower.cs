@@ -11,35 +11,35 @@ using UnityEngine.UI;
 
 public class ButtonSellTower : MonoBehaviour 
 {
+#if GameRuning
     private int price;
     private Button button;
     private Text text;
-    private GameController gameController;
 
     private void OnEnable()
     {
         if (text == null) return;
 
-        price = gameController.selectGrid.towerPersonalProperty.sellPrice;
+        price = GameController.Instance.selectGrid.towerPersonalProperty.sellPrice;
         text.text = price.ToString();
 
     }
 
     private void Start()
     {
-        gameController = GameController.Instance;
         button = GetComponent<Button>();
         button.onClick.AddListener(SellTower);
     }
 
     private void SellTower()
     {
-        gameController.selectGrid.towerPersonalProperty.SellTower();
+        GameController.Instance.selectGrid.towerPersonalProperty.SellTower();
 
-        gameController.selectGrid.handleTowerCanvasGo.SetActive(false);
-        gameController.selectGrid.InitGrid();
-        gameController.selectGrid.HideGrid();
+        GameController.Instance.selectGrid.handleTowerCanvasGo.SetActive(false);
+        GameController.Instance.selectGrid.InitGrid();
+        GameController.Instance.selectGrid.HideGrid();
         
-        gameController.selectGrid = null;
+        GameController.Instance.selectGrid = null;
     }
+#endif
 }

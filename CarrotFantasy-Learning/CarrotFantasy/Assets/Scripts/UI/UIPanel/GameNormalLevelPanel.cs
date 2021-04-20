@@ -227,7 +227,8 @@ public class GameNormalLevelPanel : BasePanel
 
     public void ToGamePanel()
     {
-        GameManager.Instance.currentStage = playerManager.unLockedNormalModelLevelList[(currentBigLevelID - 1) * 5 + currentLevelID];
+        mUIFacade.PlayButtonAudioClip();
+        GameManager.Instance.currentStage = playerManager.unLockedNormalModelLevelList[(currentBigLevelID - 1) * 5 + currentLevelID - 1];
         mUIFacade.currentScenePanelDict[StringManager.GameLoadPanel].EnterPanel();
         mUIFacade.ChangeSceneState(new NormalModelSceneState(mUIFacade));
     }

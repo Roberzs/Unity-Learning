@@ -28,14 +28,12 @@ public class TowerPersonalProperty : MonoBehaviour
     public Transform targetTrans;       // 攻击目标
     public Tower tower;                 // 自身Tower
     public Animator animator;
-    protected GameController gameController;
 
     // 资源
     protected GameObject bulletGo;      // 子弹
 
     protected virtual void Start()
     {
-        gameController = GameController.Instance;
         upLevelPrice = (int)(price * 1.5f);
         sellPrice = price / 2;
         animator = transform.Find("tower").GetComponent<Animator>();
@@ -45,7 +43,7 @@ public class TowerPersonalProperty : MonoBehaviour
     protected virtual void Update()
     {
         // 游戏暂停或丢失目标
-        if (gameController.isPause || targetTrans == null) return;
+        if (GameController.Instance.isPause || targetTrans == null || GameController.Instance.gameOver) return;
         // 目标已失活（已死亡）
         if (!targetTrans.gameObject.activeSelf)
         {
@@ -53,7 +51,7 @@ public class TowerPersonalProperty : MonoBehaviour
             return;
         }
         // 攻击方法
-        if (timeVal >= attackCD / gameController.gameSpeed)
+        if (timeVal >= attackCD / GameController.Instance.gameSpeed)
         {
             timeVal = 0;
             Attack();
@@ -87,16 +85,22 @@ public class TowerPersonalProperty : MonoBehaviour
 
     public void SellTower()
     {
-        gameController.ChangeCoin(sellPrice);
-        gameController.GetGameObjectResource("BuildEffect");
+        GameController.Instance.PlayEffectMusic("NormalMordel/Tower/TowerSell");
+
+        GameController.Instance.ChangeCoin(sellPrice);
+        GameObject itemGo = GameController.Instance.GetGameObjectResource("BuildEffect");
+        itemGo.transform.position = transform.position;
         DestoryTower();
     }
 
     public void UpLevelTower()
     {
-        GameObject effectGo = gameController.GetGameObjectResource("UpLevelEffect");
-        effectGo.transform.position = gameController.selectGrid.transform.position;
-        gameController.ChangeCoin(-sellPrice);
+        GameController.Instance.PlayEffectMusic("NormalMordel/Tower/TowerUpdata");
+
+
+        GameObject effectGo = GameController.Instance.GetGameObjectResource("UpLevelEffect");
+        effectGo.transform.position = GameController.Instance.selectGrid.transform.position;
+        GameController.Instance.ChangeCoin(-sellPrice);
         DestoryTower();
     }
 
@@ -109,8 +113,10 @@ public class TowerPersonalProperty : MonoBehaviour
     {
         if (targetTrans == null) return;
 
+        GameController.Instance.PlayEffectMusic("NormalMordel/Tower/Attack/" + tower.towerID.ToString());
+
         animator.Play("Attack");
-        bulletGo = gameController.GetGameObjectResource("Tower/ID" + tower.towerID.ToString() + "/Bullect/" + towerLevel.ToString());
+        bulletGo = GameController.Instance.GetGameObjectResource("Tower/ID" + tower.towerID.ToString() + "/Bullect/" + towerLevel.ToString());
         bulletGo.transform.position = transform.position;
         bulletGo.GetComponent<Bullet>().targetTrans = targetTrans;
     }

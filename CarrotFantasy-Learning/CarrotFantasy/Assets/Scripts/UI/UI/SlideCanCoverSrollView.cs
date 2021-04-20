@@ -105,5 +105,6 @@ public class SlideCanCoverSrollView : MonoBehaviour, IBeginDragHandler, IEndDrag
                     lastProportion,             // 想要得到的对象值
                     0.5f                              // 完成动画所需的时间
                     ).SetEase(Ease.OutQuint);     // 缓动函数
+        GameManager.Instance.audioSourceManager.PlayPagingAudioClip();
     }
 }

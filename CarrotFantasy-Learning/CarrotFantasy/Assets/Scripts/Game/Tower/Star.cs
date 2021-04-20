@@ -19,10 +19,10 @@ public class Star : TowerPersonalProperty
 
     protected override void Update()
     {
-        if (gameController.isPause || targetTrans == null) return;
+        if (GameController.Instance.isPause || targetTrans == null || GameController.Instance.gameOver) return;
 
         // 攻击方法
-        if (timeVal >= attackCD / gameController.gameSpeed)
+        if (timeVal >= attackCD / GameController.Instance.gameSpeed)
         {
             timeVal = 0;
             Attack();

@@ -31,6 +31,11 @@ public class Tower : MonoBehaviour
 
     private void Update()
     {
+        if (GameController.Instance.isPause || GameController.Instance.gameOver)
+        {
+            return;
+        }
+
         if (isTarget)
         {
             if (towerPersonalProperty.targetTrans != GameController.Instance.targetTrans)

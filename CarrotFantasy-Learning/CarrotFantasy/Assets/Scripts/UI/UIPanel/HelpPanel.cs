@@ -66,6 +66,7 @@ public class HelpPanel : BasePanel
     {
         base.ExitPanel();
 
+        mUIFacade.PlayButtonAudioClip();
         if (mUIFacade.currentSceneState.GetType() == typeof(NormalGameOptionSceneState))
         {
             // 先将面板隐藏倒放一下 否则将无法执行正播事件
@@ -88,6 +89,10 @@ public class HelpPanel : BasePanel
     // 页面切换
     public void ShowHelpPage()
     {
+        if (!helpPageGo.activeSelf)
+        {
+            mUIFacade.PlayButtonAudioClip();
+        }
         helpPageGo.SetActive(true);
         monsterPageGo.SetActive(false);
         towerPageGo.SetActive(false);
@@ -95,6 +100,7 @@ public class HelpPanel : BasePanel
 
     public void ShowMonsterPage()
     {
+        mUIFacade.PlayButtonAudioClip();
         helpPageGo.SetActive(false);
         monsterPageGo.SetActive(true);
         towerPageGo.SetActive(false);
@@ -102,6 +108,7 @@ public class HelpPanel : BasePanel
 
     public void ShowTowerPage()
     {
+        mUIFacade.PlayButtonAudioClip();
         helpPageGo.SetActive(false);
         monsterPageGo.SetActive(false);
         towerPageGo.SetActive(true);

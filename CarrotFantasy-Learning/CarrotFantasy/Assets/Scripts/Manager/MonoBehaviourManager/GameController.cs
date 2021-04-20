@@ -63,9 +63,10 @@ public class GameController : MonoBehaviour
         _instance = this;
         mGameManager = GameManager.Instance;
         // 注释 用以方便测试
-        //currentStage = mGameManager.currentStage;
-        //normalModelPanel = mGameManager.uIManager.mUIFacade.currentScenePanelDict[StringManager.NormalModelPanel] as NormalModelPanel;
-        currentStage = new Stage(10, 5, new int[5] { 1, 2 ,3, 4, 5}, false,0 , 1, 1, true, false);
+        currentStage = mGameManager.currentStage;
+        normalModelPanel = mGameManager.uIManager.mUIFacade.currentScenePanelDict[StringManager.NormalModelPanel] as NormalModelPanel;
+        normalModelPanel.EnterPanel();
+        //currentStage = new Stage(10, 5, new int[5] { 1, 2 ,3, 4, 5}, false,0 , 1, 1, true, false);
         
 
         mapMaker = GetComponent<MapMaker>();
@@ -75,8 +76,6 @@ public class GameController : MonoBehaviour
         coin = 1000;
         monsterBuilder = new MonsterBuilder();
         towerBuilder = new TowerBuilder();
-
-        level = new Level(mapMaker.roundInfoList.Count, mapMaker.roundInfoList);
 
         // 建塔列表
         for (int i = 0; i < currentStage.mTowerIDList.Length; i++)
@@ -103,6 +102,12 @@ public class GameController : MonoBehaviour
         {
             controllers[i] = GetRuntimeAnimatorController("Monster/" + mapMaker.bigLevelID.ToString() + "/" + (i + 1).ToString());
         }
+
+        level = new Level(mapMaker.roundInfoList.Count, mapMaker.roundInfoList);
+        normalModelPanel.topPage.UpdateCoinText();
+        normalModelPanel.topPage.UpdateRoundText();
+        isPause = true;
+        // level.HandleRound();
 #endif
     }
 
@@ -114,6 +119,10 @@ public class GameController : MonoBehaviour
             // 产怪逻辑
             if (killMonsterNum >= mMonsterIDList.Length)
             {
+                if (level.currentRound >= level.totalRound)
+                {
+                    return;
+                }
                 // 回合数增加
                 AddRoundNum();
             }
@@ -143,14 +152,52 @@ public class GameController : MonoBehaviour
     {
         coin += coinNum;
         // 更新UI
+        normalModelPanel.UpdatePanel();
     }
 
     // 萝卜减血
     public void DecreaseHP()
     {
+        PlayEffectMusic("NormalMordel/Carrot/Crash");
+
         carrotHp--;
         // 更新萝卜的UI
         mapMaker.carrot.UpdateCarrotUI();
+    }
+
+    // 判断当前道具是否全部清除
+    public bool IfAllClear()
+    {
+        for (int x = 0; x < MapMaker.xColumn; x++)
+        {
+            for (int y = 0; y < MapMaker.yRow; y++)
+            {
+                if (mapMaker.gridPoints[x,y].gridState.hasItem == true)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // 萝卜状态
+    public int GetCarrotState()
+    {
+        int carrotState = 0;
+        if (carrotHp >=8)
+        {
+            carrotState = 1;
+        }
+        else if (carrotHp >= 4)
+        {
+            carrotState = 2;
+        }
+        else
+        {
+            carrotState = 3;
+        }
+        return carrotState;
     }
 
     /// <summary>
@@ -159,13 +206,23 @@ public class GameController : MonoBehaviour
 
     public void CreateMonster()
     {
+        //Debug.Log("开始产怪");
         creatingMonster = true;
         // 重复延时调用
         InvokeRepeating("InstantiateMonster", (float)1 / gameSpeed, (float)1 / gameSpeed);
     }
 
+    // 具体产怪逻辑
     private void InstantiateMonster()
     {
+        if (mMonsterIDIndex >= mMonsterIDList.Length)
+        {
+            StopCreateMonster();
+            return;
+        }
+
+        PlayEffectMusic("NormalMordel/Monster/Create");
+
         // 特效
         GameObject effectGo = GetGameObjectResource("CreateEffect");
         effectGo.transform.SetParent(transform);
@@ -182,10 +239,7 @@ public class GameController : MonoBehaviour
         monsterGo.transform.SetParent(transform);
         monsterGo.transform.position = mapMaker.monsterPathPos[0];
         mMonsterIDIndex++;
-        if (mMonsterIDIndex >= mMonsterIDList.Length)
-        {
-            StopCreateMonster();
-        }
+        
     }
 
     public void StopCreateMonster()
@@ -202,6 +256,7 @@ public class GameController : MonoBehaviour
         level.HandleRound();
 
         // 更新有关UI
+        normalModelPanel.UpdatePanel();
     }
 
     /// <summary>
@@ -217,13 +272,14 @@ public class GameController : MonoBehaviour
                 // 没有上一个网格
                 selectGrid = grid;
                 selectGrid.ShowGrid();
-                
+                PlayEffectMusic("NormalMordel/Grid/GridSelect");
             }
             else if (grid == selectGrid)
             {
                 // 选择网格与上一个相同
                 grid.HideGrid();
                 selectGrid = null;
+                PlayEffectMusic("NormalMordel/Grid/GridDeSelect");
             }
             else if (grid != selectGrid)
             {
@@ -231,17 +287,32 @@ public class GameController : MonoBehaviour
                 selectGrid.HideGrid();
                 selectGrid = grid;
                 selectGrid.ShowGrid();
+                PlayEffectMusic("NormalMordel/Grid/GridSelect");
             }
         }
         else
         {
             grid.HideGrid();
             grid.ShowCantGrid();
+            PlayEffectMusic("NormalMordel/Grid/SelectFault");
             if (selectGrid != null)
             {
                 selectGrid.HideGrid();
             }
         }
+    }
+
+    // 开始游戏
+    public void StartGame()
+    {
+        isPause = false;
+        level.HandleRound();
+    }
+
+    // 打开礼物页面
+    public void ShowPrizePage()
+    {
+        normalModelPanel.ShowPrizePage();
     }
 
     /// <summary>
@@ -250,6 +321,7 @@ public class GameController : MonoBehaviour
 
     public void ShowSignal()
     {
+        PlayEffectMusic("NormalMordel/Tower/ShootSelect");
         targetSignal.transform.position = targetTrans.position + new Vector3(0, mapMaker.gridHeight / 2, 0);
         targetSignal.transform.SetParent(targetTrans);
         targetSignal.SetActive(true);
@@ -290,4 +362,15 @@ public class GameController : MonoBehaviour
     {
         mGameManager.PushGameObjectToFactory(FactoryType.GameFactory, resourcePath, itemGo);
     }
+
+    public void PlayEffectMusic(string audioClipPath)
+    {
+        mGameManager.audioSourceManager.PlayEffectMusic(GetAudioClip(audioClipPath));
+    }
+}
+
+public enum LevelType
+{
+    None,
+    Boss
 }

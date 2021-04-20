@@ -10,13 +10,15 @@ public class Crystal : TowerPersonalProperty {
     private float distance;
     private float bullectWidth;
     private float bullectLength;
-
-	// Use this for initialization
+    private AudioSource audioSource;
+	
 	protected override void Start () {
         base.Start();
         bulletGo = GameController.Instance.GetGameObjectResource("Tower/ID"+tower.towerID.ToString()+"/Bullect/"+towerLevel.ToString());
         bulletGo.SetActive(false);
-	}
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = GameController.Instance.GetAudioClip("NormalMordel/Tower/Attack/" + tower.towerID.ToString());
+    }
 
     private void OnEnable()
     {
@@ -31,7 +33,7 @@ public class Crystal : TowerPersonalProperty {
     // Update is called once per frame
     protected override void Update () {
        
-        if (GameController.Instance.isPause||targetTrans==null)
+        if (GameController.Instance.isPause||targetTrans==null || GameController.Instance.gameOver)
         {
             if (targetTrans==null)
             {
@@ -47,6 +49,10 @@ public class Crystal : TowerPersonalProperty {
         if (targetTrans==null)
         {
             return;
+        }
+        if (!audioSource.isPlaying)
+        {
+            audioSource.Play();
         }
         animator.Play("Attack");
         if (targetTrans.gameObject.tag=="Item")
