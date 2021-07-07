@@ -16,13 +16,13 @@ namespace FrameworkDesign.Example
         private void Start()
         {
             GameStartEvent.Register(OnGameStart);
-            KilledOneEnemyEvent.Register(OneEnemyKilled);
+            GameModel.KillCount.OnValueChanged += OneEnemyKilled;
         }
 
         private void OnDestroy()
         {
             GameStartEvent.UnRegister(OnGameStart);
-            KilledOneEnemyEvent.UnRegister(OneEnemyKilled);
+            GameModel.KillCount.OnValueChanged -= OneEnemyKilled;
         }
 
         private void OnGameStart()
@@ -30,11 +30,10 @@ namespace FrameworkDesign.Example
             transform.Find("Enemies").gameObject.SetActive(true);
         }
 
-        private void OneEnemyKilled()
+        private void OneEnemyKilled(int killCount)
         {
-            GameModel.KillCount++;
 
-            if (GameModel.KillCount == 9)
+            if (killCount == 9)
             {
                 GamePassEvent.Trigger();
             }

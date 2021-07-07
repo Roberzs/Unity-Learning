@@ -17,60 +17,43 @@ namespace Counter
     {
         private void Start()
         {
-            OnCountChangedEvent.Register(OnCountChanged);
+            CounterModel.Count.OnValueChanged += OnCountChanged;
 
             transform.Find("btnAdd").GetComponent<Button>().onClick
                 .AddListener(() =>
                 {
-                    CounterModel.Count++;
+                    new AddCountCommand().Execute();
                 });
             transform.Find("btnSub").GetComponent<Button>().onClick
                 .AddListener(() =>
                 {
-                    CounterModel.Count--;
+                    new SubCountCommand().Execute();
                 });
 
-            OnCountChanged();
+            OnCountChanged(CounterModel.Count.Value);
         }
 
         /// <summary>
         /// 表现逻辑
         /// </summary>
-        private void OnCountChanged()
+        private void OnCountChanged(int newValue)
         {
             transform.Find("txtCount").GetComponent<Text>()
-                .text = CounterModel.Count.ToString();
+                .text = newValue.ToString();
         }
 
         private void OnDestroy()
         {
-            OnCountChangedEvent.UnRegister(OnCountChanged);
+            CounterModel.Count.OnValueChanged -= OnCountChanged;
         }
     }
 
     public static class CounterModel
     {
-        private static int mCount = 0;
-
-        public static int Count
+        public static BindableProperty<int> Count = new BindableProperty<int>()
         {
-            get => mCount;
-            set
-            {
-                if (value != mCount)
-                {
-                    mCount = value;
-
-                    OnCountChangedEvent.Trigger();
-                }
-            }
-        }
-    }
-
-    // 定义事件
-    public class OnCountChangedEvent : Event<OnCountChangedEvent>
-    {
-
+            Value = 0
+        };
     }
 }
 

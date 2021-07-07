@@ -12,13 +12,26 @@ namespace FrameworkDesign.Example
 {
     public class GameModel
     {
-        public static int KillCount;
 
-        public static int Glod;
+        public static BindableProperty<int> KillCount = new BindableProperty<int>()
+        {
+            Value = 0
+        };
 
-        public static int Score;
+        public static BindableProperty<int> Glod = new BindableProperty<int>()
+        {
+            Value = 0
+        };
 
-        public static int BestScore;
+        public static BindableProperty<int> Score = new BindableProperty<int>()
+        {
+            Value = 0
+        };
+
+        public static BindableProperty<int> BestScore = new BindableProperty<int>()
+        {
+            Value = 0
+        };
 
     }
 }
