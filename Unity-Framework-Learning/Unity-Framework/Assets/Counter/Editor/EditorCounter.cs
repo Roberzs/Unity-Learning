@@ -29,7 +29,7 @@ namespace Counter
                 new AddCountCommand().Execute();
             }
 
-            GUILayout.Label(CounterModel.Count.Value.ToString());
+            GUILayout.Label(Counter.Get<CounterModel>().Count.Value.ToString());
 
             if (GUILayout.Button("-"))
             {

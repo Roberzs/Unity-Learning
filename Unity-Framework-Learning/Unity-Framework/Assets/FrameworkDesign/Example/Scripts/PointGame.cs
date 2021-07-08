@@ -1,21 +1,20 @@
 /****************************************************
-    文件：AddCountCommand.cs
+    文件：PointGame.cs
     作者：zhyStay
     邮箱：zhy18125@163.com
-    日期：2021/7/7 13:50:44
+    日期：2021/7/8 16:57:39
     功能：Nothing
 *****************************************************/
 
-using FrameworkDesign;
 using UnityEngine;
 
-namespace Counter
+namespace FrameworkDesign.Example
 {
-    public struct AddCountCommand : ICommand
+    public class PointGame : Architecture<PointGame>
     {
-        public void Execute()
+        protected override void Init()
         {
-            CounterModel.Count.Value++;
+            Register<GameModel>(new GameModel());
         }
     }
 }

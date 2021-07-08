@@ -15,9 +15,13 @@ namespace Counter
 {
     public class CounterViewController : MonoBehaviour
     {
+        private CounterModel mCounterModel;
+
         private void Start()
         {
-            CounterModel.Count.OnValueChanged += OnCountChanged;
+            mCounterModel = Counter.Get<CounterModel>();
+
+            mCounterModel.Count.OnValueChanged += OnCountChanged;
 
             transform.Find("btnAdd").GetComponent<Button>().onClick
                 .AddListener(() =>
@@ -30,7 +34,7 @@ namespace Counter
                     new SubCountCommand().Execute();
                 });
 
-            OnCountChanged(CounterModel.Count.Value);
+            OnCountChanged(mCounterModel.Count.Value);
         }
 
         /// <summary>
@@ -44,13 +48,14 @@ namespace Counter
 
         private void OnDestroy()
         {
-            CounterModel.Count.OnValueChanged -= OnCountChanged;
+            mCounterModel.Count.OnValueChanged -= OnCountChanged;
         }
     }
 
-    public static class CounterModel
+    public class CounterModel
     {
-        public static BindableProperty<int> Count = new BindableProperty<int>()
+
+        public BindableProperty<int> Count = new BindableProperty<int>()
         {
             Value = 0
         };

@@ -1,21 +1,21 @@
 /****************************************************
-    文件：SubCountCommand.cs
+    文件：Counter.cs
     作者：zhyStay
     邮箱：zhy18125@163.com
-    日期：2021/7/7 14:1:32
+    日期：2021/7/8 16:26:0
     功能：Nothing
 *****************************************************/
 
 using FrameworkDesign;
 using UnityEngine;
 
-namespace Counter 
+namespace Counter
 {
-    public class SubCountCommand : ICommand
+    public class Counter : Architecture<Counter>
     {
-        public void Execute()
+        protected override void Init()
         {
-            CounterModel.Count.Value--;
+            Register<CounterModel>(new CounterModel());
         }
     }
 }

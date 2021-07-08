@@ -16,27 +16,16 @@ namespace FrameworkDesign.Example
         private void Start()
         {
             GameStartEvent.Register(OnGameStart);
-            GameModel.KillCount.OnValueChanged += OneEnemyKilled;
         }
 
         private void OnDestroy()
         {
             GameStartEvent.UnRegister(OnGameStart);
-            GameModel.KillCount.OnValueChanged -= OneEnemyKilled;
         }
 
         private void OnGameStart()
         {
             transform.Find("Enemies").gameObject.SetActive(true);
-        }
-
-        private void OneEnemyKilled(int killCount)
-        {
-
-            if (killCount == 9)
-            {
-                GamePassEvent.Trigger();
-            }
         }
     }
 }
