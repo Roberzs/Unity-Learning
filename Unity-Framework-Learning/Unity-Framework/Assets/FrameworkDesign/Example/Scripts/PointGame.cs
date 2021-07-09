@@ -14,7 +14,7 @@ namespace FrameworkDesign.Example
     {
         protected override void Init()
         {
-            Register<GameModel>(new GameModel());
+            Register<IGameModel>(new GameModel());
         }
     }
 }

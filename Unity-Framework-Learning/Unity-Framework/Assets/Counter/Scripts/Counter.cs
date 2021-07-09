@@ -15,7 +15,7 @@ namespace Counter
     {
         protected override void Init()
         {
-            Register<CounterModel>(new CounterModel());
+            Register<ICountModel>(new CounterModel());
         }
     }
 }

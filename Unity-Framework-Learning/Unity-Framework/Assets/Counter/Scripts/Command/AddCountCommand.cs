@@ -15,7 +15,7 @@ namespace Counter
     {
         public void Execute()
         {
-            Counter.Get<CounterModel>().Count.Value++;
+            Counter.Get<ICountModel>().Count.Value++;
         }
     }
 }

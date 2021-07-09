@@ -15,11 +15,11 @@ namespace Counter
 {
     public class CounterViewController : MonoBehaviour
     {
-        private CounterModel mCounterModel;
+        private ICountModel mCounterModel;
 
         private void Start()
         {
-            mCounterModel = Counter.Get<CounterModel>();
+            mCounterModel = Counter.Get<ICountModel>();
 
             mCounterModel.Count.OnValueChanged += OnCountChanged;
 
@@ -52,13 +52,19 @@ namespace Counter
         }
     }
 
-    public class CounterModel
+    public interface ICountModel
+    {
+        BindableProperty<int> Count { get; }
+    }
+
+public class CounterModel : ICountModel
     {
 
-        public BindableProperty<int> Count = new BindableProperty<int>()
+        public BindableProperty<int> Count { get; } = new BindableProperty<int>()
         {
             Value = 0
         };
+
     }
 }
 
