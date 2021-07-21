@@ -15,7 +15,12 @@ namespace Counter
     {
         protected override void Init()
         {
-            Register<ICountModel>(new CounterModel());
+            RegisterModel<ICountModel>(new CounterModel());
+            RegisterUtility<IStorage>(new PlayerPrefsStorage());
+
+            //Debug.Log(Get<IStorage>());
+
+            Debug.Log("Counter Init Done...");
         }
     }
 }

@@ -52,19 +52,34 @@ namespace Counter
         }
     }
 
-    public interface ICountModel
+    public interface ICountModel : IModel
     {
         BindableProperty<int> Count { get; }
     }
 
 public class CounterModel : ICountModel
     {
+        public void Init()
+        {
+            var storage = Architecture.GetUtility<IStorage>();
+
+            Debug.Log(storage + " Loaded");
+
+            Count.Value = storage.LoadInt("COUNTER_COUNT", 0);
+            Count.OnValueChanged += count =>
+            {
+                storage.SaveInt("COUNTER_COUNT", count);
+            };
+        }
 
         public BindableProperty<int> Count { get; } = new BindableProperty<int>()
         {
             Value = 0
         };
 
+        public IArchitecture Architecture { get; set; }
+
+        
     }
 }
 

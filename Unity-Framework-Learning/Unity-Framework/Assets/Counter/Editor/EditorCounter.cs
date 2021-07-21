@@ -6,16 +6,23 @@
     功能：Nothing
 *****************************************************/
 
+
 using UnityEditor;
 using UnityEngine;
+using FrameworkDesign;
 
 namespace Counter
-{
+{    
     public class EditorCounter : EditorWindow
     {
         [MenuItem("EditorCounter/Open")]
         private static void OpenMenu()
         {
+            Counter.OnRegisterPatch += architecture =>
+            {
+                Counter.Register<IStorage>(new EditorPrefsStorage());
+            };
+
             var editorCounter = GetWindow<EditorCounter>();
             editorCounter.name = nameof(EditorCounter);
             editorCounter.position = new Rect(100, 100, 400, 600);
@@ -29,7 +36,7 @@ namespace Counter
                 new AddCountCommand().Execute();
             }
 
-            GUILayout.Label(Counter.Get<CounterModel>().Count.Value.ToString());
+            GUILayout.Label(Counter.Get<ICountModel>().Count.Value.ToString());
 
             if (GUILayout.Button("-"))
             {
