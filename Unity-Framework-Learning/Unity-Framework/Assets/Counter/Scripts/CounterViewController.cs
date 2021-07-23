@@ -63,8 +63,6 @@ public class CounterModel : ICountModel
         {
             var storage = Architecture.GetUtility<IStorage>();
 
-            Debug.Log(storage + " Loaded");
-
             Count.Value = storage.LoadInt("COUNTER_COUNT", 0);
             Count.OnValueChanged += count =>
             {

@@ -3,7 +3,7 @@
     作者：zhyStay
     邮箱：zhy18125@163.com
     日期：2021/7/8 15:28:13
-    功能：Nothing
+    功能：用于注册获取模块与Model
 *****************************************************/
 
 using System;
@@ -38,7 +38,7 @@ namespace FrameworkDesign
         {
             instance.Architecture = this;
             mArchitecture.mContainer.Register<T>(instance);
-
+            
             if (mInited)
             {
                 instance.Init();
@@ -76,7 +76,7 @@ namespace FrameworkDesign
 
         private IOCContainer mContainer = new IOCContainer();
 
-        // 子类的注册模块
+        // 子类的注册模块初始化
         protected abstract void Init();
 
         // 注册模块的API
@@ -86,9 +86,11 @@ namespace FrameworkDesign
             mArchitecture.mContainer.Register<T>(instance);
         }
 
-        public T GetUtility<T>() where T : class
+        // 获取模块的API
+        public static T Get<T>() where T : class
         {
-            return mContainer.Get<T>();
+            MakeSureArchitecture();
+            return mArchitecture.mContainer.Get<T>();
         }
 
         public void RegisterUtility<T>(T instance)
@@ -96,12 +98,11 @@ namespace FrameworkDesign
             mContainer.Register<T>(instance);
         }
 
-        // 获取模块的API
-        public static T Get<T>() where T : class
+        public T GetUtility<T>() where T : class
         {
-            MakeSureArchitecture();
-            return mArchitecture.mContainer.Get<T>();
+            return mContainer.Get<T>();
         }
+        
     }
 }
 
