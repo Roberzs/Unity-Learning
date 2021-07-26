@@ -14,12 +14,19 @@ namespace FrameworkDesign
 {
     public interface IArchitecture
     {
+        // 注册System
+        void RegisterSystem<T>(T instance) where T : ISystem;
+
         // 注册Model
         void RegisterModel<T>(T instance) where T : IModel;
 
         // 注册Utility
         void RegisterUtility<T>(T instance);
 
+        // 获取Model
+        T GetModel<T>() where T : class, IModel;
+
+        // 获取工具
         T GetUtility<T>() where T : class;
     }
 
@@ -68,9 +75,34 @@ namespace FrameworkDesign
                     architectureModel.Init();
                 }
 
-                // 清空Model
+                // 初始化System
+                foreach (var architectureSystem in mArchitecture.mSystems)
+                {
+                    architectureSystem.Init();
+                }
+
+                // 清空Models
                 mArchitecture.mModels.Clear();
+                // 清空Systems
+                mArchitecture.mSystems.Clear();
                 mArchitecture.mInited = true;
+            }
+        }
+
+        // 存储初始化的Systems的缓存
+        private List<ISystem> mSystems = new List<ISystem>();
+        public void RegisterSystem<T>(T instance) where T : ISystem
+        {
+            instance.Architecture = this;
+            mContainer.Register<T>(instance);
+
+            if (mInited)
+            {
+                instance.Init();
+            }
+            else
+            {
+                mSystems.Add(instance);
             }
         }
 
@@ -103,6 +135,10 @@ namespace FrameworkDesign
             return mContainer.Get<T>();
         }
         
+        public T GetModel<T>() where T : class, IModel
+        {
+            return mContainer.Get<T>();
+        }
     }
 }
 

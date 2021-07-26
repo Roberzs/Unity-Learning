@@ -15,6 +15,7 @@ namespace Counter
     {
         protected override void Init()
         {
+            RegisterSystem<IAchievementSystem>(new AchievementSystem());
             RegisterModel<ICountModel>(new CounterModel());
             RegisterUtility<IStorage>(new PlayerPrefsStorage());
         }
