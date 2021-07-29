@@ -49,7 +49,7 @@ namespace Counter
         private void OnDestroy()
         {
             mCounterModel.Count.OnValueChanged -= OnCountChanged;
-
+            
             mCounterModel = null;
         }
     }

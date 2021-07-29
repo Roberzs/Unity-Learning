@@ -6,38 +6,40 @@
     功能：Nothing
 *****************************************************/
 
-using System;
-using System.Reflection;
-
 namespace FrameworkDesign
 {
-    public class Singleton<T> where T : class
+    public class Singleton<T> : ISingleton where T : Singleton<T>
     {
+        protected static T mInstance;
+
+        private static object mLock = new object(); 
+
         public static T Instance
         {
             get
             {
-                if (mInstance == null)
+                lock(mLock)
                 {
-                    // 通过反射获取构造
-                    var ctors = typeof(T).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic);
-                    // 获取无参非 public 的构造
-                    var ctor = Array.Find(ctors, c => c.GetParameters().Length == 0);
-
-                    if (ctor == null)
+                    if (mInstance == null)
                     {
-                        throw new Exception("Non-Public Constructor() not found in " + typeof(T));
+                        mInstance = SingletonCreator.CreateSingleton<T>();
                     }
-
-                    mInstance = ctor.Invoke(null) as T;
                 }
-
                 return mInstance;
             }
         }
 
-        private static T mInstance;
+        
 
+        public virtual void OnSingletonInit()
+        {
+            
+        }
+
+        public virtual void Dispose()
+        {
+
+        }
     }
 }
 
