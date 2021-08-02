@@ -11,11 +11,11 @@ using UnityEngine;
 
 namespace Counter 
 {
-    public class SubCountCommand : ICommand
+    public class SubCountCommand : AbstractCommand
     {
-        public void Execute()
+        protected override void OnExecute()
         {
-            Counter.Get<ICountModel>().Count.Value--;
+            GetArchitecture().GetModel<ICountModel>().Count.Value--;
         }
     }
 }

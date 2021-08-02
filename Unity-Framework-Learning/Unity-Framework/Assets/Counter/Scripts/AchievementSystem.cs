@@ -16,13 +16,11 @@ namespace FrameworkDesign
 
     }
 
-    public class AchievementSystem : IAchievementSystem
+    public class AchievementSystem : AbstractSystem, IAchievementSystem
     {
-        public IArchitecture Architecture { get; set; }
-
-        public void Init()
+        protected override void OnInit()
         {
-            var counterModel = Architecture.GetModel<ICountModel>();
+            var counterModel = GetArchitecture().GetModel<ICountModel>();
             var previousCount = counterModel.Count.Value;
             
             counterModel.Count.OnValueChanged += newCount =>

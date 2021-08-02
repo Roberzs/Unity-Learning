@@ -10,11 +10,11 @@ using UnityEngine;
 
 namespace FrameworkDesign.Example
 {
-    public class KilledEnemyCommand : ICommand
+    public class KilledEnemyCommand : AbstractCommand
     {
-        public void Execute()
+        protected override void OnExecute()
         {
-            var gameModel = PointGame.Get<IGameModel>();
+            var gameModel = GetArchitecture().GetModel<IGameModel>();
 
             gameModel.KillCount.Value++;
 

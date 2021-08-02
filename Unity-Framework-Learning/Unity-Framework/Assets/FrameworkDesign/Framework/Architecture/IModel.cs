@@ -6,13 +6,35 @@
     功能：Nothing
 *****************************************************/
 
+using System;
 using UnityEngine;
 
 namespace FrameworkDesign
 {
-    public interface IModel : IBelongToArchitecture
+    public interface IModel : IBelongToArchitecture, ICanSetArchitecture
     {
         void Init();
+    }
+
+    public abstract class AbstractModel : IModel
+    {
+        private IArchitecture mArchitecture = null;
+        public IArchitecture GetArchitecture()
+        {
+            return mArchitecture;
+        }
+
+        void IModel.Init()
+        {
+            OnInit();
+        }
+
+        protected abstract void OnInit();
+
+        public void SetArchitecture(IArchitecture architecture)
+        {
+            mArchitecture = architecture;
+        }
     }
 }
 

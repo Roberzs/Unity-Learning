@@ -28,11 +28,27 @@ namespace FrameworkDesign
 
         // 获取工具
         T GetUtility<T>() where T : class;
+
+        // 发送命令
+        void SendCommand<T>() where T : ICommand, new();
+        void SendCommand<T>(T command) where T : ICommand;
     }
 
     public abstract class Architecture<T> : IArchitecture where T : Architecture<T>, new()
     {
         private static T mArchitecture = null;
+
+        public static IArchitecture Interface
+        {
+            get
+            {
+                if (mArchitecture == null) 
+                {
+                    MakeSureArchitecture();
+                }
+                return mArchitecture;
+            }
+        }
 
         // 是否已经初始化完成
         private bool mInited = false;
@@ -43,7 +59,7 @@ namespace FrameworkDesign
         // 注册Model的API
         public void RegisterModel<T>(T instance) where T: IModel
         {
-            instance.Architecture = this;
+            instance.SetArchitecture(this);
             mArchitecture.mContainer.Register<T>(instance);
             
             if (mInited)
@@ -93,7 +109,7 @@ namespace FrameworkDesign
         private List<ISystem> mSystems = new List<ISystem>();
         public void RegisterSystem<T>(T instance) where T : ISystem
         {
-            instance.Architecture = this;
+            instance.SetArchitecture(this);
             mContainer.Register<T>(instance);
 
             if (mInited)
@@ -138,6 +154,19 @@ namespace FrameworkDesign
         public T GetModel<T>() where T : class, IModel
         {
             return mContainer.Get<T>();
+        }
+
+        public void SendCommand<T>() where T : ICommand, new()
+        {
+            var command = new T();
+            command.SetArchitecture(this);
+            command.Execute();
+        }
+
+        public void SendCommand<T>(T command) where T : ICommand
+        {
+            command.SetArchitecture(this);
+            command.Execute();
         }
     }
 }

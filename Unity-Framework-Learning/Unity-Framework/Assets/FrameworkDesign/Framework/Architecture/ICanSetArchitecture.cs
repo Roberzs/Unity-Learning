@@ -1,19 +1,18 @@
 /****************************************************
-    文件：IController.cs
+    文件：ICanSetArchitecture.cs
     作者：zhyStay
     邮箱：zhy18125@163.com
-    日期：2021/7/26 14:12:43
+    日期：2021/8/2 11:47:41
     功能：Nothing
 *****************************************************/
 
 using UnityEngine;
 
-namespace FrameworkDesign 
+namespace FrameworkDesign
 {
-    public interface IController : IBelongToArchitecture
+    public interface ICanSetArchitecture
     {
-
+        void SetArchitecture(IArchitecture architecture);
     }
 }
-
 

@@ -11,9 +11,12 @@ using UnityEngine.UI;
 
 namespace FrameworkDesign.Example
 {
-    public class GameStartPanel : MonoBehaviour
+    public class GameStartPanel : MonoBehaviour, IController
     {
-        //[SerializeField] private GameObject Enemies;
+        public IArchitecture GetArchitecture()
+        {
+            return PointGame.Interface;
+        }
 
         private void Start()
         {
@@ -22,7 +25,7 @@ namespace FrameworkDesign.Example
                 {
                     gameObject.SetActive(false);
 
-                    new StartGameCommand().Execute();
+                    GetArchitecture().SendCommand<StartGameCommand>();
                 });
         }
     }

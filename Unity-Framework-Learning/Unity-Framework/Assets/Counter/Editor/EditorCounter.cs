@@ -13,14 +13,14 @@ using FrameworkDesign;
 
 namespace Counter
 {    
-    public class EditorCounter : EditorWindow
+    public class EditorCounter : EditorWindow, IController
     {
         [MenuItem("EditorCounter/Open")]
         private static void OpenMenu()
         {
             Counter.OnRegisterPatch += architecture =>
             {
-                Counter.Register<IStorage>(new EditorPrefsStorage());
+                architecture.RegisterUtility<IStorage>(new EditorPrefsStorage());
             };
 
             var editorCounter = GetWindow<EditorCounter>();
@@ -29,18 +29,23 @@ namespace Counter
             editorCounter.Show();
         }
 
+        public IArchitecture GetArchitecture()
+        {
+            return Counter.Interface;
+        }
+
         private void OnGUI()
         {
             if (GUILayout.Button("+"))
             {
-                new AddCountCommand().Execute();
+                GetArchitecture().SendCommand<AddCountCommand>();
             }
 
             GUILayout.Label(Counter.Get<ICountModel>().Count.Value.ToString());
 
             if (GUILayout.Button("-"))
             {
-                new SubCountCommand().Execute();
+                GetArchitecture().SendCommand<SubCountCommand>();
             }
         }
     }

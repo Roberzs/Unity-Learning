@@ -1,19 +1,18 @@
 /****************************************************
-    文件：IController.cs
+    文件：IUtility.cs
     作者：zhyStay
     邮箱：zhy18125@163.com
-    日期：2021/7/26 14:12:43
+    日期：2021/8/2 13:42:7
     功能：Nothing
 *****************************************************/
 
 using UnityEngine;
 
-namespace FrameworkDesign 
+namespace FrameworkDesign
 {
-    public interface IController : IBelongToArchitecture
+    public interface IUtility 
     {
 
     }
 }
-
 

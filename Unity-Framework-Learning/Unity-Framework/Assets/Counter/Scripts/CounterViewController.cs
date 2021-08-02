@@ -7,31 +7,31 @@
 *****************************************************/
 
 using FrameworkDesign;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Counter
 {
-    public class CounterViewController : MonoBehaviour
+    public class CounterViewController : MonoBehaviour, IController
     {
         private ICountModel mCounterModel;
 
+
         private void Start()
         {
-            mCounterModel = Counter.Get<ICountModel>();
+            mCounterModel = GetArchitecture().GetModel<ICountModel>();
 
             mCounterModel.Count.OnValueChanged += OnCountChanged;
 
             transform.Find("btnAdd").GetComponent<Button>().onClick
                 .AddListener(() =>
                 {
-                    new AddCountCommand().Execute();
+                    GetArchitecture().SendCommand<AddCountCommand>();
                 });
             transform.Find("btnSub").GetComponent<Button>().onClick
                 .AddListener(() =>
                 {
-                    new SubCountCommand().Execute();
+                    GetArchitecture().SendCommand<SubCountCommand>();
                 });
 
             OnCountChanged(mCounterModel.Count.Value);
@@ -52,6 +52,11 @@ namespace Counter
             
             mCounterModel = null;
         }
+
+        public IArchitecture GetArchitecture()
+        {
+            return Counter.Interface;
+        }
     }
 
     public interface ICountModel : IModel
@@ -59,11 +64,12 @@ namespace Counter
         BindableProperty<int> Count { get; }
     }
 
-public class CounterModel : ICountModel
+    public class CounterModel : AbstractModel, ICountModel
     {
-        public void Init()
+
+        protected override void OnInit()
         {
-            var storage = Architecture.GetUtility<IStorage>();
+            var storage = GetArchitecture().GetUtility<IStorage>();
 
             Count.Value = storage.LoadInt("COUNTER_COUNT", 0);
             Count.OnValueChanged += count =>
@@ -77,7 +83,6 @@ public class CounterModel : ICountModel
             Value = 0
         };
 
-        public IArchitecture Architecture { get; set; }
 
         
     }

@@ -10,9 +10,10 @@ using UnityEngine;
 
 namespace FrameworkDesign.Example
 {
-    public class StartGameCommand : ICommand
+    public class StartGameCommand :AbstractCommand, ICommand
     {
-        public void Execute()
+
+        protected override void OnExecute()
         {
             GameStartEvent.Trigger();
         }
