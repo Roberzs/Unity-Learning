@@ -19,19 +19,19 @@ namespace Counter
 
         private void Start()
         {
-            mCounterModel = GetArchitecture().GetModel<ICountModel>();
+            mCounterModel = this.GetModel<ICountModel>();
 
             mCounterModel.Count.OnValueChanged += OnCountChanged;
 
             transform.Find("btnAdd").GetComponent<Button>().onClick
                 .AddListener(() =>
                 {
-                    GetArchitecture().SendCommand<AddCountCommand>();
+                    this.SendCommand<AddCountCommand>();
                 });
             transform.Find("btnSub").GetComponent<Button>().onClick
                 .AddListener(() =>
                 {
-                    GetArchitecture().SendCommand<SubCountCommand>();
+                    this.SendCommand<SubCountCommand>();
                 });
 
             OnCountChanged(mCounterModel.Count.Value);
@@ -53,7 +53,7 @@ namespace Counter
             mCounterModel = null;
         }
 
-        public IArchitecture GetArchitecture()
+        IArchitecture IBelongToArchitecture.GetArchitecture()
         {
             return Counter.Interface;
         }
@@ -69,13 +69,15 @@ namespace Counter
 
         protected override void OnInit()
         {
-            var storage = GetArchitecture().GetUtility<IStorage>();
+            var storage = this.GetUtility<IStorage>();
 
             Count.Value = storage.LoadInt("COUNTER_COUNT", 0);
+
             Count.OnValueChanged += count =>
             {
                 storage.SaveInt("COUNTER_COUNT", count);
             };
+            
         }
 
         public BindableProperty<int> Count { get; } = new BindableProperty<int>()

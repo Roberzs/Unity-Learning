@@ -23,15 +23,26 @@ namespace FrameworkDesign
         // 注册Utility
         void RegisterUtility<T>(T instance);
 
+        // 获取System
+        T GetSystem<T>() where T : class, ISystem;
+
         // 获取Model
         T GetModel<T>() where T : class, IModel;
 
-        // 获取工具
+        // 获取Utility
         T GetUtility<T>() where T : class;
 
         // 发送命令
         void SendCommand<T>() where T : ICommand, new();
         void SendCommand<T>(T command) where T : ICommand;
+
+        // 注册事件
+        IUnRegister RegisterEvent<T>(Action<T> onEvent);
+        // 注销事件
+        void UnRegisterEvent<T>(Action<T> onEvent);
+        // 发送事件
+        void SendEvent<T>() where T : new();
+        void SendEvent<T>(T e);
     }
 
     public abstract class Architecture<T> : IArchitecture where T : Architecture<T>, new()
@@ -57,10 +68,10 @@ namespace FrameworkDesign
         private List<IModel> mModels = new List<IModel>();
 
         // 注册Model的API
-        public void RegisterModel<T>(T instance) where T: IModel
+        public void RegisterModel<T1>(T1 instance) where T1: IModel
         {
             instance.SetArchitecture(this);
-            mArchitecture.mContainer.Register<T>(instance);
+            mArchitecture.mContainer.Register<T1>(instance);
             
             if (mInited)
             {
@@ -107,10 +118,10 @@ namespace FrameworkDesign
 
         // 存储初始化的Systems的缓存
         private List<ISystem> mSystems = new List<ISystem>();
-        public void RegisterSystem<T>(T instance) where T : ISystem
+        public void RegisterSystem<T1>(T1 instance) where T1 : ISystem
         {
             instance.SetArchitecture(this);
-            mContainer.Register<T>(instance);
+            mContainer.Register<T1>(instance);
 
             if (mInited)
             {
@@ -128,45 +139,72 @@ namespace FrameworkDesign
         protected abstract void Init();
 
         // 注册模块的API
-        public static void Register<T>(T instance)
+        public static void Register<T1>(T1 instance)
         {
             MakeSureArchitecture();
-            mArchitecture.mContainer.Register<T>(instance);
+            mArchitecture.mContainer.Register<T1>(instance);
+        }
+
+        public void RegisterUtility<T1>(T1 instance)
+        {
+            mContainer.Register<T1>(instance);
+        }
+
+        public T1 GetUtility<T1>() where T1 : class
+        {
+            return mContainer.Get<T1>();
+        }
+        
+        public T1 GetModel<T1>() where T1 : class, IModel
+        {
+            return mContainer.Get<T1>();
+        }
+
+        public T1 GetSystem<T1>() where T1 : class, ISystem
+        {
+            return mContainer.Get<T1>();
+        }
+
+        public void SendCommand<T1>() where T1 : ICommand, new()
+        {
+            var command = new T1();
+            command.SetArchitecture(this);
+            command.Execute();
+        }
+
+        public void SendCommand<T1>(T1 command) where T1 : ICommand
+        {
+            command.SetArchitecture(this);
+            command.Execute();
         }
 
         // 获取模块的API
-        public static T Get<T>() where T : class
+        public static T1 Get<T1>() where T1 : class
         {
             MakeSureArchitecture();
-            return mArchitecture.mContainer.Get<T>();
+            return mArchitecture.mContainer.Get<T1>();
         }
 
-        public void RegisterUtility<T>(T instance)
+        private ITypeEventSystem mTypeEventSystem = new TypeEventSystem();
+
+        public IUnRegister RegisterEvent<T1>(Action<T1> onEvent)
         {
-            mContainer.Register<T>(instance);
+            return mTypeEventSystem.Register<T1>(onEvent);
         }
 
-        public T GetUtility<T>() where T : class
+        public void UnRegisterEvent<T1>(Action<T1> onEvent)
         {
-            return mContainer.Get<T>();
-        }
-        
-        public T GetModel<T>() where T : class, IModel
-        {
-            return mContainer.Get<T>();
+            mTypeEventSystem.UnRegister<T1>(onEvent);
         }
 
-        public void SendCommand<T>() where T : ICommand, new()
+        public void SendEvent<T1>() where T1 : new()
         {
-            var command = new T();
-            command.SetArchitecture(this);
-            command.Execute();
+            mTypeEventSystem.Send<T1>();
         }
 
-        public void SendCommand<T>(T command) where T : ICommand
+        public void SendEvent<T1>(T1 e)
         {
-            command.SetArchitecture(this);
-            command.Execute();
+            mTypeEventSystem.Send<T1>(e);
         }
     }
 }

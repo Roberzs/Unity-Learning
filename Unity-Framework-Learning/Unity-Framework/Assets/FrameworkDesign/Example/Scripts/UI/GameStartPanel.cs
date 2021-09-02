@@ -13,7 +13,7 @@ namespace FrameworkDesign.Example
 {
     public class GameStartPanel : MonoBehaviour, IController
     {
-        public IArchitecture GetArchitecture()
+        IArchitecture IBelongToArchitecture.GetArchitecture()
         {
             return PointGame.Interface;
         }
@@ -25,7 +25,7 @@ namespace FrameworkDesign.Example
                 {
                     gameObject.SetActive(false);
 
-                    GetArchitecture().SendCommand<StartGameCommand>();
+                    this.SendCommand<StartGameCommand>();
                 });
         }
     }

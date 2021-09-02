@@ -14,13 +14,13 @@ namespace FrameworkDesign.Example
     {
         protected override void OnExecute()
         {
-            var gameModel = GetArchitecture().GetModel<IGameModel>();
+            var gameModel = this.GetModel<IGameModel>();
 
             gameModel.KillCount.Value++;
 
             if (gameModel.KillCount.Value == 9)
             {
-                GamePassEvent.Trigger();
+                this.SendEvent<GamePassEvent>();
             }
         }
     }

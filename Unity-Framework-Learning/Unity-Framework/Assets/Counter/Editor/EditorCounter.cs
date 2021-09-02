@@ -29,7 +29,8 @@ namespace Counter
             editorCounter.Show();
         }
 
-        public IArchitecture GetArchitecture()
+        
+        IArchitecture IBelongToArchitecture.GetArchitecture()
         {
             return Counter.Interface;
         }
@@ -38,14 +39,14 @@ namespace Counter
         {
             if (GUILayout.Button("+"))
             {
-                GetArchitecture().SendCommand<AddCountCommand>();
+                this.SendCommand<AddCountCommand>();
             }
 
             GUILayout.Label(Counter.Get<ICountModel>().Count.Value.ToString());
 
             if (GUILayout.Button("-"))
             {
-                GetArchitecture().SendCommand<SubCountCommand>();
+                this.SendCommand<SubCountCommand>();
             }
         }
     }

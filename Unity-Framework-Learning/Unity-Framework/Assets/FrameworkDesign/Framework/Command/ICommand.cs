@@ -3,14 +3,14 @@
     作者：zhyStay
     邮箱：zhy18125@163.com
     日期：2021/7/7 13:45:23
-    功能：Nothing
+    功能：命令类接口
 *****************************************************/
 
 using UnityEngine;
 
 namespace FrameworkDesign
 {
-    public interface ICommand : IBelongToArchitecture, ICanSetArchitecture
+    public interface ICommand : IBelongToArchitecture, ICanSetArchitecture, ICanGetSystem, ICanGetModel, ICanGetUtility, ICanSendEvent, ICanSendCommand
     {
         void Execute();
     }
@@ -24,12 +24,12 @@ namespace FrameworkDesign
             OnExecute();
         }
 
-        public IArchitecture GetArchitecture()
+        IArchitecture IBelongToArchitecture.GetArchitecture()
         {
             return mArchitecture;
         }
 
-        public void SetArchitecture(IArchitecture architecture)
+        void ICanSetArchitecture.SetArchitecture(IArchitecture architecture)
         {
             mArchitecture = architecture;
         }

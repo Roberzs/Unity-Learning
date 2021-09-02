@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace FrameworkDesign.Example
 {
-    public class GamePassEvent : Event<GamePassEvent>
+    public struct GamePassEvent
     {
         
     }

@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace FrameworkDesign
 {
-    public interface ISystem : IBelongToArchitecture, ICanSetArchitecture
+    public interface ISystem : IBelongToArchitecture, ICanSetArchitecture, ICanGetModel, ICanGetUtility, ICanRegisterEvent, ICanSendEvent
     {
         void Init();
     }
@@ -18,9 +18,14 @@ namespace FrameworkDesign
     public abstract class AbstractSystem : ISystem
     {
         private IArchitecture mArchitecture = null;
-        public IArchitecture GetArchitecture()
+        IArchitecture IBelongToArchitecture.GetArchitecture()
         {
             return mArchitecture;
+        }
+
+         void ICanSetArchitecture.SetArchitecture(IArchitecture architecture)
+        {
+            mArchitecture = architecture;
         }
 
         void ISystem.Init()
@@ -29,11 +34,6 @@ namespace FrameworkDesign
         }
 
         protected abstract void OnInit();
-
-        public void SetArchitecture(IArchitecture architecture)
-        {
-            mArchitecture = architecture;
-        }
     }
 }
 
