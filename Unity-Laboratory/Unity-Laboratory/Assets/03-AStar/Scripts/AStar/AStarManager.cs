@@ -29,8 +29,8 @@ namespace AStar
 
         private AStarNode[,] nodes;
 
-        private List<AStarNode> openList;
-        private List<AStarNode> closeList;
+        private List<AStarNode> openList = new List<AStarNode>();
+        private List<AStarNode> closeList = new List<AStarNode>();
 
         /// <summary>
         /// 地图的初始化方法
@@ -38,15 +38,16 @@ namespace AStar
         /// <param name="maps"></param>
         public void InitMapInfo(Grid[,] maps)
         {
-            mapW = maps.Rank;
+            mapW = maps.GetLength(1);
             mapH = maps.GetLength(0);
             nodes = new AStarNode[mapW, mapH];
-            for (int x = 0; x < mapW; ++x)
-                for (int y = 0; y < mapH; ++y)
+            for (int x = 0; x < mapW; x++)
+                for (int y = 0; y < mapH; y++)
                 {
                     AStarNode node = new AStarNode(x, y, maps[x,y].gridType == GridType.Stop ? E_Node_Type.Stop : E_Node_Type.Walk);
                     nodes[x, y] = node;
                 }
+            //Debug.Log(mapW + " " + mapH);
             Debug.Log("AStarManager InitMapInfo Done.");
         }
 
@@ -72,16 +73,17 @@ namespace AStar
 
             while (true)
             {
-                FindNearlyNodeToOpenList((int)starPos.x - 1, (int)starPos.y + 1, Mathf.Sqrt(2), startNode, endNode);
-                FindNearlyNodeToOpenList((int)starPos.x, (int)starPos.y + 1, 1f, startNode, endNode);
-                FindNearlyNodeToOpenList((int)starPos.x + 1, (int)starPos.y + 1, Mathf.Sqrt(2), startNode, endNode);
-                FindNearlyNodeToOpenList((int)starPos.x - 1, (int)starPos.y, 1f, startNode, endNode);
-                FindNearlyNodeToOpenList((int)starPos.x + 1, (int)starPos.y, 1f, startNode, endNode);
-                FindNearlyNodeToOpenList((int)starPos.x - 1, (int)starPos.y - 1, Mathf.Sqrt(2), startNode, endNode);
-                FindNearlyNodeToOpenList((int)starPos.x, (int)starPos.y - 1, 1f, startNode, endNode);
-                FindNearlyNodeToOpenList((int)starPos.x + 1, (int)starPos.y - 1, Mathf.Sqrt(2), startNode, endNode);
+                FindNearlyNodeToOpenList((int)startNode.coordinate.x - 1, (int)startNode.coordinate.y + 1, Mathf.Sqrt(2), startNode, endNode);
+                FindNearlyNodeToOpenList((int)startNode.coordinate.x, (int)startNode.coordinate.y + 1, 1f, startNode, endNode);
+                FindNearlyNodeToOpenList((int)startNode.coordinate.x + 1, (int)startNode.coordinate.y + 1, Mathf.Sqrt(2), startNode, endNode);
+                FindNearlyNodeToOpenList((int)startNode.coordinate.x - 1, (int)startNode.coordinate.y, 1f, startNode, endNode);
+                FindNearlyNodeToOpenList((int)startNode.coordinate.x + 1, (int)startNode.coordinate.y, 1f, startNode, endNode);
+                FindNearlyNodeToOpenList((int)startNode.coordinate.x - 1, (int)startNode.coordinate.y - 1, Mathf.Sqrt(2), startNode, endNode);
+                FindNearlyNodeToOpenList((int)startNode.coordinate.x, (int)startNode.coordinate.y - 1, 1f, startNode, endNode);
+                FindNearlyNodeToOpenList((int)startNode.coordinate.x + 1, (int)startNode.coordinate.y - 1, Mathf.Sqrt(2), startNode, endNode);
 
                 openList.Sort(SortOpenList);
+                if (openList == null) return null;
 
                 closeList.Add(openList[0]);
                 startNode = openList[0];
@@ -91,12 +93,14 @@ namespace AStar
                 {
                     // 已寻到终点
                     List<AStarNode> pathNode = new List<AStarNode>();
+                    //Debug.Log(pathNode.Count);
                     pathNode.Add(endNode);
-                    while (endNode.parentNode == null)
+                    while (endNode.parentNode != null)
                     {
                         endNode = endNode.parentNode;
                         pathNode.Add(endNode);
                     }
+                    pathNode.Reverse();
                     return pathNode;
                 }
             }

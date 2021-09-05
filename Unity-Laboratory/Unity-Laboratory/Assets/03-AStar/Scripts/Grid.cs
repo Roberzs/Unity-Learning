@@ -35,7 +35,8 @@ namespace AStar
 
         private void OnMouseDown()
         {
-            Debug.Log("点击了坐标 " + coordinate + " 的网格" );
+            //Debug.Log("点击了坐标 " + coordinate + " 的网格" );
+            GameRoot.Instance.FindWay(coordinate);
         }
 
         private void SetMaterialColor(Color color)
