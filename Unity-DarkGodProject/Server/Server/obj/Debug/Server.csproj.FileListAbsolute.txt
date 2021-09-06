@@ -10,3 +10,15 @@ E:\Unity\DarkGodProject\Server\Server\Server\obj\Debug\Server.csproj.CopyComplet
 E:\Unity\DarkGodProject\Server\Server\Server\obj\Debug\Server.exe
 E:\Unity\DarkGodProject\Server\Server\Server\obj\Debug\Server.pdb
 E:\Unity\DarkGodProject\Server\Server\Server\bin\Debug\MySql.Data.dll
+E:\Unity\Unity-Learning\Unity-DarkGodProject\Server\Server\bin\Debug\Server.exe.config
+E:\Unity\Unity-Learning\Unity-DarkGodProject\Server\Server\bin\Debug\Server.exe
+E:\Unity\Unity-Learning\Unity-DarkGodProject\Server\Server\bin\Debug\Server.pdb
+E:\Unity\Unity-Learning\Unity-DarkGodProject\Server\Server\bin\Debug\MySql.Data.dll
+E:\Unity\Unity-Learning\Unity-DarkGodProject\Server\Server\bin\Debug\PEProtocol.dll
+E:\Unity\Unity-Learning\Unity-DarkGodProject\Server\Server\bin\Debug\PESocket.dll
+E:\Unity\Unity-Learning\Unity-DarkGodProject\Server\Server\bin\Debug\PEProtocol.pdb
+E:\Unity\Unity-Learning\Unity-DarkGodProject\Server\Server\obj\Debug\Server.csprojAssemblyReference.cache
+E:\Unity\Unity-Learning\Unity-DarkGodProject\Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+E:\Unity\Unity-Learning\Unity-DarkGodProject\Server\Server\obj\Debug\Server.csproj.CopyComplete
+E:\Unity\Unity-Learning\Unity-DarkGodProject\Server\Server\obj\Debug\Server.exe
+E:\Unity\Unity-Learning\Unity-DarkGodProject\Server\Server\obj\Debug\Server.pdb

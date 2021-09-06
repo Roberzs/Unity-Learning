@@ -7,3 +7,10 @@ E:\Unity\DarkGodProject\Server\Server\PEProtocol\obj\Debug\PEProtocol.csproj.Cor
 E:\Unity\DarkGodProject\Server\Server\PEProtocol\obj\Debug\PEProtocol.csproj.CopyComplete
 E:\Unity\DarkGodProject\Server\Server\PEProtocol\obj\Debug\PEProtocol.dll
 E:\Unity\DarkGodProject\Server\Server\PEProtocol\obj\Debug\PEProtocol.pdb
+E:\Unity\Unity-Learning\Client\DarkGodClient\Assets\Scripts\Net\PEProtocol.dll
+E:\Unity\Unity-Learning\Client\DarkGodClient\Assets\Scripts\Net\PEProtocol.pdb
+E:\Unity\Unity-Learning\Unity-DarkGodProject\Server\PEProtocol\obj\Debug\PEProtocol.csprojAssemblyReference.cache
+E:\Unity\Unity-Learning\Unity-DarkGodProject\Server\PEProtocol\obj\Debug\PEProtocol.csproj.CoreCompileInputs.cache
+E:\Unity\Unity-Learning\Unity-DarkGodProject\Server\PEProtocol\obj\Debug\PEProtocol.csproj.CopyComplete
+E:\Unity\Unity-Learning\Unity-DarkGodProject\Server\PEProtocol\obj\Debug\PEProtocol.dll
+E:\Unity\Unity-Learning\Unity-DarkGodProject\Server\PEProtocol\obj\Debug\PEProtocol.pdb

@@ -44,7 +44,7 @@ public class CfgSvc
     private void InitGuideCfg()
     {
         XmlDocument doc = new XmlDocument();
-        doc.Load(@"E:\Unity\DarkGodProject\Client\DarkGodClient\Assets\Resources\ResCfgs\guide.xml");
+        doc.Load(@"E:\Unity\Unity-Learning\Unity-DarkGodProject\DarkGodClient\Assets\Resources\ResCfgs\guide.xml");
 
         XmlNodeList nodeList = doc.SelectSingleNode("root").ChildNodes;
 
@@ -94,7 +94,7 @@ public class CfgSvc
     private void InitTaskRewardCfg()
     {
         XmlDocument doc = new XmlDocument();
-        doc.Load(@"E:\Unity\DarkGodProject\Client\DarkGodClient\Assets\Resources\ResCfgs\taskreward.xml");
+        doc.Load(@"E:\Unity\Unity-Learning\Unity-DarkGodProject\DarkGodClient\Assets\Resources\ResCfgs\taskreward.xml");
 
         XmlNodeList nodeList = doc.SelectSingleNode("root").ChildNodes;
 
@@ -147,7 +147,7 @@ public class CfgSvc
     private void InitStrongCfg()
     {
         XmlDocument doc = new XmlDocument();
-        doc.Load(@"E:\Unity\DarkGodProject\Client\DarkGodClient\Assets\Resources\ResCfgs\strong.xml");
+        doc.Load(@"E:\Unity\Unity-Learning\Unity-DarkGodProject\DarkGodClient\Assets\Resources\ResCfgs\strong.xml");
 
         XmlNodeList nodeList = doc.SelectSingleNode("root").ChildNodes;
 
