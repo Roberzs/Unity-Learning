@@ -12,5 +12,8 @@ using UnityEngine;
 
 public class GameRoot : MonoBehaviour
 {
-    
+    public void ClickAddTaskBtn()
+    {
+        PETimerSys.Instance.AddTimeTask(() => { Debug.Log("回调执行"); }, 2000f);
+    }
 }
