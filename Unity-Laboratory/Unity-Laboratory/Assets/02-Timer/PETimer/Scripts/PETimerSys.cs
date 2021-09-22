@@ -30,6 +30,10 @@ public class PETimerSys: MonoBehaviour
     /// </summary>
     private List<PETimeTask> taskTimeLst = new List<PETimeTask>();
 
+    private int frameCounter;
+    private List<PEFrameTask> tmpFrameLst = new List<PEFrameTask>();
+    private List<PEFrameTask> taskFrameLst = new List<PEFrameTask>();
+
     private void Awake()
     {
         _instance = this;
@@ -37,6 +41,18 @@ public class PETimerSys: MonoBehaviour
     }
 
     private void Update()
+    {
+        CheckTimeTask();
+        CheckFrameTask();
+
+        // 清理定时任务ID
+        if (recTidLst.Count > 0)
+        {
+            RecycleTid();
+        }
+    }
+
+    private void CheckTimeTask()
     {
         // 将缓存区内容加入定时任务列表 
         foreach (var item in tmpTimeLst) taskTimeLst.Add(item);
@@ -50,7 +66,14 @@ public class PETimerSys: MonoBehaviour
             else
             {
                 Action cb = task.callback;
-                cb?.Invoke();
+                try
+                {
+                    cb?.Invoke();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e.Message);
+                }
 
                 // 检查任务完成情况
                 if (task.count == 1)
@@ -69,14 +92,54 @@ public class PETimerSys: MonoBehaviour
                 }
             }
         }
-
-        // 清理定时任务ID
-        if (recTidLst.Count > 0)
-        {
-            RecycleTid();
-        }
     }
 
+    private void CheckFrameTask()
+    {
+        // 将缓存区内容加入定时任务列表 
+        foreach (var item in tmpFrameLst) taskFrameLst.Add(item);
+        tmpFrameLst.Clear();
+
+        frameCounter++;
+
+        // 遍历任务是否已达到条件
+        for (int index = 0; index < taskFrameLst.Count; index++)
+        {
+            PEFrameTask task = taskFrameLst[index];
+            if (frameCounter < task.destFrame) continue;
+            else
+            {
+                Action cb = task.callback;
+                try
+                {
+                    cb?.Invoke();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e.Message);
+                }
+
+                // 检查任务完成情况
+                if (task.count == 1)
+                {
+                    taskFrameLst.RemoveAt(index);
+                    index--;
+                    recTidLst.Add(task.tid);
+                }
+                else
+                {
+                    if (task.count != 0)
+                    {
+                        task.count--;
+                    }
+                    task.destFrame += task.delay;
+                }
+            }
+        }
+
+    }
+
+    #region TimeTask
     public int AddTimeTask(Action callback, float delay, PETImeUnit timeUnit = PETImeUnit.Millsecond, int count = 1)
     {
         if (timeUnit != PETImeUnit.Millsecond)
@@ -195,6 +258,91 @@ public class PETimerSys: MonoBehaviour
         }
         return isRep;
     }
+    #endregion
+
+    #region FrameTask
+    public int AddFrameTask(Action callback, int delay, int count = 1)
+    {
+        int destFrame = frameCounter + delay;
+        int tid = GetTid();
+        tmpFrameLst.Add(new PEFrameTask(tid, callback, destFrame, delay, count));
+        tidLst.Add(tid);
+        return tid;
+    }
+
+    public bool DeleteFrameTask(int tid)
+    {
+        bool exist = false;
+        for (int i = 0; i < taskFrameLst.Count; i++)
+        {
+            PEFrameTask task = taskFrameLst[i];
+            if (task.tid == tid)
+            {
+                taskFrameLst.RemoveAt(i);
+                for (int j = 0; j < tidLst.Count; j++)
+                {
+                    if (tidLst[j] == tid)
+                    {
+                        tidLst.RemoveAt(j);
+                        exist = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (!exist)
+        {
+            for (int i = 0; i < tmpFrameLst.Count; i++)
+            {
+                PEFrameTask task = tmpFrameLst[i];
+                if (task.tid == tid)
+                {
+                    tmpFrameLst.RemoveAt(i);
+                    for (int j = 0; j < tidLst.Count; j++)
+                    {
+                        if (tidLst[j] == tid)
+                        {
+                            tidLst.RemoveAt(j);
+                            exist = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return exist;
+    }
+
+    public bool ReplaceFrameTask(int tid, Action callback, int delay, int count = 1)
+    {
+        int destFrame = frameCounter + delay;
+        PEFrameTask newTask = new PEFrameTask(tid, callback, destFrame, delay, count);
+
+        bool isRep = false;
+        for (int i = 0; i < taskFrameLst.Count; i++)
+        {
+            if (taskFrameLst[i].tid == tid)
+            {
+                taskFrameLst[i] = newTask;
+                isRep = true;
+                break;
+            }
+        }
+        if (!isRep)
+        {
+            for (int i = 0; i < tmpFrameLst.Count; i++)
+            {
+                if (tmpFrameLst[i].tid == tid)
+                {
+                    tmpFrameLst[i] = newTask;
+                    isRep = true;
+                    break;
+                }
+            }
+        }
+        return isRep;
+    }
+    #endregion
 
     private int GetTid()
     {
@@ -249,7 +397,7 @@ public class PETimerSys: MonoBehaviour
 /// <summary>
 /// 定时任务数据类
 /// </summary>
-public class PETimeTask
+class PETimeTask
 {
     public int tid;
     /// <summary>
@@ -274,6 +422,39 @@ public class PETimeTask
         this.tid = tid;
         this.callback = callback;
         this.destTime = destTime;
+        this.delay = delay;
+        this.count = count;
+    }
+}
+
+/// <summary>
+/// 帧定时任务数据类
+/// </summary>
+class PEFrameTask
+{
+    public int tid;
+    /// <summary>
+    /// 定时完成时间(单位毫秒)
+    /// </summary>
+    public int destFrame;
+    /// <summary>
+    /// 延时时长
+    /// </summary>
+    public int delay;
+    /// <summary>
+    /// 回调方法
+    /// </summary>
+    public Action callback;
+    /// <summary>
+    /// 执行次数 0为持续循环
+    /// </summary>
+    public int count;
+
+    public PEFrameTask(int tid, Action callback, int destFrame, int delay, int count)
+    {
+        this.tid = tid;
+        this.callback = callback;
+        this.destFrame = destFrame;
         this.delay = delay;
         this.count = count;
     }
