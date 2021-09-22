@@ -119,16 +119,31 @@ namespace AStar
             // 边界检测
             if (x < 0 || x >= mapW || y < 0 || y >= mapH) 
                 return;
+
+            // ????? 这里的判断有问题 不是最佳路径！ 
             // 取点
             AStarNode thisNode = nodes[x, y];
             if (thisNode.type == E_Node_Type.Stop || openList.Contains(thisNode) || closeList.Contains(thisNode))
                 return;
+            //AStarNode thisNode = new AStarNode(x, y, nodes[x, y].type);
+            //if (thisNode.type == E_Node_Type.Stop)
+            //    return;
+            //foreach (var item in openList)
+            //{
+            //    if (item.coordinate == thisNode.coordinate && item.parentNode == parentNode) return;
+            //}
+            //foreach (var item in closeList)
+            //{
+            //    if (item.coordinate == thisNode.coordinate && item.parentNode == parentNode) return;
+            //}
+
             thisNode.parentNode = parentNode;
             thisNode.g = thisNode.parentNode.g + g;
             thisNode.h = Mathf.Abs(endNode.coordinate.x - x) + Mathf.Abs(endNode.coordinate.y - y);
             thisNode.f = thisNode.g + thisNode.h;
 
             openList.Add(thisNode);
+            //Debug.Log("1");
         }
 
         /// <summary>

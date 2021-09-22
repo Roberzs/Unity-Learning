@@ -103,15 +103,23 @@ namespace AStar
             Vector2 startPos = new Vector2(characterTrans.position.x, characterTrans.position.z);
 
             // 调用寻路方法获取路径
+            StartCoroutine(FindTheWay(startPos, endPos));
+            
+        }
+
+        IEnumerator FindTheWay(Vector3 startPos ,Vector2 endPos)
+        {
             List<AStarNode> path = AStarManager.Instance.FindPath(startPos, endPos);
+            yield return path;
+
             if (path == null)
             {
                 Debug.Log("当前位置不能寻路");
-                return;
+                yield break;
             }
 
             // 角色开始移动
-            StartCoroutine(MoveCharacter(path));
+            yield return StartCoroutine(MoveCharacter(path));
         }
 
         IEnumerator MoveCharacter(List<AStarNode> path)
