@@ -20,5 +20,6 @@ public class RotateAuthoring : MonoBehaviour, IConvertGameObjectToEntity
     {
         dstManager.AddComponentData(entity, new RotateComponentData() { radiansPerSecond = math.radians(degresPerSecond) });
         dstManager.AddComponentData(entity, new RotationEulerXYZ());
+        //dstManager.AddComponentData(entity, new Translation());
     }
 }
