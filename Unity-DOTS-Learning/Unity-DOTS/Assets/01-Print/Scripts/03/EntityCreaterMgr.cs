@@ -25,6 +25,7 @@ public class EntityCreaterMgr : MonoBehaviour
 
     private void Start()
     {
+        float startTime = Time.realtimeSinceStartup;
         GameObjectConversionSettings tmpSettings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, null);
         Entity cubeEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(cubeEntity, tmpSettings);
         EntityManager tmpEntityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -32,18 +33,24 @@ public class EntityCreaterMgr : MonoBehaviour
         Translation tmpTranslation = new Translation();
         tmpTranslation.Value.x = 0f;
         tmpTranslation.Value.y = 0f;
-
+        tmpTranslation.Value.z = 0f;
         for (int x = 0; x < size; x++)
         {
             for (int y = 0; y < size; y++)
             {
-                Entity tmpCube = tmpEntityManager.Instantiate(cubeEntityPrefab);
-                tmpEntityManager.SetComponentData(tmpCube, tmpTranslation);
+                for (int z = 0; z < size; z++)
+                {
+                    Entity tmpCube = tmpEntityManager.Instantiate(cubeEntityPrefab);
+                    tmpEntityManager.SetComponentData(tmpCube, tmpTranslation);
+                    tmpTranslation.Value.z += interval;
+                }
                 tmpTranslation.Value.y += interval;
+                tmpTranslation.Value.z = 0;
             }
 
             tmpTranslation.Value.x += interval;
             tmpTranslation.Value.y = 0f;
         }
+        Debug.Log((Time.realtimeSinceStartup - startTime));
     }
 }
