@@ -10,6 +10,7 @@ using UnityEngine;
 using Unity.Entities;
 using Unity.Transforms;
 
+[DisableAutoCreation]
 public class RotateSystem : ComponentSystem
 {
     protected override void OnUpdate()
