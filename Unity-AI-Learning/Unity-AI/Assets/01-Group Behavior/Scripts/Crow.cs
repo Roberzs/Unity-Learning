@@ -30,10 +30,13 @@ public class Crow : MonoBehaviour
     public float mass = 1.0f;
     public Vector3 velocity = Vector3.zero;
     private Vector3 startVelocity = Vector3.zero;
+    private Transform targetTrans;
+    public float speed = 10f;
 
     private void Start()
     {
         startVelocity = velocity;
+        targetTrans = GameObject.Find("Target").transform;
         InvokeRepeating(nameof(CalcForce), 0.0f, checkInterval);
         Invoke(nameof(PlayAnim), Random.Range(0.0f, 1.5f));
     }
@@ -109,15 +112,19 @@ public class Crow : MonoBehaviour
         }
 
         // 保持恒定飞行速度的力
-        Vector3 engineForce = startVelocity - velocity;
+        Vector3 engineForce = startVelocity.magnitude * velocity.normalized;
         sumForce += engineForce;
+
+        // 向目标点移动
+        Vector3 targetDir = targetTrans.position - transform.position;
+        sumForce += (targetDir.normalized - transform.forward) * speed;
     }
 
     private void Update()
     {
         Vector3 a = sumForce / mass;
         velocity += a * Time.deltaTime;
-        transform.rotation = Quaternion.LookRotation(velocity);
-        transform.Translate(velocity * Time.deltaTime, Space.World);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(velocity), Time.deltaTime * 3);
+        transform.Translate(transform.forward * Time.deltaTime * velocity.magnitude, Space.World);
     }
 }

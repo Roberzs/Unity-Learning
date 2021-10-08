@@ -498,11 +498,16 @@ MonoBehaviour:
   separationDistance: 3
   seprationNeighbors: []
   separationForce: {x: 0, y: 0, z: 0}
+  alignmentWeight: 1
+  alignmentDistance: 6
+  alignmentNeighbors: []
   alignmentForce: {x: 0, y: 0, z: 0}
+  cohesionWeight: 3
   cohesionForce: {x: 0, y: 0, z: 0}
   checkInterval: 0.2
   mass: 1
-  velocity: {x: 0, y: 0, z: 0}
+  velocity: {x: 0, y: 0, z: 0.1}
+  speed: 10
 --- !u!1 &5258032783419442843
 GameObject:
   m_ObjectHideFlags: 0
