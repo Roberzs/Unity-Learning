@@ -52,5 +52,15 @@ public class EntityCreaterMgr : MonoBehaviour
             tmpTranslation.Value.y = 0f;
         }
         Debug.Log((Time.realtimeSinceStartup - startTime));
+        TestCode();
+    }
+
+    void TestCode()
+    {
+        string defaultWorldName = World.DefaultGameObjectInjectionWorld.Name;
+        foreach (var item in World.DefaultGameObjectInjectionWorld.Systems)
+        {
+            Debug.Log(item.ToString());
+        } 
     }
 }

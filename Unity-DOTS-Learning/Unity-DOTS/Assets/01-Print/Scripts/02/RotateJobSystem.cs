@@ -11,7 +11,7 @@ using Unity.Entities;
 using Unity.Transforms;
 using Unity.Jobs;
 
-
+//[DisableAutoCreation]
 public class RotateJobSystem : JobComponentSystem
 {
     protected override JobHandle OnUpdate(JobHandle inputDeps)
