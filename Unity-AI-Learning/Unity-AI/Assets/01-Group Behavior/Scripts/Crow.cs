@@ -57,7 +57,7 @@ public class Crow : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(transform.position, separationDistance);
         foreach (var collider in colliders)
         {
-            if (collider != null && collider.gameObject != this.gameObject && collider.CompareTag("Crow"))
+            if (collider != null && collider.gameObject != this.gameObject && collider.CompareTag(transform.tag))
             {
                 seprationNeighbors.Add(collider.gameObject);
             }
