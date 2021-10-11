@@ -11,9 +11,14 @@ using UnityEngine;
 public static class StringDefine
 {
     // 2D资源根目录
-    public static string SpritesRootPath = "";
+    public const string SpritesRootPath = "";
     // 音频资源根目录
-    public static string AudioClipsRootPath = "";
+    public const string AudioClipsRootPath = "";
     // 游戏物体资源根目录
-    public static string PrefabsRootPath = "";
+    public const string PrefabsRootPath = "";
+
+    public const string E_ExitScene = "E_ExitScene";
+    public const string E_EnterScene = "E_EnterScene";
+    public const string E_StartUp = "E_StartUp";
+
 }
