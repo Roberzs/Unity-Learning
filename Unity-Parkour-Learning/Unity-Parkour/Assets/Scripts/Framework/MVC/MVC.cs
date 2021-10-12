@@ -24,6 +24,10 @@ public static class MVC
 
     public static void RegisterView(View view)
     {
+        if (Views.ContainsKey(view.name))
+        {
+            Views.Remove(view.name);
+        }
         view.RegisterAttentionEvent();
         Views[view.Name] = view;
     }
