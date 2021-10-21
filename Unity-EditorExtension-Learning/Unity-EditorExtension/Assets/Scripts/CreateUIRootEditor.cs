@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEditor;
-
+using System.IO;
 
 public class CreateUIRootEditor : EditorWindow
 {
@@ -35,6 +35,7 @@ public class CreateUIRootEditor : EditorWindow
 
     private void OnGUI()
     {
+        
         GUILayout.BeginHorizontal();
         GUILayout.Label("Width:", GUILayout.Width(50f));
         var width = GUILayout.TextField("1920");
@@ -46,11 +47,13 @@ public class CreateUIRootEditor : EditorWindow
         if (GUILayout.Button("Create"))
         {
             Create(float.Parse(width), float.Parse(height));
+            Close();
         }
     }
 
     private void Create(float width, float height)
     {
+        /** UIRoot 基础结构 */
         var uiRootObj = new GameObject("UIRoot");
         uiRootObj.layer = LayerMask.NameToLayer("UI");
         var canvasObj = new GameObject("Canvas");
@@ -66,5 +69,22 @@ public class CreateUIRootEditor : EditorWindow
         eventSystemObj.layer = LayerMask.NameToLayer("UI");
         eventSystemObj.AddComponent<EventSystem>();
         eventSystemObj.AddComponent<StandaloneInputModule>();
+
+        /** UIRoot 扩展物体 */
+        UIRoot uiRootScript = uiRootObj.AddComponent<UIRoot>();
+        // 序列化方式设置脚本私有变量 (修改完记得ApplyModifiedPropertiesWithoutUndo)
+        var uiRootScriptSerializedObj = new SerializedObject(uiRootScript);
+        uiRootScriptSerializedObj.FindProperty("mRootCanvas").objectReferenceValue = canvasObj.GetComponent<Canvas>();
+        uiRootScriptSerializedObj.ApplyModifiedPropertiesWithoutUndo();
+        // 普通方式设置脚本公共变量
+        var bgObj = new GameObject("bgObj");
+        bgObj.transform.SetParent(canvasObj.transform);
+        bgObj.AddComponent<RectTransform>();
+        uiRootScript.bgTrans = bgObj.transform;
+
+        var saveFolderPath = Application.dataPath + "/Resources/Prefabs";
+        if (!Directory.Exists(saveFolderPath)) Directory.CreateDirectory(saveFolderPath);
+        PrefabUtility.SaveAsPrefabAssetAndConnect(uiRootObj, saveFolderPath + "/UIRoot.prefab", InteractionMode.AutomatedAction);
+
     }
 }
