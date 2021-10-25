@@ -102,6 +102,9 @@ public static class CreateComponentCodeEditor
         var scriptFile = scriptsFolder + $"/{name}.Designer.cs";
         var stream = File.CreateText(scriptFile);
 
+        // 这里是生成一个唯一码 避免文件重复
+        stream.WriteLine($"//Generate ID:{Guid.NewGuid().ToString()}");
+
         stream.WriteLine("using UnityEngine;");
         stream.WriteLine();
         stream.WriteLine($"public partial class {name} : MonoBehaviour");

@@ -7,12 +7,13 @@
 *****************************************************/
 
 using UnityEngine;
-using UnityEditor;
+using UnityEditor;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 using System.IO;
 
 public class TestEditor : EditorWindow
 {
-    [MenuItem("编辑器扩展/Test/LoadCube", priority = 0)]
+    // 快捷键 # - Shift, & - Alt, % - Ctrl 如果只按一个按键 可在按键前 +_, 例如 _s,  表示按s触发
+    [MenuItem("编辑器扩展/Test/LoadCube %&#x", priority = 0)]
     static void LoadCube()
     {
         GameObject tmpObj = Resources.Load<GameObject>("Prefabs/Cube");
