@@ -103,7 +103,7 @@ public static class CreateComponentCodeEditor
         var stream = File.CreateText(scriptFile);
 
         // 这里是生成一个唯一码 避免文件重复
-        stream.WriteLine($"//Generate ID:{Guid.NewGuid().ToString()}");
+        stream.WriteLine($"//Generate ID:{Guid.NewGuid()}");
 
         stream.WriteLine("using UnityEngine;");
         stream.WriteLine();
