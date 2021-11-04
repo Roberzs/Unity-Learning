@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Xml.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-public class XMLSerializeTest : MonoBehaviour
+public class SerializeLoadAndSaveTest : MonoBehaviour
 {
     private void Start()
     {
@@ -15,7 +15,10 @@ public class XMLSerializeTest : MonoBehaviour
 
         // Binary
         //BinarySerializeData();
-        BinaryDeSerializeData();
+        //BinaryDeSerializeData();
+
+        // AssetsText
+        AssetsReadData();
     }
 
     private void XMLSerializeData()
@@ -89,6 +92,24 @@ public class XMLSerializeTest : MonoBehaviour
         SerializeDataTemplate data = bf.Deserialize(stream) as SerializeDataTemplate;
 
         Debug.Log("XMLDeSerializeData Done.");
+        Debug.Log("------------------------");
+        Debug.Log("Id:" + data.Id);
+        Debug.Log("Name:" + data.Name);
+        Debug.Log("Score:");
+        string score = "--Mathematics:" + data.Score.Mathematics + " English:" + data.Score.English;
+        Debug.Log(score);
+        Debug.Log("Hobby:");
+        string hobby = "--";
+        foreach (var item in data.Hobby) hobby = hobby + "[" + item + "]";
+        Debug.Log(hobby);
+
+    }
+
+    private void AssetsReadData()
+    {
+        AssetsSerialize data = UnityEditor.AssetDatabase.LoadAssetAtPath<AssetsSerialize>("Assets/Test/02-Serialize/AssetText.asset");
+
+        Debug.Log("AssetsLoadData Done.");
         Debug.Log("------------------------");
         Debug.Log("Id:" + data.Id);
         Debug.Log("Name:" + data.Name);
