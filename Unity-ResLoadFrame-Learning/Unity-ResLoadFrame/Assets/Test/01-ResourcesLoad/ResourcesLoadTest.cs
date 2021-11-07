@@ -8,30 +8,36 @@
 
 using UnityEngine;
 
-public class ResourcesLoadTest : MonoBehaviour
+#if UNITY_EDITOR
+namespace ResLoadFrame.Test
 {
-    private void Start()
+    public class ResourcesLoadTest : MonoBehaviour
     {
-        // AB资源加载 
-        //LoadAssetBundleRes("attack", "attack");
+        private void Start()
+        {
+            // AB资源加载 
+            //LoadAssetBundleRes("attack", "attack");
 
-        // 在做编辑器扩展时可使用此资源加载方式
-        LoadEditorLoadRes();
-    }
+            // 在做编辑器扩展时可使用此资源加载方式
+            LoadEditorLoadRes();
+        }
 
-    /// <summary>
-    /// 加载AB包资源
-    /// </summary>
-    /// <param name="fileName">文件名</param>
-    /// <param name="resName">资源名</param>
-    private void LoadAssetBundleRes(string fileName, string resName)
-    {
-        AssetBundle assetBundle = AssetBundle.LoadFromFile(Application.streamingAssetsPath + "/" + fileName);
-        GameObject obj = GameObject.Instantiate(assetBundle.LoadAsset<GameObject>(resName));
-    }
+        /// <summary>
+        /// 加载AB包资源
+        /// </summary>
+        /// <param name="fileName">文件名</param>
+        /// <param name="resName">资源名</param>
+        private void LoadAssetBundleRes(string fileName, string resName)
+        {
+            AssetBundle assetBundle = AssetBundle.LoadFromFile(Application.streamingAssetsPath + "/" + fileName);
+            GameObject obj = GameObject.Instantiate(assetBundle.LoadAsset<GameObject>(resName));
+        }
 
-    private void LoadEditorLoadRes()
-    {
-        GameObject obj = GameObject.Instantiate(UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Prefabs/Attack.prefab"));
+        private void LoadEditorLoadRes()
+        {
+            GameObject obj = GameObject.Instantiate(UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Prefabs/Attack.prefab"));
+        }
     }
 }
+#endif
+

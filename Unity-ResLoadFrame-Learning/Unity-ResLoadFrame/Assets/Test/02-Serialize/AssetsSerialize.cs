@@ -2,22 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "AssetText", menuName = "CreateAsset",order = 0)]
-public class AssetsSerialize : ScriptableObject
+#if UNITY_EDITOR
+namespace ResLoadFrame.Test
 {
-    public int Id;
+    // [CreateAssetMenu(fileName = "AssetText", menuName = "CreateAsset", order = 0)]
+    public class AssetsSerialize : ScriptableObject
+    {
+        public int Id;
 
-    public string Name;
+        public string Name;
 
-    public AssetsScoreTemplate Score;
+        public AssetsScoreTemplate Score;
 
-    public List<string> Hobby;
+        public List<string> Hobby;
+    }
+
+    [System.Serializable]
+    public class AssetsScoreTemplate
+    {
+        public int Mathematics;
+
+        public int English;
+    }
 }
-
-[System.Serializable]
-public class AssetsScoreTemplate
-{
-    public int Mathematics;
-
-    public int English;
-}
+#endif
