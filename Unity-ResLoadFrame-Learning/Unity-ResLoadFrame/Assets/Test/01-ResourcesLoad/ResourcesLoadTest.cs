@@ -6,6 +6,8 @@
     功能：Nothing
 *****************************************************/
 
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -16,7 +18,7 @@ namespace ResLoadFrame.Test
         private void Start()
         {
             // AB资源加载 
-            //LoadAssetBundleRes("attack", "attack");
+            //LoadAssetBundleRes();
 
             // 在做编辑器扩展时可使用此资源加载方式
             LoadEditorLoadRes();
@@ -27,15 +29,37 @@ namespace ResLoadFrame.Test
         /// </summary>
         /// <param name="fileName">文件名</param>
         /// <param name="resName">资源名</param>
-        private void LoadAssetBundleRes(string fileName, string resName)
+        private void LoadAssetBundleRes()
         {
-            AssetBundle assetBundle = AssetBundle.LoadFromFile(Application.streamingAssetsPath + "/" + fileName);
-            GameObject obj = GameObject.Instantiate(assetBundle.LoadAsset<GameObject>(resName));
+            AssetBundle configAB = AssetBundle.LoadFromFile(Application.streamingAssetsPath + "/assetbundleconfig");
+            TextAsset textAsset = configAB.LoadAsset<TextAsset>("AssetBundleConfig");
+
+            MemoryStream stream = new MemoryStream(textAsset.bytes);
+            BinaryFormatter bf = new BinaryFormatter();
+            AssetBundleConfig data = bf.Deserialize(stream) as AssetBundleConfig;
+
+            string path = "Assets/GameData/Prefabs/Attack.prefab";
+            uint crc = CRC32.GetCRC32(path);
+            ABBase abBase = null;
+            for (int i = 0; i < data.ABList.Count; i++)
+            {
+                if (data.ABList[i].Crc == crc)
+                {
+                    abBase = data.ABList[i];
+                    break;
+                }
+            }
+            foreach (var item in abBase.ABDependance)
+            {
+                AssetBundle.LoadFromFile(Application.streamingAssetsPath + "/" + item);
+            }
+            AssetBundle assetBundle = AssetBundle.LoadFromFile(Application.streamingAssetsPath + "/" + abBase.ABName);
+            GameObject obj = GameObject.Instantiate(assetBundle.LoadAsset<GameObject>(abBase.AssetName));
         }
 
         private void LoadEditorLoadRes()
         {
-            GameObject obj = GameObject.Instantiate(UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Prefabs/Attack.prefab"));
+            GameObject obj = GameObject.Instantiate(UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/GameData/Prefabs/Attack.prefab"));
         }
     }
 }

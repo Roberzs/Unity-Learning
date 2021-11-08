@@ -9,20 +9,22 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
-using System.Threading;
+using System.Xml.Serialization;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class BundleEditor
 {
-    public static string M_ABCONFIG_PATH = "Assets/Editor/ABConfig.asset";
-    public static string M_BUNDLETARGET_PATH = Application.streamingAssetsPath;
+    private static string M_ABCONFIG_PATH = "Assets/Editor/ABConfig.asset";
+    private static string M_BUNDLETARGET_PATH = Application.streamingAssetsPath;
 
     /// <summary>
     /// 存储所有资源类AB包的路径 key:包名 value:路径
     /// </summary>
-    public static Dictionary<string, string> m_AllFileDir = new Dictionary<string, string>();
-    public static Dictionary<string, List<string>> m_AllPrefabDir = new Dictionary<string, List<string>>();
-    public static List<string> m_AllFileAB = new List<string>();
+    private static Dictionary<string, string> m_AllFileDir = new Dictionary<string, string>();
+    private static Dictionary<string, List<string>> m_AllPrefabDir = new Dictionary<string, List<string>>();
+    private static List<string> m_AllFileAB = new List<string>();
+    private static List<string> m_ConfigFile = new List<string>();
 
     [MenuItem("Tools/打包")]
     private static void Build()
@@ -37,6 +39,7 @@ public class BundleEditor
         m_AllFileDir.Clear();
         m_AllPrefabDir.Clear();
         m_AllFileAB.Clear();
+        m_ConfigFile.Clear();
 
         ABConfig abConfig = AssetDatabase.LoadAssetAtPath<ABConfig>(M_ABCONFIG_PATH);
         foreach (ABConfig.FileDirABName fileDir in abConfig.m_AllFileDirAB)
@@ -45,6 +48,7 @@ public class BundleEditor
             {
                 m_AllFileDir.Add(fileDir.ABName, fileDir.Path);
                 m_AllFileAB.Add(fileDir.Path);
+                m_ConfigFile.Add(fileDir.Path);
             }
             else
             {
@@ -57,6 +61,7 @@ public class BundleEditor
         {
             string path = AssetDatabase.GUIDToAssetPath(allStr[i]);
             EditorUtility.DisplayProgressBar("查找Prefab", "Prefab:" + path, i * 1.0f / allStr.Length);
+            m_ConfigFile.Add(path);
             if (!ContainAllFileAB(path))
             {
                 GameObject obj = AssetDatabase.LoadAssetAtPath<GameObject>(path);
@@ -137,7 +142,7 @@ public class BundleEditor
     {
         for(int i = 0; i < m_AllFileAB.Count; i++)
         {
-            if(path == m_AllFileAB[i] || path.Contains(m_AllFileAB[i]))
+            if(path == m_AllFileAB[i] || (path.Contains(m_AllFileAB[i]) && path.Replace(m_AllFileAB[i], "")[0] == '/'))
             {
                 return true;
             }
@@ -155,7 +160,7 @@ public class BundleEditor
             string[] allBundlePath = AssetDatabase.GetAssetPathsFromAssetBundle(allBundles[i]);
             for (int j = 0; j < allBundlePath.Length; j++)
             {
-                if (allBundlePath[j].EndsWith(".cs"))
+                if (allBundlePath[j].EndsWith(".cs") || !ValidPath(allBundlePath[j]))
                     continue;
                 //Debug.Log("AB包:" + allBundles[i] + "下所包含的文件路径:" + allBundlePath[j]);
                 resPathDic.Add(allBundlePath[j], allBundles[i]);
@@ -164,12 +169,68 @@ public class BundleEditor
         // 删除无用AB包
         DeleteUselessAB();
         // 生成配置表
-
+        WriteDataConfig(resPathDic);
         // 打包
         BuildPipeline.BuildAssetBundles(M_BUNDLETARGET_PATH, BuildAssetBundleOptions.ChunkBasedCompression, EditorUserBuildSettings.activeBuildTarget);
     }
 
-    public static void DeleteUselessAB()
+    private static void WriteDataConfig(Dictionary<string,string> resPathDic)
+    {
+        AssetBundleConfig config = new AssetBundleConfig();
+        config.ABList = new List<ABBase>();
+        foreach (string path in resPathDic.Keys)
+        {
+            ABBase abBase = new ABBase();
+            abBase.Path = path;
+            abBase.Crc = CRC32.GetCRC32(path);
+            abBase.ABName = resPathDic[path];
+            abBase.AssetName = path.Remove(0, path.LastIndexOf("/") + 1);
+            abBase.ABDependance = new List<string>();
+            string[] resDependance = AssetDatabase.GetDependencies(path);
+            for (int i = 0; i < resDependance.Length; i++)
+            {
+                string tmpPath = resDependance[i];
+                if (tmpPath == path || tmpPath.EndsWith(".cs"))
+                    continue;
+                string abName = "";
+                if (resPathDic.TryGetValue(tmpPath, out abName))
+                {
+                    if (abName == resPathDic[path])
+                        continue;
+                    if (!abBase.ABDependance.Contains(abName))
+                    {
+                        abBase.ABDependance.Add(abName);
+                    }
+                }
+            }
+            config.ABList.Add(abBase);
+        }
+
+
+        // 写入xml文件(方便查看)
+        string xmlPath = Application.dataPath + "/AssetBundleConfig.xml";
+        if (File.Exists(xmlPath))
+            File.Delete(xmlPath);
+        FileStream xmlFileStream = new FileStream(xmlPath, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+        StreamWriter sw = new StreamWriter(xmlFileStream, System.Text.Encoding.UTF8);
+        XmlSerializer xml = new XmlSerializer(config.GetType());
+        xml.Serialize(sw, config);
+        sw.Close();
+        xmlFileStream.Close();
+        // 写入二进制文件
+        // 二进制文件用于AB包的加载，只需要包名、资源名、依赖即可, 并不需要原始路径. 所以此处清空Path以减小二进制文件大小
+        foreach (ABBase item in config.ABList)
+        {
+            item.Path = "";
+        }
+        string binaryPath = "Assets/GameData/Data/ABData/AssetBundleConfig.bytes";
+        FileStream binaryFileStream = new FileStream(binaryPath, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+        BinaryFormatter bf = new BinaryFormatter();
+        bf.Serialize(binaryFileStream, config);
+        binaryFileStream.Close();
+    }
+
+    private static void DeleteUselessAB()
     {
         string[] allBundleName = AssetDatabase.GetAllAssetBundleNames();
         DirectoryInfo direction = new DirectoryInfo(M_BUNDLETARGET_PATH);
@@ -195,6 +256,18 @@ public class BundleEditor
         {
             if (name == names[i])
                 return true;
+        }
+        return false;
+    }
+
+    private static bool ValidPath(string path)
+    {
+        for (int i = 0; i < m_ConfigFile.Count; i++)
+        {
+            if (path.Contains(m_ConfigFile[i]))
+            {
+                return true;
+            }
         }
         return false;
     }
