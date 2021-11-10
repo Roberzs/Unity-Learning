@@ -309,7 +309,7 @@ GameObject:
   - component: {fileID: 1374722370}
   - component: {fileID: 1374722369}
   m_Layer: 0
-  m_Name: ResourcesLoad
+  m_Name: GameRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -324,7 +324,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1374722368}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 927db983d42f25f45b5032f88f7898f1, type: 3}
+  m_Script: {fileID: 11500000, guid: 626da73bd7c95bb4ea00f8d718da7e97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1374722370
