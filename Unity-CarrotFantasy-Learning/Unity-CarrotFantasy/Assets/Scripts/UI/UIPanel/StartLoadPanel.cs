@@ -15,6 +15,7 @@ public class StartLoadPanel : BasePanel
     protected override void Awake()
     {
         base.Awake();
+        transform.SetSiblingIndex(0);
         Invoke("LoadNextScene", 2);
     }
 

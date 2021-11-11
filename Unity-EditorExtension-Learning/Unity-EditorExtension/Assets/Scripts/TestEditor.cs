@@ -16,7 +16,8 @@ public class TestEditor : EditorWindow
     [MenuItem("编辑器扩展/Test/LoadCube %&#x", priority = 0)]
     static void LoadCube()
     {
-        GameObject tmpObj = Resources.Load<GameObject>("Prefabs/Cube");
+        
+        GameObject tmpObj = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Prefabs/Cube.prefab"); ;
         PrefabUtility.InstantiatePrefab(tmpObj);
         Debug.Log("加载成功");
     }
