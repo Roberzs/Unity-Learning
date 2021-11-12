@@ -15,6 +15,11 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
 {
     // 资源关系依赖配置表, 通过Crc查找
     protected Dictionary<uint, ResourceItem> m_ResourceItemDic = new Dictionary<uint, ResourceItem>();
+    // 已加载的AB包
+    protected Dictionary<uint, AssetBundleItem> m_AssetBundleItemDic = new Dictionary<uint, AssetBundleItem>();
+
+    // AssetBundleItem对象池
+    protected ClassObjectPool<AssetBundleItem> m_AssetBundleItemPool = ObjectManager.Instance.GetOrCreateClassPool<AssetBundleItem>(1024);
 
     /// <summary>
     /// 加载依赖配置表
@@ -25,7 +30,7 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
         string configPath = Application.streamingAssetsPath + "/assetbundleconfig";
         AssetBundle configAB = AssetBundle.LoadFromFile(configPath);
         TextAsset textAsset = configAB.LoadAsset<TextAsset>("assetbundleconfig");
-        if (textAsset = null)
+        if (textAsset == null)
         {
             Debug.LogError("AssetBundleConfig is no exist!");
             return false;
@@ -55,6 +60,116 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
         }
 
         return true;
+    }
+
+    public ResourceItem LoadResourceAssetBundle(uint crc)
+    {
+        ResourceItem item = null;
+        if (m_ResourceItemDic.TryGetValue(crc, out item))
+        {
+            if (item.m_AssetBundle == null)
+            {
+                item.m_AssetBundle = LoadAssetBundle(item.m_ABName);
+            }
+            if (item.m_DependAssetBundle != null)
+            {
+                foreach (var dependName in item.m_DependAssetBundle)
+                {
+                    LoadAssetBundle(dependName);
+                }
+            }
+
+        }
+        else
+        {
+            Debug.LogError($"LoadResourceAssetBundle Error: can not find crc {crc} in AssetBundleConfig");
+        }
+        return item;
+    }
+
+    private AssetBundle LoadAssetBundle(string name)
+    {
+        AssetBundleItem item = null;
+        uint crc = CRC32.GetCRC32(name);
+        if (!m_AssetBundleItemDic.TryGetValue(crc, out item))
+        {
+            AssetBundle assetBundle = null;
+            string fullPath = Application.streamingAssetsPath + "/" + name;
+            if (File.Exists(fullPath))
+            {
+                assetBundle = AssetBundle.LoadFromFile(fullPath);
+            }
+            if (assetBundle == null)
+            {
+                Debug.LogError($"Load AssetBundle Error, path:{fullPath}");
+            }
+            item = m_AssetBundleItemPool.Spawn(true);
+            item.assetBundle = assetBundle;
+            item.RefCount++;
+            m_AssetBundleItemDic.Add(crc, item);
+        }
+        else
+        {
+            item.RefCount++;
+        }
+        
+        return item.assetBundle;
+
+    }
+
+    /// <summary>
+    /// 释放资源
+    /// </summary>
+    /// <param name="item"></param>
+    public void ReleaseAsset(ResourceItem item)
+    {
+        if (item == null)
+        {
+            return;
+        }
+        if (item.m_DependAssetBundle != null && item.m_DependAssetBundle.Count > 0)
+        {
+            for (int i = 0; i < item.m_DependAssetBundle.Count; i++)
+            {
+                UnLoadAssetBundle(item.m_DependAssetBundle[i]);
+            }
+        }
+        UnLoadAssetBundle(item.m_AssetName);
+    }
+
+    private void UnLoadAssetBundle(string name)
+    {
+        uint crc = CRC32.GetCRC32(name);
+        AssetBundleItem item = null;
+        if (m_AssetBundleItemDic.TryGetValue(crc, out item) && item != null)
+        {
+            item.RefCount--;
+            if (item.RefCount <= 0 && item.assetBundle != null)
+            {
+                item.assetBundle.Unload(true);
+                item.Reset();
+                m_AssetBundleItemPool.Recycle(item);
+                m_AssetBundleItemDic.Remove(crc);
+            }
+        }
+    }
+
+
+    public ResourceItem FindResourcesItem(uint crc)
+    {
+        return m_ResourceItemDic[crc];
+    }
+}
+
+public class AssetBundleItem
+{
+    public AssetBundle assetBundle = null;
+    public int RefCount;
+
+    public void Reset()
+    {
+        assetBundle = null;
+        RefCount = 0;
     }
 }
 
