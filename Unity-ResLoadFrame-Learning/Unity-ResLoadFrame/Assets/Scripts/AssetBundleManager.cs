@@ -180,4 +180,24 @@ public class ResourceItem
     public string m_ABName = string.Empty;
     public List<string> m_DependAssetBundle = null;
     public AssetBundle m_AssetBundle = null;
+
+    // 资源对象
+    public Object m_Obj = null;
+    // 资源最后使用的时间
+    public float m_LastUserTime = 0.0f;
+    // 引用计数
+    protected int m_RefCount = 0;
+    public int RefCount
+    {
+        get => m_RefCount;
+        set
+        {
+            m_RefCount = value;
+            if (m_RefCount < 0)
+            {
+                Debug.LogError($"refCount < 0, {((m_Obj != null) ? m_Obj.name : "name is null")}");
+            }
+        }
+    }
+
 }
