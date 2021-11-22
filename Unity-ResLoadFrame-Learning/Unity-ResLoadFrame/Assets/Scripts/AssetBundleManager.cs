@@ -183,6 +183,8 @@ public class ResourceItem
 
     // 资源对象
     public Object m_Obj = null;
+    // 资源唯一标识
+    public int m_Guid = 0;
     // 资源最后使用的时间
     public float m_LastUserTime = 0.0f;
     // 引用计数
