@@ -42,8 +42,16 @@ public class ResourceManager :Singleton<ResourceManager>
 #if UNITY_EDITOR
         if (!m_LoadFormAssetBundle)
         {
-            obj = LoadAssetByEditor<T>(path);
+            
             item = AssetBundleManager.Instance.FindResourcesItem(crc);
+            if (item.m_Obj != null)
+            {
+                obj = item.m_Obj as T;
+            }
+            else
+            {
+                obj = LoadAssetByEditor<T>(path);
+            }
         }
 #endif
         if (obj == null)
@@ -51,12 +59,45 @@ public class ResourceManager :Singleton<ResourceManager>
             item = AssetBundleManager.Instance.LoadResourceAssetBundle(crc);
             if (item != null && item.m_AssetBundle != null)
             {
-                obj = item.m_AssetBundle.LoadAsset<T>(item.m_AssetName);
+                if (item.m_Obj != null)
+                {
+                    obj = item.m_Obj as T;
+                }
+                else
+                {
+                    obj = item.m_AssetBundle.LoadAsset<T>(item.m_AssetName);
+                }
+                
             }
         }
-
+        
         CacheResource(path, ref item, crc, obj);
         return obj;
+    }
+
+    public bool ReleaseResource(Object obj, bool destoryObj = false)
+    {
+        if (obj == null)
+            return false;
+
+        ResourceItem item = null;
+        foreach (ResourceItem res in AssetDic.Values)
+        {
+            if (res.m_Guid == obj.GetInstanceID())
+            {
+                item = res;
+            }
+        }
+        if (item == null)
+        {
+            Debug.LogError($"AssetDic不存在该资源: {obj.name}");
+            return false;
+        }
+
+        item.RefCount--;
+        DestoryResourceItem(item, destoryObj);
+
+        return true;
     }
 
     private void CacheResource(string path, ref ResourceItem item, uint crc, Object obj, int addRefcount = 1)
@@ -108,13 +149,15 @@ public class ResourceManager :Singleton<ResourceManager>
         {
             return;
         }
+
+        if (!AssetDic.Remove(item.m_Crc))
+        {
+            return;
+        }
+
         if (!destroyCache)
         {
             m_NoRefrenceAssetMapList.InsertToHead(item);
-            return;
-        }
-        if (!AssetDic.Remove(item.m_Crc))
-        {
             return;
         }
 
