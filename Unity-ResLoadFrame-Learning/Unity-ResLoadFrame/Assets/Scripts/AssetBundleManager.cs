@@ -134,7 +134,7 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
                 UnLoadAssetBundle(item.m_DependAssetBundle[i]);
             }
         }
-        UnLoadAssetBundle(item.m_AssetName);
+        UnLoadAssetBundle(item.m_ABName);
     }
 
     private void UnLoadAssetBundle(string name)

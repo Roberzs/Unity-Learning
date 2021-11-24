@@ -183,6 +183,7 @@ public class BundleEditor
             ABBase abBase = new ABBase();
             abBase.Path = path;
             abBase.Crc = CRC32.GetCRC32(path);
+            Debug.Log($"将要写入的资源路径:{path} Crc:{CRC32.GetCRC32(path)}");
             abBase.ABName = resPathDic[path];
             abBase.AssetName = path.Remove(0, path.LastIndexOf("/") + 1);
             abBase.ABDependance = new List<string>();

@@ -11,7 +11,7 @@ using UnityEngine;
 
 public class ResourceManager :Singleton<ResourceManager>
 {
-    public bool m_LoadFormAssetBundle = false;
+    public bool m_LoadFormAssetBundle = true;
 
     // 缓存使用的资源列表
     public Dictionary<uint, ResourceItem> AssetDic { get; set; } = new Dictionary<uint, ResourceItem>();
