@@ -39,6 +39,9 @@ public class ChatSys
         SndChat data = pack.msg.sndChat;
         PlayerData pd = cacheSvc.GetPlayerDataBySession(pack.session);
 
+        // 更新任务进度
+        TaskSys.Instance.CalcTaskPrgs(pd, 6);
+
         GameMsg msg = new GameMsg
         {
             cmd = (int)CMD.PshChat,

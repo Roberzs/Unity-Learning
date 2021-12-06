@@ -36,6 +36,7 @@ namespace PEProtocol
 
         public ReqTakeTaskReward reqTakeTaskReward;
         public RspTakeTaskReward rspTakeTaskReward;
+        public PshTaskPrgs pshTaskPrgs;
     }
 
     #region 登录相关
@@ -194,6 +195,11 @@ namespace PEProtocol
         public string[] taskArr;
     }
 
+    [Serializable]
+    public class PshTaskPrgs
+    {
+        public string[] taskArr;
+    }
     #endregion
 
     // 错误码
@@ -243,6 +249,7 @@ namespace PEProtocol
 
         ReqTakeTaskReward = 210,
         RspTakeTaskReward = 211,
+        PshTaskPrgs = 212,
     }
 
     public class SrvCfg

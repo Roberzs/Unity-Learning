@@ -52,10 +52,14 @@ public class BuySys
             switch (data.type)
             {
                 case 0:
-                    pd.power += 50;
+
+                    // 更新任务进度
+                    TaskSys.Instance.CalcTaskPrgs(pd, 4);
                     break;
                 case 1:
                     pd.coin += 1000;
+                    // 更新任务进度
+                    TaskSys.Instance.CalcTaskPrgs(pd, 5);
                     break;
             }
 

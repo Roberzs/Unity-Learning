@@ -127,8 +127,21 @@ public class TaskSys
         if (trd.prgs < trc.count)
         {
             trd.prgs += 1;
-
+            // 更新任务进度
             CalcTaskArr(pd, trd);
+
+            ServerSession session = cacheSvc.GetOnlineServerSession(pd.id);
+            if (session != null)
+            {
+                session.SendMsg(new GameMsg
+                {
+                    cmd = (int)CMD.PshTaskPrgs,
+                    pshTaskPrgs = new PshTaskPrgs
+                    {
+                        taskArr = pd.taskArr
+                    }
+                });
+            }
         }
     }
 }

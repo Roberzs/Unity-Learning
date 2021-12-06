@@ -33,7 +33,7 @@ public class TaskWnd : WindowRoot
         SetWndState(false);
     }
 
-    private void RefreshUI()
+    public void RefreshUI()
     {
         trdList.Clear();
 

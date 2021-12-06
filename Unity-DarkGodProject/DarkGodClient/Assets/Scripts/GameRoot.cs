@@ -109,4 +109,17 @@ public class GameRoot : MonoBehaviour
     {
         playerData.power = data.power;
     }
+
+    public void SetPlayerDataByTask(RspTakeTaskReward data)
+    {
+        playerData.coin = data.coin;
+        playerData.lv = data.lv;
+        playerData.exp = data.exp;
+        playerData.taskArr = data.taskArr;
+    }
+
+    public void SetPlayerDataByTask(PshTaskPrgs data)
+    {
+        playerData.taskArr = data.taskArr;
+    }
 }

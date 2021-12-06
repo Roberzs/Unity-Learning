@@ -74,6 +74,9 @@ public class StrongSys
             pd.ap += nextsd.addhurt;
             pd.addef += nextsd.adddef;
             pd.apdef += nextsd.adddef;
+
+            // 更新任务进度
+            TaskSys.Instance.CalcTaskPrgs(pd, 3);
         }
 
         // 更新数据库

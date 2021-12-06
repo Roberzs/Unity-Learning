@@ -97,6 +97,20 @@ public class CacheSvc
         return dbMgr.UpdatePlayerData(id, playerData);
     }
 
+    public ServerSession GetOnlineServerSession(int ID)
+    {
+        ServerSession session = null;
+        foreach (var item in onLineSessionDic)
+        {
+            if (item.Value.id == ID)
+            {
+                session = item.Key;
+                break;
+            }
+        }
+        return session;
+    }
+
     // 下线处理
     public void AcctOfLine(ServerSession session)
     {
