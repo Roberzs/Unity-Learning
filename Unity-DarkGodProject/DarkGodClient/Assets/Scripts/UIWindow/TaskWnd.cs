@@ -65,6 +65,8 @@ public class TaskWnd : WindowRoot
         }
 
         trdList.AddRange(todoList);
+        // 简单排序
+        trdList.Sort((a, b) => b.prgs - a.prgs);
         trdList.AddRange(doneList);
 
         for (int i = 0; i < trdList.Count; i++)

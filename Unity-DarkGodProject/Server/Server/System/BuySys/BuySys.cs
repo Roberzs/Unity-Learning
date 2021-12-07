@@ -49,17 +49,18 @@ public class BuySys
         else
         {
             pd.diamond -= data.cost;
+            PshTaskPrgs pshTaskPrgs = null;
             switch (data.type)
             {
                 case 0:
 
                     // 更新任务进度
-                    TaskSys.Instance.CalcTaskPrgs(pd, 4);
+                    pshTaskPrgs = TaskSys.Instance.GetTaskPrgs(pd, 4);
                     break;
                 case 1:
                     pd.coin += 1000;
                     // 更新任务进度
-                    TaskSys.Instance.CalcTaskPrgs(pd, 5);
+                    pshTaskPrgs = TaskSys.Instance.GetTaskPrgs(pd, 5);
                     break;
             }
 
@@ -77,6 +78,8 @@ public class BuySys
                     power = pd.power
                 };
                 msg.rspBuy = rspBuy;
+                // 并包
+                msg.pshTaskPrgs = pshTaskPrgs;
             }
         }
         pack.session.SendMsg(msg);

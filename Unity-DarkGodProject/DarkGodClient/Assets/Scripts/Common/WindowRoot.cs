@@ -35,6 +35,11 @@ public class WindowRoot : MonoBehaviour
         
     }
 
+    public bool GetWndState()
+    {
+        return gameObject.activeSelf;
+    }
+
     // 初始化窗体
     protected virtual void InitWnd()
     {

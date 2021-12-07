@@ -144,4 +144,26 @@ public class TaskSys
             }
         }
     }
+
+    public PshTaskPrgs GetTaskPrgs(PlayerData pd, int tid)
+    {
+        TaskRewardData trd = CalcTaskRewardData(pd, tid);
+        TaskRewardCfg trc = cfgSvc.GeTaskRewardData(tid);
+
+        if (trd.prgs < trc.count)
+        {
+            trd.prgs += 1;
+            // 更新任务进度
+            CalcTaskArr(pd, trd);
+
+            return new PshTaskPrgs
+            {
+                taskArr = pd.taskArr
+            };
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

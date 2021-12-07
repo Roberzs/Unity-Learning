@@ -1644,46 +1644,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114116187323058958, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 34099c3f5c4014f4c95dfbd5700e4bfa, type: 3}
-    - target: {fileID: 114135359218758608, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 425261a50f314bc4185c11180e8acf7f, type: 3}
-    - target: {fileID: 114200623753174690, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 68cd23f575335524dba9a8e00ae2c97a, type: 3}
-    - target: {fileID: 114329122797049760, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: f6503c5b2f09d7c409c9dab93ac97de9, type: 3}
-    - target: {fileID: 114762374245209486, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
-      propertyPath: m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114762374245209486, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 4cfa6e896591ccf49b2a46453acb4647, type: 3}
-    - target: {fileID: 114794293719049806, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
-      propertyPath: m_SpriteState.m_PressedSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 11a628ed50156f949a81d84af0cff5e9, type: 3}
-    - target: {fileID: 114794293719049806, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1701277079}
-    - target: {fileID: 114794293719049806, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ClickCloseBtn
-      objectReference: {fileID: 0}
-    - target: {fileID: 114794293719049806, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: TaskWnd, Assembly-CSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 224252952646810762, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -1788,41 +1748,24 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: -17
       objectReference: {fileID: 0}
-    - target: {fileID: 224940436304698884, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 114300168941725576, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
 --- !u!224 &1701277076 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224269253346644840, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
   m_PrefabInstance: {fileID: 1701277075}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &1701277077 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 224940436304698884, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
-  m_PrefabInstance: {fileID: 1701277075}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1701277078 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1305713718813912, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
-  m_PrefabInstance: {fileID: 1701277075}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1701277079
+--- !u!114 &1701277079 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 1701277079, guid: 1468eab5c6a9918488818b4797c093ff, type: 3}
+  m_PrefabInstance: {fileID: 1701277075}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1701277078}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f823d9c74af13940a34ad9bd53b0e62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollTrans: {fileID: 1701277077}
 --- !u!114 &1706452954 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114546347192476786, guid: 429cb36098dcaa943b6360eee91a8f19, type: 3}

@@ -299,6 +299,11 @@ public class MainCitySys : SystemRoot
 
         maincityWnd.RefreshUI();
         buyWnd.SetWndState(false);
+
+        if (msg.pshTaskPrgs != null)
+        {
+            PshTaskPrgs(msg.pshTaskPrgs);
+        }
     }
 
     #endregion
@@ -308,7 +313,7 @@ public class MainCitySys : SystemRoot
     {
         PshPower data = msg.pshPower;
         GameRoot.Instance.SetPlayerDataByPower(data);
-        if (maincityWnd.gameObject.activeSelf)
+        if (maincityWnd.GetWndState())
         {
             maincityWnd.RefreshUI();
         }
@@ -334,7 +339,18 @@ public class MainCitySys : SystemRoot
     public void PshTaskPrgs(GameMsg msg)
     {
         PshTaskPrgs data = msg.pshTaskPrgs;
+
+        PshTaskPrgs(data);
+    }
+
+    public void PshTaskPrgs(PshTaskPrgs data)
+    {
         GameRoot.Instance.SetPlayerDataByTask(data);
+
+        if (taskWnd.GetWndState())
+        {
+            taskWnd.RefreshUI();
+        }
 
 
     }
