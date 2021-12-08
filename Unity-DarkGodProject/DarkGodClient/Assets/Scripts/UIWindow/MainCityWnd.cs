@@ -164,6 +164,12 @@ public class MainCityWnd : WindowRoot
 
     }
 
+    public void ClickFubenBtn()
+    {
+        audioSvc.PlayUIAudio(Constants.UIOpenPage);
+        MainCitySys.Instance.EnterFuben();
+    }
+
     public void ClickHeadBtn()
     {
         audioSvc.PlayUIAudio(Constants.UIOpenPage);

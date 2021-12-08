@@ -355,4 +355,11 @@ public class MainCitySys : SystemRoot
 
     }
     #endregion
+
+    #region 副本
+    public void EnterFuben()
+    {
+        FubenSys.Instance.EnterFuben();
+    }
+    #endregion
 }

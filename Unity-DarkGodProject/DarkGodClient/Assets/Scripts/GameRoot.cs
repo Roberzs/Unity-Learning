@@ -51,6 +51,9 @@ public class GameRoot : MonoBehaviour
         MainCitySys maincitySys = GetComponent<MainCitySys>();
         maincitySys.InitSys();
 
+        FubenSys fubenSys = GetComponent<FubenSys>();
+        fubenSys.InitSys();
+
         // 进入加载登录场景UI
         login.EnterLogin();
     }
@@ -122,4 +125,8 @@ public class GameRoot : MonoBehaviour
     {
         playerData.taskArr = data.taskArr;
     }
+
+    #region 副本系统业务逻辑
+    
+    #endregion
 }
