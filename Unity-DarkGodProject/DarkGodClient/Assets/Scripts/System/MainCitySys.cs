@@ -240,7 +240,25 @@ public class MainCitySys : SystemRoot
             case 0:
                 // 与智者的对话
                 break;
-            default:
+            case 1:
+                // 进入副本界面
+                EnterFuben();
+                break;
+            case 2:
+                // 打开强化界面
+                OpenStrongWnd();
+                break;
+            case 3:
+                // 进入体力购买页面
+                OpenBuyWnd(0);
+                break;
+            case 4:
+                // 进入金币购买页面
+                OpenBuyWnd(0);
+                break;
+            case 5:
+                // 进入世界聊天
+                OpenChatWnd();
                 break;
         }
 
@@ -254,6 +272,7 @@ public class MainCitySys : SystemRoot
 
     public void OpenStrongWnd()
     {
+        StopNavTask();
         strongWnd.SetWndState();
     }
 
@@ -273,6 +292,7 @@ public class MainCitySys : SystemRoot
     #region 聊天
     public void OpenChatWnd()
     {
+        StopNavTask();
         chatWnd.SetWndState();
     }
 
@@ -287,6 +307,7 @@ public class MainCitySys : SystemRoot
 
     public void OpenBuyWnd(int type)
     {
+        StopNavTask();
         buyWnd.SetBuyType(type);
         buyWnd.SetWndState();
     }
@@ -324,6 +345,7 @@ public class MainCitySys : SystemRoot
     #region 任务奖励
     public void OpenTaskRewardWnd()
     {
+        StopNavTask();
         taskWnd.SetWndState();
     }
 
@@ -359,6 +381,7 @@ public class MainCitySys : SystemRoot
     #region 副本
     public void EnterFuben()
     {
+        StopNavTask();
         FubenSys.Instance.EnterFuben();
     }
     #endregion

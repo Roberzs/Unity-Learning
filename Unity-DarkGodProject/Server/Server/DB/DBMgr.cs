@@ -80,6 +80,8 @@ public class DBMgr
                         guideid = reader.GetInt32("guideid"),
                         time = reader.GetInt64("time"),
 
+                        fuben = reader.GetInt32("fuben"),
+
                     };
                     // 解析锻造属性
                     string[] strongStrArr = reader.GetString("strong").Split('#');
@@ -161,6 +163,8 @@ public class DBMgr
                     time = TimerSvc.Instance.GetNowTime(),
 
                     taskArr = new string[6],
+
+                    fuben = 10001,
                     
                 };
                 for (int i = 0; i < playerData.taskArr.Length; i++)
@@ -179,7 +183,7 @@ public class DBMgr
         int id = -1;
         try
         {
-            MySqlCommand cmd = new MySqlCommand("insert into account set acct=@acct,pass =@pass,name=@name,level=@level,exp=@exp,power=@power,coin=@coin,diamond=@diamond,crystal = @crystal,hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical,guideid = @guideid, strong = @strong, time = @time, task = @task", conn);
+            MySqlCommand cmd = new MySqlCommand("insert into account set acct=@acct,pass =@pass,name=@name,level=@level,exp=@exp,power=@power,coin=@coin,diamond=@diamond,crystal = @crystal,hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical,guideid = @guideid, strong = @strong, time = @time, task = @task, fuben = @fuben", conn);
             cmd.Parameters.AddWithValue("acct", acct);
             cmd.Parameters.AddWithValue("pass", pass);
             cmd.Parameters.AddWithValue("name", pd.name);
@@ -201,6 +205,8 @@ public class DBMgr
 
             cmd.Parameters.AddWithValue("guideid", pd.guideid);
             cmd.Parameters.AddWithValue("time", pd.time);
+
+            cmd.Parameters.AddWithValue("fuben", pd.fuben);
 
             string strongInfo = "";
             for (int i = 0; i < pd.strongArr.Length; i++)
@@ -258,7 +264,7 @@ public class DBMgr
     {
         try
         {
-            MySqlCommand cmd = new MySqlCommand("update account set name=@name,level=@level,exp=@exp,power=@power,coin=@coin,diamond=@diamond,crystal=@crystal,hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical,guideid = @guideid,strong = @strong,time = @time, task = @task where id =@id", conn);
+            MySqlCommand cmd = new MySqlCommand("update account set name=@name,level=@level,exp=@exp,power=@power,coin=@coin,diamond=@diamond,crystal=@crystal,hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical,guideid = @guideid,strong = @strong,time = @time, task = @task, fuben = @fuben where id =@id", conn);
             cmd.Parameters.AddWithValue("id", id);
             cmd.Parameters.AddWithValue("name", playerData.name);
             cmd.Parameters.AddWithValue("level", playerData.lv);
@@ -279,6 +285,8 @@ public class DBMgr
 
             cmd.Parameters.AddWithValue("guideid", playerData.guideid);
             cmd.Parameters.AddWithValue("time", playerData.time);
+
+            cmd.Parameters.AddWithValue("fuben", playerData.fuben); 
 
             string strongInfo = "";
             for (int i = 0; i < playerData.strongArr.Length; i++)

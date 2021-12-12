@@ -37,6 +37,9 @@ namespace PEProtocol
         public ReqTakeTaskReward reqTakeTaskReward;
         public RspTakeTaskReward rspTakeTaskReward;
         public PshTaskPrgs pshTaskPrgs;
+
+        public ReqFBFight reqFBFight;
+        public RspFBFight rspFBFight;
     }
 
     #region 登录相关
@@ -94,6 +97,8 @@ namespace PEProtocol
         public long time;
 
         public string[] taskArr;
+
+        public int fuben;
     }
 
     #endregion
@@ -179,6 +184,21 @@ namespace PEProtocol
 
     #endregion
 
+    #region 副本战斗相关
+    [Serializable]
+    public class ReqFBFight
+    {
+        public int fbId;
+    }
+
+    [Serializable]
+    public class RspFBFight
+    {
+        public int fbId;
+        public int power;
+    }
+    #endregion
+
     #region 任务相关
     [Serializable]
     public class ReqTakeTaskReward
@@ -250,6 +270,9 @@ namespace PEProtocol
         ReqTakeTaskReward = 210,
         RspTakeTaskReward = 211,
         PshTaskPrgs = 212,
+
+        ReqFBFight = 301,
+        RspFBFight = 302,
     }
 
     public class SrvCfg
