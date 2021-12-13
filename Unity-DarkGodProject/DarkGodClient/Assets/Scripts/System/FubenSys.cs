@@ -6,6 +6,7 @@
     功能：Nothing
 *****************************************************/
 
+using PEProtocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,4 +34,12 @@ public class FubenSys : SystemRoot
     {
         fubenWnd.SetWndState();
     }
+
+    public void RspFBFight(GameMsg msg)
+    {
+        GameRoot.Instance.SetPlayerDataByFBStart(msg.rspFBFight);
+
+        MainCitySys.Instance.maincityWnd.SetWndState(false);
+    }
+
 }

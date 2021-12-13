@@ -127,6 +127,9 @@ public class GameRoot : MonoBehaviour
     }
 
     #region 副本系统业务逻辑
-    
+    public void SetPlayerDataByFBStart(RspFBFight data)
+    {
+        playerData.power = data.power;
+    }
     #endregion
 }

@@ -128,7 +128,7 @@ public class CfgSvc
             TaskRewardDic.Add(ID, trc);
         }
     }
-    public TaskRewardCfg GeTaskRewardData(int id)
+    public TaskRewardCfg GetTaskRewardData(int id)
     {
         TaskRewardCfg trc = null;
         if (TaskRewardDic.TryGetValue(id, out trc))
@@ -223,6 +223,52 @@ public class CfgSvc
     }
 
     #endregion
+
+    #region 地图配置文件
+    private Dictionary<int, MapCfg> mapDic = new Dictionary<int, MapCfg>();
+
+    public void InitMapCfg(string path)
+    {
+        XmlDocument doc = new XmlDocument();
+        doc.Load(@"E:\Unity\Unity-Learning\Unity-DarkGodProject\DarkGodClient\Assets\Resources\ResCfgs\map.xml");
+
+        XmlNodeList nodeList = doc.SelectSingleNode("root").ChildNodes;
+
+        for (int i = 0; i < nodeList.Count; i++)
+        {
+            XmlElement ele = nodeList[i] as XmlElement;
+
+            if (ele.GetAttributeNode("ID") == null) continue;
+            int ID = Convert.ToInt32(ele.GetAttributeNode("ID").InnerText);
+            MapCfg mc = new MapCfg
+            {
+                ID = ID
+            };
+            foreach (XmlElement e in nodeList[i].ChildNodes)
+            {
+                switch (e.Name)
+                {
+                    case "power":
+                        mc.power = int.Parse(e.InnerText);
+                        break;
+                }
+            }
+
+            mapDic.Add(ID, mc);
+        }
+
+    }
+
+    public MapCfg GetMapData(int id)
+    {
+        MapCfg mc = null;
+        if (mapDic.TryGetValue(id, out mc))
+        {
+            return mc;
+        }
+        return null;
+    }
+    #endregion
 }
 
 public class TaskRewardCfg : BaseData<TaskRewardCfg>
@@ -260,4 +306,9 @@ public class GuideCfg : BaseData<GuideCfg>
 public class BaseData<T>
 {
     public int ID;
+}
+
+public class MapCfg : BaseData<MapCfg>
+{
+    public int power;
 }

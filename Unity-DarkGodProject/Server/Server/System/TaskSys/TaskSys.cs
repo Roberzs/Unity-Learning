@@ -48,7 +48,7 @@ public class TaskSys
 
         PlayerData pd = cacheSvc.GetPlayerDataBySession(pack.session);
 
-        TaskRewardCfg trc = cfgSvc.GeTaskRewardData(data.rid);
+        TaskRewardCfg trc = cfgSvc.GetTaskRewardData(data.rid);
         TaskRewardData trd = CalcTaskRewardData(pd, data.rid);
 
         if (trd.prgs == trc.count && !trd.taked)
@@ -122,7 +122,7 @@ public class TaskSys
     public void CalcTaskPrgs(PlayerData pd, int tid)
     {
         TaskRewardData trd = CalcTaskRewardData(pd, tid);
-        TaskRewardCfg trc = cfgSvc.GeTaskRewardData(tid);
+        TaskRewardCfg trc = cfgSvc.GetTaskRewardData(tid);
 
         if (trd.prgs < trc.count)
         {
@@ -148,7 +148,7 @@ public class TaskSys
     public PshTaskPrgs GetTaskPrgs(PlayerData pd, int tid)
     {
         TaskRewardData trd = CalcTaskRewardData(pd, tid);
-        TaskRewardCfg trc = cfgSvc.GeTaskRewardData(tid);
+        TaskRewardCfg trc = cfgSvc.GetTaskRewardData(tid);
 
         if (trd.prgs < trc.count)
         {

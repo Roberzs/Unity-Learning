@@ -39,6 +39,8 @@ public class ServerRoot
         BuySys.Instance.Init();
         PowerSys.Instance.Init();
         TaskSys.Instance.Init();
+        FubenSys.Instance.Init();
+
     }
 
     public void Update()

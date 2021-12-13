@@ -240,6 +240,7 @@ namespace PEProtocol
         LackCoin,
         LackCrystal,
         LackDiamond,
+        LackPower
     }
 
     public enum CMD
