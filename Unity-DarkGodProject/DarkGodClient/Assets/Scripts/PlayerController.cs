@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        /**
+ 
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
             Dir = Vector2.zero;
             SetBlend(Constants.BlendIdle);
         }
-        */
+
 
         if (currentBlend != targetBlend)
         {
@@ -80,12 +80,11 @@ public class PlayerController : MonoBehaviour
             SetCam();
         }
 
-        
     }
 
     private void SetDir()
     {
-        float angle = Vector2.SignedAngle(Dir, new Vector2(0, 1)) + camTrans.eulerAngles.y;
+        float angle = Vector2.SignedAngle(Dir, new Vector2(0, 1));// + camTrans.eulerAngles.y;
         Vector3 eulerAngles = new Vector3(0, angle, 0);
         transform.localEulerAngles = eulerAngles;
     }

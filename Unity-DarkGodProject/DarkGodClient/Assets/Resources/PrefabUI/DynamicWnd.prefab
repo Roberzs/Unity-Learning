@@ -158,6 +158,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7079075993079203489}
+  - component: {fileID: 940246398}
   m_Layer: 0
   m_Name: DynamicWnd
   m_TagString: Untagged
@@ -185,3 +186,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &940246398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7079075993079203490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68cf3309b816a2e44883a0d3e8da13e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tipsAni: {fileID: 7079075991308684184}
+  txtTips: {fileID: 7079075991308684185}

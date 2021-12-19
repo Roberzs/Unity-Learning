@@ -34,6 +34,7 @@ public class CfgSvc
         InitGuideCfg();
         InitStrongCfg();
         InitTaskRewardCfg();
+        InitMapCfg();
         PECommon.Log("CfgSvc Init Done.");
     }
 
@@ -227,7 +228,7 @@ public class CfgSvc
     #region 地图配置文件
     private Dictionary<int, MapCfg> mapDic = new Dictionary<int, MapCfg>();
 
-    public void InitMapCfg(string path)
+    public void InitMapCfg()
     {
         XmlDocument doc = new XmlDocument();
         doc.Load(@"E:\Unity\Unity-Learning\Unity-DarkGodProject\DarkGodClient\Assets\Resources\ResCfgs\map.xml");

@@ -27,12 +27,12 @@ public class FubenSys : SystemRoot
 
     public void EnterFuben()
     {
-        OpenFubenWnd();
+        SetFubenWndState();
     }
 
-    public void OpenFubenWnd()
+    public void SetFubenWndState(bool isActive = true)
     {
-        fubenWnd.SetWndState();
+        fubenWnd.SetWndState(isActive);
     }
 
     public void RspFBFight(GameMsg msg)
@@ -40,6 +40,8 @@ public class FubenSys : SystemRoot
         GameRoot.Instance.SetPlayerDataByFBStart(msg.rspFBFight);
 
         MainCitySys.Instance.maincityWnd.SetWndState(false);
+        SetFubenWndState(false);
+        BattleSys.Instance.StartBattle(msg.rspFBFight.fbId);
     }
 
 }

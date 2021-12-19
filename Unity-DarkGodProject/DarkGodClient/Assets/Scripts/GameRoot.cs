@@ -54,6 +54,12 @@ public class GameRoot : MonoBehaviour
         FubenSys fubenSys = GetComponent<FubenSys>();
         fubenSys.InitSys();
 
+        BattleSys battleSys = GetComponent<BattleSys>();
+        battleSys.InitSys();
+
+        // 物理设置
+        Physics.autoSyncTransforms = true;
+
         // 进入加载登录场景UI
         login.EnterLogin();
     }

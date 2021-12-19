@@ -133,7 +133,6 @@ GameObject:
   m_Component:
   - component: {fileID: 413027679}
   - component: {fileID: 413027678}
-  - component: {fileID: 413027677}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -141,14 +140,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &413027677
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 413027676}
-  m_Enabled: 1
 --- !u!20 &413027678
 Camera:
   m_ObjectHideFlags: 0
@@ -217,6 +208,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SceneOrge
       objectReference: {fileID: 0}
+    - target: {fileID: 100428, guid: 27c218ae828bcf3489f337ea4eebb747, type: 3}
+      propertyPath: m_TagString
+      value: MapRoot
+      objectReference: {fileID: 0}
     - target: {fileID: 400428, guid: 27c218ae828bcf3489f337ea4eebb747, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -263,3 +258,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27c218ae828bcf3489f337ea4eebb747, type: 3}
+--- !u!1 &1814710186 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100428, guid: 27c218ae828bcf3489f337ea4eebb747, type: 3}
+  m_PrefabInstance: {fileID: 1814710185}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1814710187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1814710186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dd0f718f84bf4c459ac466d4012aef5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
