@@ -10,7 +10,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameRoot : MonoBehaviour
+namespace TimerTest
+{
+    public class GameRoot : MonoBehaviour
 {
     private int mTid;
 
@@ -42,3 +44,5 @@ public class GameRoot : MonoBehaviour
         Debug.Log("FuncB Executing, Tid:" + mTid);
     }
 }
+}
+
