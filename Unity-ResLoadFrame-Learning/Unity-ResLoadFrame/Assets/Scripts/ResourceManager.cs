@@ -6,18 +6,40 @@
     功能：Nothing
 *****************************************************/
 
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ResourceManager :Singleton<ResourceManager>
 {
-    public bool m_LoadFormAssetBundle = true;
+    public bool m_LoadFormAssetBundle = false;
 
     // 缓存使用的资源列表
     public Dictionary<uint, ResourceItem> AssetDic { get; set; } = new Dictionary<uint, ResourceItem>();
 
     // 缓存引用计数为零的资源列表， 达到缓存最大计数的时候清除列表最没用的资源
     protected CMapList<ResourceItem> m_NoRefrenceAssetMapList = new CMapList<ResourceItem>();
+
+    // 异步加载中间类、回调类对象池
+    protected ClassObjectPool<AsyncLoadResParam> m_AsyncLoadResParamPool = new ClassObjectPool<AsyncLoadResParam>(50);
+    protected ClassObjectPool<AsyncCallBack> m_AsyncCallBackPool = new ClassObjectPool<AsyncCallBack>(100);
+
+    // Mono
+    protected MonoBehaviour m_Startmono;
+    // 正在加载中的异步加载队列
+    protected List<AsyncLoadResParam>[] m_LoadingAssetList = new List<AsyncLoadResParam>[(int)LoadResPriority.RES_NUM];
+    // 正在异步加载的Dic
+    protected Dictionary<uint, AsyncLoadResParam> m_LoadingAssetDic = new Dictionary<uint, AsyncLoadResParam>();
+
+    public void Init(MonoBehaviour mono)
+    {
+        for (int i = 0; i < (int)LoadResPriority.RES_NUM; i++)
+        {
+            m_LoadingAssetList[i] = new List<AsyncLoadResParam>();
+        }
+        m_Startmono = mono;
+        m_Startmono.StartCoroutine(AsyncLoadCor());
+    }
 
     /// <summary>
     /// 同步资源加载， 用于加载不需要实例化的资源文件
@@ -195,7 +217,71 @@ public class ResourceManager :Singleton<ResourceManager>
 
         return item;
     }
+
+    /// <summary>
+    /// 异步加载协程
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator AsyncLoadCor()
+    {
+        
+        while (true)
+        {
+            long lastYieldTime = System.DateTime.Now.Ticks;
+            for (int i = 0; i < (int)LoadResPriority.RES_NUM; i++)
+            {
+                List<AsyncLoadResParam> loadingList = m_LoadingAssetList[i];
+                if (loadingList.Count <= 0)
+                    continue;
+                AsyncLoadResParam loadingItem = loadingList[0];
+            }
+
+            yield return null;
+        }
+    }
+
+    /// <summary>
+    /// 异步加载资源
+    /// </summary>
+    public void AsyncLoadResource(string path, OnAsyncObjFinish dealFinish, LoadResPriority priority, object param1 = null, object param2 = null, object param3 = null, uint crc = 0)
+    {
+        if (crc == 0)
+        {
+            crc = CRC32.GetCRC32(path);
+        }
+        ResourceItem item = GetCacheResouceItem(crc);
+        if (item != null)
+        {
+            if (dealFinish != null)
+            {
+                dealFinish(path, item.m_Obj, param1, param2, param3);
+            }
+            return;
+        }
+        // 判断是否正在加载中
+        AsyncLoadResParam param = null;
+        if (!m_LoadingAssetDic.TryGetValue(crc, out param) || param == null)
+        {
+            param = m_AsyncLoadResParamPool.Spawn(true);
+            param.m_Crc = crc;
+            param.m_Path = path;
+            param.m_Priority = priority;
+            m_LoadingAssetDic.Add(crc, param);
+            m_LoadingAssetList[(int)priority].Add(param);
+        }
+
+        // 添加回调列表
+        AsyncCallBack callBack = m_AsyncCallBackPool.Spawn(true);
+        callBack.m_DealFinish = dealFinish;
+        callBack.m_Param1 = param1;
+        callBack.m_Param2 = param2;
+        callBack.m_Param3 = param3;
+        param.m_CallBackList.Add(callBack);
+
+    }
 }
+
+#region 链表相关
 
 /// <summary>
 /// 双向链表结构节点
@@ -446,3 +532,50 @@ public class CMapList<T> where T : class, new()
         }
     }
 }
+
+#endregion
+
+/// <summary>
+/// 资源加载优先级
+/// </summary>
+public enum LoadResPriority
+{
+    RES_HIGHT = 0,  // 最高优先级
+    RES_MIDDLE,
+    RES_SLOW,
+    RES_NUM,
+}
+
+public class AsyncLoadResParam
+{
+    public List<AsyncCallBack> m_CallBackList = new List<AsyncCallBack>();
+    public uint m_Crc;
+    public string m_Path;
+    public LoadResPriority m_Priority = LoadResPriority.RES_SLOW;
+
+    public void Reset()
+    {
+        m_CallBackList.Clear();
+        m_Crc = 0;
+        m_Path = "";
+        m_Priority = LoadResPriority.RES_SLOW;
+    }
+}
+
+public class AsyncCallBack
+{
+    // 事件
+    public OnAsyncObjFinish m_DealFinish = null;
+    // 参数
+    public object m_Param1 = null, m_Param2 = null, m_Param3 = null;
+
+    public void Reset()
+    {
+        m_DealFinish = null;
+        m_Param1 = null;
+        m_Param2 = null;
+        m_Param3 = null;
+    }
+}
+
+public delegate void OnAsyncObjFinish(string path, Object obj, object param1 = null, object param2 = null, object param3 = null);
