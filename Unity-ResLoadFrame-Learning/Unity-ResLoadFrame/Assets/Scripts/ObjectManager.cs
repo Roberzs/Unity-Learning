@@ -12,6 +12,9 @@ using UnityEngine;
 
 public class ObjectManager :Singleton<ObjectManager>
 {
+
+
+    #region 类对象池
     protected Dictionary<Type, object> m_ClassPoolDic = new Dictionary<Type, object>();
 
     /// <summary>
@@ -33,5 +36,6 @@ public class ObjectManager :Singleton<ObjectManager>
         return outObj as ClassObjectPool<T>;
         
     }
+    #endregion
 
 }

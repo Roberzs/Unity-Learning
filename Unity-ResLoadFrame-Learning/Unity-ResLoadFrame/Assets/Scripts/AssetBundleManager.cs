@@ -189,6 +189,9 @@ public class ResourceItem
     public float m_LastUserTime = 0.0f;
     // 引用计数
     protected int m_RefCount = 0;
+    // 是否在场景跳转时清掉该资源
+    public bool m_Clear = true;
+
     public int RefCount
     {
         get => m_RefCount;

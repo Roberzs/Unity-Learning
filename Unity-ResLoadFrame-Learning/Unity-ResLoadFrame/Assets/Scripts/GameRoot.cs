@@ -13,18 +13,32 @@ public class GameRoot : MonoBehaviour
     {
         m_Audio = GetComponent<AudioSource>();
         AssetBundleManager.Instance.LoadAssetBundleConfig();
+        ResourceManager.Instance.Init(this);
     }
 
     private void Start()
     {
-        tmpClip = ResourceManager.Instance.LoadResource<AudioClip>("Assets/GameData/Sounds/senlin.mp3");
+        //ResourceManager.Instance.AsyncLoadResource("Assets/GameData/Sounds/senlin.mp3", (string path, Object obj, object param1, object parma2, object param3) =>
+        //{
+        //    tmpClip = obj as AudioClip;
+        //    m_Audio.clip = tmpClip;
+        //    m_Audio.Play();
+        //}, LoadResPriority.RES_MIDDLE);
 
-        m_Audio.clip = tmpClip;
-        m_Audio.Play();
+        ResourceManager.Instance.PreloadRes("Assets/GameData/Sounds/senlin.mp3");
+        
     }
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            float time = Time.realtimeSinceStartup;
+            tmpClip = ResourceManager.Instance.LoadResource<AudioClip>("Assets/GameData/Sounds/senlin.mp3");
+            Debug.Log($"资源加载时长:{Time.realtimeSinceStartup - time}");
+            m_Audio.clip = tmpClip;
+            m_Audio.Play();
+        }
         if (Input.GetKeyDown(KeyCode.R))
         {
             m_Audio.Stop();
