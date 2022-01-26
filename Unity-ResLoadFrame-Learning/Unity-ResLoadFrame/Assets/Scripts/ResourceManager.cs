@@ -41,7 +41,62 @@ public class ResourceManager :Singleton<ResourceManager>
             m_LoadingAssetList[i] = new List<AsyncLoadResParam>();
         }
         m_Startmono = mono;
-        m_Startmono.StartCoroutine(AsyncLoadCor());
+        m_Startmono.StartCoroutine(AsyncLoadCor()); 
+    }
+
+    #region 同步资源加载
+
+    /// <summary>
+    /// 同步资源加载 加载需要实例化的游戏对象
+    /// </summary>
+    public ResourceObj LoadResource(string path, ResourceObj resObj)
+    {
+        if (resObj == null)
+            return null;
+        uint crc = resObj.m_Crc == 0 ? CRC32.GetCRC32(path) : resObj.m_Crc;
+
+        ResourceItem item = GetCacheResouceItem(crc);
+        if (item != null)
+        {
+            resObj.m_ResItem = item;
+            return resObj;
+        }
+        Object obj = null;
+#if UNITY_EDITOR
+        if (!m_LoadFormAssetBundle)
+        {
+
+            item = AssetBundleManager.Instance.FindResourcesItem(crc);
+            if (item.m_Obj != null)
+            {
+                obj = item.m_Obj as Object;
+            }
+            else
+            {
+                obj = LoadAssetByEditor<Object>(path);
+            }
+        }
+#endif
+        if (obj == null)
+        {
+            item = AssetBundleManager.Instance.LoadResourceAssetBundle(crc);
+            if (item != null && item.m_AssetBundle != null)
+            {
+                if (item.m_Obj != null)
+                {
+                    obj = item.m_Obj as Object;
+                }
+                else
+                {
+                    obj = item.m_AssetBundle.LoadAsset<Object>(item.m_AssetName);
+                }
+
+            }
+        }
+        CacheResource(path, ref item, crc, obj);
+        resObj.m_ResItem = item;
+        item.m_Clear = resObj.m_bClear;
+        return resObj;
     }
 
     /// <summary>
@@ -99,8 +154,30 @@ public class ResourceManager :Singleton<ResourceManager>
         CacheResource(path, ref item, crc, obj);
         return obj;
     }
+    #endregion
 
-    #region 卸载不需要实例化的资源
+    #region 卸载资源
+
+    public bool ReleaseResource(ResourceObj resObj, bool destoryObj = false)
+    {
+        if (resObj == null)
+            return false;
+
+        uint crc = resObj.m_Crc;
+        ResourceItem item = null;
+
+        if (!AssetDic.TryGetValue(crc, out item) || item == null)
+        {
+            Debug.LogError($"AssetDic不存在该资源: {resObj.m_CloneObj.name}");
+            return false;
+        }
+        GameObject.Destroy(resObj.m_CloneObj);
+        item.RefCount--;
+        DestoryResourceItem(item, destoryObj);
+
+        return true;
+    }
+
     public bool ReleaseResource(Object obj, bool destoryObj = false)
     {
         if (obj == null)
@@ -750,3 +827,26 @@ public class AsyncCallBack
 }
 
 public delegate void OnAsyncObjFinish(string path, Object obj, object param1 = null, object param2 = null, object param3 = null);
+
+public class ResourceObj
+{
+    public uint m_Crc = 0;
+    public ResourceItem m_ResItem;
+    public GameObject m_CloneObj = null;
+    // 是否场景跳转时清除该资源
+    public bool m_bClear = true;
+    public int m_Guid = 0;
+    // 是否已放回对象池
+    public bool m_Already = false;
+
+    public void Reset()
+    {
+        m_Crc = 0;
+        m_ResItem = null;
+        m_CloneObj = null;
+        m_bClear = true;
+        m_Guid = 0;
+        m_Already = false;
+
+    }
+}
