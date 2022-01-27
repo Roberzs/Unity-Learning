@@ -10,18 +10,21 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectManager :Singleton<ObjectManager>
+public class ObjectManager : Singleton<ObjectManager>
 {
     // 对象池默认回收节点
     public Transform RecyclePoolTrs;
     // 场景节点
     public Transform SceneTrs;
     protected Dictionary<uint, List<ResourceObj>> m_ObjectPoolDic = new Dictionary<uint, List<ResourceObj>>();
-    protected ClassObjectPool<ResourceObj> m_ResourceObjClassPool = ObjectManager.Instance.GetOrCreateClassPool<ResourceObj>(1000);
+    protected ClassObjectPool<ResourceObj> m_ResourceObjClassPool;
     // 暂存ResourceObj的字典
     protected Dictionary<int, ResourceObj> m_ResourceObjDic = new Dictionary<int, ResourceObj>();
+    // 根据异步加载的Guid存储ResourceObj
+    protected Dictionary<long, ResourceObj> m_AsyncResObjDic = new Dictionary<long, ResourceObj>();
     public void Init(Transform recyclePoolTrs, Transform sceneTrs)
     {
+        m_ResourceObjClassPool = ObjectManager.Instance.GetOrCreateClassPool<ResourceObj>(1000);
         RecyclePoolTrs = recyclePoolTrs;
         SceneTrs = sceneTrs;
     }
@@ -36,6 +39,7 @@ public class ObjectManager :Singleton<ObjectManager>
         List<ResourceObj> st = null;
         if (m_ObjectPoolDic.TryGetValue(crc, out st) && st != null && st.Count > 0)
         {
+            ResourceManager.Instance.IncreaseResourceRef(crc);
             ResourceObj resObj = st[0];
             st.RemoveAt(0);
             GameObject obj = resObj.m_CloneObj;
@@ -45,7 +49,7 @@ public class ObjectManager :Singleton<ObjectManager>
 #if UNITY_EDITOR
                 if (obj.name.EndsWith("(Recycle)"))
                 {
-                    obj.name.Replace("(Recycle)", "");
+                    obj.name = obj.name.Replace("(Recycle)", "");
                 }
 #endif
                 return resObj;
@@ -140,9 +144,139 @@ public class ObjectManager :Singleton<ObjectManager>
                 st.Add(resObj);
                 resObj.m_Already = true;
 
+                ResourceManager.Instance.DecreaseResourceRef(resObj);
+            }
+            else
+            {
+                m_ResourceObjDic.Remove(tmpID);
+                ResourceManager.Instance.ReleaseResource(resObj, destoryCache);
+                resObj.Reset();
+                m_ResourceObjClassPool.Recycle(resObj);
+            }
+        }
+    }
+
+    public long InstantiateObjectAsync(string path, OnAsyncObjFinish dealFinish, LoadResPriority priority, bool setSceneObj = false,
+        object param1 = null, object param2 = null, object param3 = null, bool bClear = true)
+    {
+        if (string.IsNullOrEmpty(path))
+            return -1;
+
+        uint crc = CRC32.GetCRC32(path);
+        ResourceObj resObj = GetObjectFromPool(crc);
+        if (resObj != null)
+        {
+            if (setSceneObj)
+            {
+                resObj.m_CloneObj.transform.SetParent(SceneTrs, false);
             }
 
+            if (dealFinish != null)
+            {
+                dealFinish(path, resObj.m_CloneObj, param1, param2, param3);
+            }
+            return resObj.m_Guid;
         }
+
+        long guid = ResourceManager.Instance.CreateGuid();
+
+        resObj = m_ResourceObjClassPool.Spawn(true);
+        resObj.m_Crc = crc;
+        resObj.m_Guid = guid;
+        resObj.m_SetSceneParent = setSceneObj;
+        resObj.m_bClear = bClear;
+        resObj.m_DealFinish = dealFinish;
+        resObj.m_Param1 = param1;
+        resObj.m_Param2 = param2;
+        resObj.m_Param3 = param3;
+
+        m_AsyncResObjDic.Add(guid, resObj);
+
+        ResourceManager.Instance.AsyncLoadResource(path, resObj, OnLoadResObjFinish, priority);
+
+        return guid;
+    }
+
+    public void ClearCache()
+    {
+        foreach (var key in m_ObjectPoolDic.Keys)
+        {
+            List<ResourceObj> st = m_ObjectPoolDic[key];
+        }
+    }
+
+    public bool IsAsyncLoading(long guid)
+    {
+        return m_AsyncResObjDic[guid] != null;
+    }
+
+    public bool IsObjectManagerCreate(GameObject obj)
+    {
+        return m_ResourceObjDic[obj.GetInstanceID()] != null;
+    }
+
+    public void CancleAsyncLoad(long guid)
+    {
+        ResourceObj resObj = null;
+        if (m_AsyncResObjDic.TryGetValue(guid, out resObj) && ResourceManager.Instance.CancleAsyncLoad(resObj))
+        {
+            m_AsyncResObjDic.Remove(guid);
+            resObj.Reset();
+            m_ResourceObjClassPool.Recycle(resObj);
+        }
+    }
+
+    private void OnLoadResObjFinish(string path, ResourceObj resObj, object param1 = null, object param2 = null, object param3 = null)
+    {
+        if (resObj == null)
+            return;
+        if (resObj.m_ResItem.m_Obj == null)
+        {
+#if UNITY_EDITOR
+            Debug.LogError($"异步资源加载为空:{path}");
+#endif
+            return;
+        }
+
+        resObj.m_CloneObj = GameObject.Instantiate(resObj.m_ResItem.m_Obj) as GameObject;
+
+        // 加载完后移除GUID
+        if (m_AsyncResObjDic.ContainsKey(resObj.m_Guid))
+        {
+            m_AsyncResObjDic.Remove(resObj.m_Guid);
+        }
+
+        if (resObj.m_CloneObj != null && resObj.m_SetSceneParent)
+        {
+            resObj.m_CloneObj.transform.SetParent(SceneTrs, false);
+        }
+        if (resObj.m_DealFinish != null)
+        {
+            int tmpId = resObj.m_CloneObj.GetInstanceID();
+            if (!m_ResourceObjDic.ContainsKey(tmpId))
+            {
+                m_ResourceObjDic.Add(tmpId, resObj);
+            }
+
+            resObj.m_DealFinish(path, resObj.m_CloneObj, param1, param2, param3);
+        }
+    }
+
+    public void PreloadGameObject(string path, int count = 1, bool clear = false)
+    {
+        Debug.Log(count);
+        List<GameObject> tmpGameObjectList = new List<GameObject>();
+        for (int i = 0; i < count; i++)
+        {
+            GameObject tmpGameObject = InstantiateObject(path, false, clear);
+            tmpGameObjectList.Add(tmpGameObject);
+        }
+        for (int i = 0; i< count; i++)
+        {
+            GameObject tmpGameObject = tmpGameObjectList[i];
+            ReleaseResource(tmpGameObject);
+        }
+        tmpGameObjectList.Clear();
     }
 
     #region 类对象池管理

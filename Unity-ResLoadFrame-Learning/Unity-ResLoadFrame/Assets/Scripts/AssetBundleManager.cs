@@ -154,7 +154,6 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
         }
     }
 
-
     public ResourceItem FindResourcesItem(uint crc)
     {
         return m_ResourceItemDic[crc];
