@@ -82,7 +82,7 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
         }
         else
         {
-            Debug.LogError($"LoadResourceAssetBundle Error: can not find crc {crc} in AssetBundleConfig");
+            Debug.LogError($"LoadResourceAssetBundle Error: can not find crc: {crc} in AssetBundleConfig");
         }
         return item;
     }

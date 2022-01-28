@@ -199,10 +199,60 @@ public class ObjectManager : Singleton<ObjectManager>
 
     public void ClearCache()
     {
+        List<uint> tmpList = new List<uint>();
         foreach (var key in m_ObjectPoolDic.Keys)
         {
             List<ResourceObj> st = m_ObjectPoolDic[key];
+            for (int i = st.Count - 1; i >= 0; i--)
+            {
+                ResourceObj resObj = st[i];
+                if (!System.Object.ReferenceEquals(resObj, null) && resObj.m_bClear)
+                {
+                    GameObject.Destroy(resObj.m_CloneObj);
+                    m_ResourceObjDic.Remove(resObj.m_CloneObj.GetInstanceID());
+                    resObj.Reset();
+                    m_ResourceObjClassPool.Recycle(resObj);
+                }
+            }
+            if (st.Count <= 0)
+            {
+                tmpList.Add(key);
+            }
         }
+        for (int i = 0; i < tmpList.Count; i++)
+        {
+            uint tmp = tmpList[i];
+            if (m_ObjectPoolDic.ContainsKey(tmp))
+            {
+                m_ObjectPoolDic.Remove(tmp);
+            }
+        }
+        tmpList.Clear();
+    }
+
+    public void ClearPoolObject(uint crc)
+    {
+        List<uint> tmpList = new List<uint>();
+        List<ResourceObj> st = null;
+        if (!m_ObjectPoolDic.TryGetValue(crc, out st) || st == null)
+            return;
+
+        for (int i = st.Count - 1; i >= 0; i--)
+        {
+            ResourceObj resObj = st[i];
+            if (resObj.m_bClear)
+            {
+                m_ResourceObjDic.Remove(resObj.m_CloneObj.GetInstanceID());
+                GameObject.Destroy(resObj.m_CloneObj);
+                resObj.Reset();
+                m_ResourceObjClassPool.Recycle(resObj);
+            }
+            if (st.Count <= 0)
+            {
+                m_ObjectPoolDic.Remove(crc);
+            }
+        }
+        
     }
 
     public bool IsAsyncLoading(long guid)

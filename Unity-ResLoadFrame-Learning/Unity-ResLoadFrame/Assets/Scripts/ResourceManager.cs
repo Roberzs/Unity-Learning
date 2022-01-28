@@ -597,6 +597,8 @@ public class ResourceManager :Singleton<ResourceManager>
         }
 
         AssetBundleManager.Instance.ReleaseAsset(item);
+        // 清空GameObject资源对应的对象池
+        ObjectManager.Instance.ClearPoolObject(item.m_Crc);
 
         if (item.m_Obj != null)
         {
