@@ -1,0 +1,130 @@
+﻿/****************************************************
+	文件：BuildAppEditor.cs
+	作者：Zhang
+	邮箱：zhy18125@163.com
+	日期：#CreateTime#
+	功能：Nothing
+*****************************************************/
+
+using UnityEngine;
+using UnityEditor;
+using System.Collections.Generic;
+using System;
+using System.IO;
+
+public class BuildAppEditor
+{
+    public static string m_AppName = "ResLoadFrame";
+
+    public static string m_BuildAndroidPath = Application.dataPath + "/../BuildTarget/Android/";
+    public static string m_BuildIOSPath = Application.dataPath + "/../BuildTarget/IOS/";
+    public static string m_BuildWindowsPath = Application.dataPath + "/../BuildTarget/Windows/";
+
+    [MenuItem("Build/标准包")]
+    public static void Build()
+    {
+        BundleEditor.Build();
+
+        string abPath = Application.dataPath + "/../AssetBundle/" + EditorUserBuildSettings.activeBuildTarget.ToString() + "/";
+        CopyDir(abPath, Application.streamingAssetsPath);
+
+        string savePath = "";
+        switch (EditorUserBuildSettings.activeBuildTarget)
+        {
+            case BuildTarget.iOS:
+                savePath = $"{m_BuildIOSPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_{string.Format("_{0:yyyy_MM_dd_HH_mm}", DateTime.Now)}";
+                break;
+            case BuildTarget.Android:
+                savePath = $"{m_BuildAndroidPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_{string.Format("_{0:yyyy_MM_dd_HH_mm}", DateTime.Now)}.apk";
+                break;
+            case BuildTarget.StandaloneWindows:
+                savePath = $"{m_BuildWindowsPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_{string.Format("_{0:yyyy_MM_dd_HH_mm}", DateTime.Now)}/{m_AppName}.exe";
+                break;
+            case BuildTarget.StandaloneWindows64:
+                savePath = $"{m_BuildWindowsPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_{string.Format("_{0:yyyy_MM_dd_HH_mm}", DateTime.Now)}/{m_AppName}.exe";
+                break;
+        }
+
+        BuildPipeline.BuildPlayer(FindEnableEditorScenes(), savePath, EditorUserBuildSettings.activeBuildTarget, BuildOptions.None);
+
+        DeleteDir(Application.streamingAssetsPath);
+    }
+
+
+	private static string[] FindEnableEditorScenes()
+    {
+		List<string> editorScenes = new List<string>();
+        foreach (var scene in EditorBuildSettings.scenes)
+        {
+            if (!scene.enabled)
+                continue;
+
+            editorScenes.Add(scene.path);
+        }
+        return editorScenes.ToArray();
+    }
+
+    private static void CopyDir(string srcPath, string targetPath)
+    {
+        try
+        {
+            if (!Directory.Exists(targetPath))
+            {
+                Directory.CreateDirectory(targetPath);
+            }
+            
+            string srcDir = Path.Combine(targetPath, Path.GetFileName(srcPath));
+            if (Directory.Exists(srcPath))
+            {
+                srcDir += Path.DirectorySeparatorChar;
+            }
+            if (!Directory.Exists(srcDir))
+            {
+                Directory.CreateDirectory(srcDir);
+            }
+
+            string[] files = Directory.GetFileSystemEntries(srcPath);
+            foreach (var file in files)
+            {
+                if (Directory.Exists(file))
+                {
+                    CopyDir(file, srcDir);
+                }
+                else
+                {
+                    File.Copy(file, srcDir + Path.GetFileName(file), true);
+                }
+            }
+        }
+        catch
+        {
+            Debug.LogError("文件复制失败");
+        }
+    }
+
+    public static void DeleteDir(string srcPath)
+    {
+        try
+        {
+            DirectoryInfo dir = new DirectoryInfo(srcPath);
+            FileSystemInfo[] fileInfo = dir.GetFileSystemInfos();
+            foreach (var info in fileInfo)
+            {
+                if (info is DirectoryInfo)
+                {
+                    DirectoryInfo subDir = new DirectoryInfo(info.FullName);
+                    subDir.Delete(true);
+                }
+                else
+                {
+                    File.Delete(info.FullName);
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            Debug.LogError(e);
+        }
+    }
+}
+

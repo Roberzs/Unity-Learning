@@ -1,10 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <AssetBundleConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ABList Path="Assets/GameData/Prefabs/Attack.prefab" Crc="1330568117" ABName="attack" AssetName="Attack.prefab" />
-  <ABList Path="Assets/GameData/Shaders/benghuai.shader" Crc="1145813025" ABName="attack" AssetName="benghuai.shader" />
+  <ABList Path="Assets/GameData/Prefabs/Attack.prefab" Crc="1330568117" ABName="attack" AssetName="Attack.prefab">
+    <ABDependance>shader</ABDependance>
+  </ABList>
+  <ABList Path="Assets/GameData/Prefabs/UGUI/Panel/LoadingPanel.prefab" Crc="2273451330" ABName="loadingpanel" AssetName="LoadingPanel.prefab" />
+  <ABList Path="Assets/GameData/Prefabs/UGUI/Panel/MenuPanel.prefab" Crc="3283179713" ABName="menupanel" AssetName="MenuPanel.prefab" />
+  <ABList Path="Assets/GameData/Shaders/benghuai.shader" Crc="1145813025" ABName="shader" AssetName="benghuai.shader" />
   <ABList Path="Assets/GameData/Shaders/Skybox.shader" Crc="1986987949" ABName="shader" AssetName="Skybox.shader" />
   <ABList Path="Assets/GameData/Shaders/Water.shader" Crc="1357101244" ABName="shader" AssetName="Water.shader" />
   <ABList Path="Assets/GameData/Shaders/Xray.shader" Crc="1043595403" ABName="shader" AssetName="Xray.shader" />
   <ABList Path="Assets/GameData/Sounds/menusound.mp3" Crc="2729331572" ABName="sound" AssetName="menusound.mp3" />
   <ABList Path="Assets/GameData/Sounds/senlin.mp3" Crc="3022988390" ABName="sound" AssetName="senlin.mp3" />
+  <ABList Path="Assets/GameData/Prefabs/Effect/Test.prefab" Crc="2146357034" ABName="test" AssetName="Test.prefab" />
+  <ABList Path="Assets/GameData/Prefabs/UGUI/Test1.prefab" Crc="2093533811" ABName="test1" AssetName="Test1.prefab" />
+  <ABList Path="Assets/GameData/Prefabs/UGUI/Test2.prefab" Crc="2418716461" ABName="test2" AssetName="Test2.prefab" />
 </AssetBundleConfig>

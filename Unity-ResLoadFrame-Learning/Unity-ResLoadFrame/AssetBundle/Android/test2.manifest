@@ -1,0 +1,30 @@
+ManifestFileVersion: 0
+CRC: 3690112136
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 2badd6369bbd91596a9ec13e61bfdde5
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: ad8c30f616dad2dcc8ee90b8a4ceca02
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 447cb75b8b8a6ee438653195f41b3fdb, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/GameData/Prefabs/UGUI/Test2.prefab
+Dependencies: []

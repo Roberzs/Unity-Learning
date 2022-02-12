@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MonsterData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <AllMonster Id="1" Name="gw0" OutLook="Assets/GameData/Prefabs/Attack.prefab" Level="0" Rare="0" Height="0" />
+  <AllMonster Id="2" Name="gw1" OutLook="Assets/GameData/Prefabs/Attack.prefab" Level="0" Rare="1" Height="1" />
+  <AllMonster Id="3" Name="gw2" OutLook="Assets/GameData/Prefabs/Attack.prefab" Level="0" Rare="2" Height="2" />
+  <AllMonster Id="4" Name="gw3" OutLook="Assets/GameData/Prefabs/Attack.prefab" Level="0" Rare="0" Height="3" />
+  <AllMonster Id="5" Name="gw4" OutLook="Assets/GameData/Prefabs/Attack.prefab" Level="0" Rare="1" Height="4" />
+</MonsterData>

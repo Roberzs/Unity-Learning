@@ -1,0 +1,15 @@
+{
+    "name": "ResLoadFrame.Resource",
+    "references": [
+        "GUID:32f3bb0aa6d7cb343aee05f1c28422e8"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
