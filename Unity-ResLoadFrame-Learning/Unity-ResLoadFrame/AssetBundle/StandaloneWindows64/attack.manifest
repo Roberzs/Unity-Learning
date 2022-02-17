@@ -3,7 +3,7 @@ CRC: 1277507548
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e5efd0dd5ddb9ee8be30d8b862e86211
+    Hash: 5470dcae3ec94f289cf0877c53fc9fb6
   TypeTreeHash:
     serializedVersion: 2
     Hash: bf6d95864c892c53196618043adceaf5
@@ -53,4 +53,4 @@ Assets:
 - Assets/GameData/Modle/benghuai/ID_362.bmp
 - Assets/GameData/Prefabs/Attack.prefab
 Dependencies:
-- E:/UnityCode/Unity-Learning/Unity-ResLoadFrame-Learning/Unity-ResLoadFrame/Assets/../AssetBundle/StandaloneWindows64/shader
+- E:/Unity/Unity-Learning/Unity-ResLoadFrame-Learning/Unity-ResLoadFrame/Assets/../AssetBundle/StandaloneWindows64/shader

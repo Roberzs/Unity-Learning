@@ -12,12 +12,13 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Reflection;
 
 public class BundleEditor
 {
-    private static string M_ABCONFIG_PATH = GetScriptInDirectory("BundleEditor") + "/ABConfig.asset";
+    private static string M_ABCONFIG_PATH = GetScriptInDirectory(MethodBase.GetCurrentMethod().DeclaringType.Name) + "/ABConfig.asset";
     private static string M_BUNDLETARGET_PATH = Application.dataPath + "/../AssetBundle/" + EditorUserBuildSettings.activeBuildTarget.ToString();
-    private static string M_ABBYTEPATH = GetScriptInDirectory("BundleEditor").Replace("ResLoadFrame/Editor/Resource", "ResLoadFrame/Temp/AssetBundleConfig.bytes");
+    private static string M_ABBYTEPATH = GetScriptInDirectory(MethodBase.GetCurrentMethod().DeclaringType.Name).Replace("ResLoadFrame/Editor/Resource", "ResLoadFrame/Temp/AssetBundleConfig.bytes");
 
     /// <summary>
     /// 存储所有资源类AB包的路径 key:包名 value:路径
@@ -30,6 +31,7 @@ public class BundleEditor
     [MenuItem("Tools/打包")]
     public static void Build()
     {
+
         /**
         // BuildPipeline.BuildAssetBundles(路径, 压缩格式, 打包平台);
         BuildPipeline.BuildAssetBundles(Application.streamingAssetsPath, BuildAssetBundleOptions.ChunkBasedCompression, EditorUserBuildSettings.activeBuildTarget);
@@ -41,6 +43,10 @@ public class BundleEditor
         m_AllPrefabDir.Clear();
         m_AllFileAB.Clear();
         m_ConfigFile.Clear();
+        // 添加依赖关系配置表
+        m_AllFileDir.Add("assetbundleconfig", M_ABCONFIG_PATH);
+        m_AllFileAB.Add(M_ABCONFIG_PATH);
+        m_ConfigFile.Add(M_ABCONFIG_PATH);
 
         ABConfig abConfig = AssetDatabase.LoadAssetAtPath<ABConfig>(M_ABCONFIG_PATH);
         foreach (ABConfig.FileDirABName fileDir in abConfig.m_AllFileDirAB)
@@ -56,8 +62,6 @@ public class BundleEditor
                 Debug.LogError("AB包名配置重复,请检查. 重复包名:" + fileDir.ABName);
             }
         }
-
-        // 添加配置表文件
 
 
         // 数组获取到的是文件的GUID
@@ -205,7 +209,7 @@ public class BundleEditor
             ABBase abBase = new ABBase();
             abBase.Path = path;
             abBase.Crc = CRC32.GetCRC32(path);
-            Debug.Log($"将要写入的资源路径:{path} Crc:{CRC32.GetCRC32(path)}");
+            //Debug.Log($"将要写入的资源路径:{path} Crc:{CRC32.GetCRC32(path)}");
             abBase.ABName = resPathDic[path];
             abBase.AssetName = path.Remove(0, path.LastIndexOf("/") + 1);
             abBase.ABDependance = new List<string>();

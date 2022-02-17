@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2501381030
+CRC: 2316364194
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 71037d2d1f298475f8237f1d285304c4
+    Hash: 99db7cdb7eb8849449589654706ed85e
   TypeTreeHash:
     serializedVersion: 2
     Hash: 5ad585dd02dfb5016c0dad519eab8f49
@@ -12,5 +12,6 @@ ClassTypes:
 - Class: 49
   Script: {instanceID: 0}
 Assets:
+- Assets/ResLoadFrame/Editor/Resource/ABConfig.asset
 - Assets/ResLoadFrame/Temp/AssetBundleConfig.bytes
 Dependencies: []
