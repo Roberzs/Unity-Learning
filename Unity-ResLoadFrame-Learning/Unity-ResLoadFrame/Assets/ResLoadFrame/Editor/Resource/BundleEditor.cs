@@ -15,9 +15,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class BundleEditor
 {
-    private static string M_ABCONFIG_PATH = "Assets/ResLoadFrame/Editor/ABConfig.asset";
+    private static string M_ABCONFIG_PATH = GetScriptInDirectory("BundleEditor") + "/ABConfig.asset";
     private static string M_BUNDLETARGET_PATH = Application.dataPath + "/../AssetBundle/" + EditorUserBuildSettings.activeBuildTarget.ToString();
-    private static string M_ABBYTEPATH = "Assets/GameData/Data/ABData/AssetBundleConfig.bytes";
+    private static string M_ABBYTEPATH = GetScriptInDirectory("BundleEditor").Replace("ResLoadFrame/Editor/Resource", "ResLoadFrame/Temp/AssetBundleConfig.bytes");
 
     /// <summary>
     /// 存储所有资源类AB包的路径 key:包名 value:路径
@@ -56,6 +56,10 @@ public class BundleEditor
                 Debug.LogError("AB包名配置重复,请检查. 重复包名:" + fileDir.ABName);
             }
         }
+
+        // 添加配置表文件
+
+
         // 数组获取到的是文件的GUID
         string[] allStr = AssetDatabase.FindAssets("t:Prefab", abConfig.m_AllPrefabPath.ToArray());
         for(int i = 0; i < allStr.Length; i++)
@@ -242,7 +246,13 @@ public class BundleEditor
         {
             item.Path = "";
         }
-        
+
+        string abConfigDirectory = M_ABBYTEPATH.Remove(M_ABBYTEPATH.LastIndexOf('/'));
+        if (!Directory.Exists(abConfigDirectory))
+        {
+            Directory.CreateDirectory(abConfigDirectory);
+        }
+
         FileStream binaryFileStream = new FileStream(M_ABBYTEPATH, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
         binaryFileStream.Seek(0, SeekOrigin.Begin);
         binaryFileStream.SetLength(0);
@@ -250,7 +260,8 @@ public class BundleEditor
         bf.Serialize(binaryFileStream, config);
         binaryFileStream.Close();
         AssetDatabase.Refresh();
-        SetABName("AssetBundleConfig", M_ABBYTEPATH);
+        SetABName("assetbundleconfig", M_ABBYTEPATH);
+        Debug.Log("配置表生成成功!");
         
     }
 
@@ -304,5 +315,21 @@ public class BundleEditor
             }
         }
         return false;
+    }
+
+    /// <summary>
+    /// 根据脚本名称获取所在目录
+    /// </summary>
+    /// <param name="scriptName"></param>
+    /// <returns></returns>
+    private static string GetScriptInDirectory(string scriptName)
+    {
+        string[] path = UnityEditor.AssetDatabase.FindAssets(scriptName);
+        if (path.Length > 1)
+        {
+            Debug.LogError("文件名重复, 脚本所在目录获取失败!");
+            return string.Empty;
+        }
+        return AssetDatabase.GUIDToAssetPath(path[0]).Replace((@"/" + scriptName + ".cs"), "");
     }
 }
