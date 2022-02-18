@@ -60,6 +60,8 @@ public class GameSceneManager : Singleton<GameSceneManager>
 			yield return new WaitForEndOfFrame();
         }
 
+		
+
 		LoadingProgress = 0;
 		int targetProgress = 0;
 		AsyncOperation asyncScene = SceneManager.LoadSceneAsync(name);
