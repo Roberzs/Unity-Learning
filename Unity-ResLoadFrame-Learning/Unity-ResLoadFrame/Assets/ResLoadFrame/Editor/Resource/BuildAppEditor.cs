@@ -14,8 +14,8 @@ using System.IO;
 
 public class BuildAppEditor
 {
-    public static string m_AppName = "ResLoadFrame";
-
+    public static string m_AppName = Application.productName.ToString();
+    public static string m_AppVersion = Application.version.ToString();
     public static string m_BuildAndroidPath = Application.dataPath + "/../BuildTarget/Android/";
     public static string m_BuildIOSPath = Application.dataPath + "/../BuildTarget/IOS/";
     public static string m_BuildWindowsPath = Application.dataPath + "/../BuildTarget/Windows/";
@@ -32,16 +32,16 @@ public class BuildAppEditor
         switch (EditorUserBuildSettings.activeBuildTarget)
         {
             case BuildTarget.iOS:
-                savePath = $"{m_BuildIOSPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_{string.Format("_{0:yyyy_MM_dd_HH_mm}", DateTime.Now)}";
+                savePath = $"{m_BuildIOSPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_{DateTime.Now:yyyy_MM_dd_HH_mm}";
                 break;
             case BuildTarget.Android:
-                savePath = $"{m_BuildAndroidPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_{string.Format("_{0:yyyy_MM_dd_HH_mm}", DateTime.Now)}.apk";
+                savePath = $"{m_BuildAndroidPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_{DateTime.Now:yyyy_MM_dd_HH_mm}.apk";
                 break;
             case BuildTarget.StandaloneWindows:
-                savePath = $"{m_BuildWindowsPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_{string.Format("_{0:yyyy_MM_dd_HH_mm}", DateTime.Now)}/{m_AppName}.exe";
+                savePath = $"{m_BuildWindowsPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_{DateTime.Now:yyyy_MM_dd_HH_mm}/{m_AppName}.exe";
                 break;
             case BuildTarget.StandaloneWindows64:
-                savePath = $"{m_BuildWindowsPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_{string.Format("_{0:yyyy_MM_dd_HH_mm}", DateTime.Now)}/{m_AppName}.exe";
+                savePath = $"{m_BuildWindowsPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_{DateTime.Now:yyyy_MM_dd_HH_mm}/{m_AppName}.exe";
                 break;
         }
 

@@ -15,7 +15,7 @@ public class GameRoot : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-
+        
         m_Audio = GetComponent<AudioSource>();
         AssetBundleManager.Instance.LoadAssetBundleConfig();
         ResourceManager.Instance.Init(this);
