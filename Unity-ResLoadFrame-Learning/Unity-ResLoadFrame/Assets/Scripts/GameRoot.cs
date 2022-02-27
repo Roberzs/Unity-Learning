@@ -30,15 +30,15 @@ public class GameRoot : MonoBehaviour
         //    tmpClip = obj as AudioClip;
         //    m_Audio.clip = tmpClip;
         //    m_Audio.Play();
-        //}, LoadResPriority.RES_MIDDLE);
+        //}, LoadResPriority.RES_MIDDLE);56
 
         //ResourceManager.Instance.PreloadRes("Assets/GameData/Sounds/senlin.mp3");
 
-        //tmpObj = ObjectManager.Instance.InstantiateObject("Assets/GameData/Prefabs/Attack.prefab", true);
-        //ObjectManager.Instance.InstantiateObjectAsync("Assets/GameData/Prefabs/Attack.prefab", (string path, Object obj, object param1, object param2, object param3) =>
-        //{
-        //    tmpObj = obj as GameObject;
-        //}, LoadResPriority.RES_HIGHT, true);
+        tmpObj = ObjectManager.Instance.InstantiateObject("Assets/GameData/Prefabs/Attack.prefab", true);
+        ObjectManager.Instance.InstantiateObjectAsync("Assets/GameData/Prefabs/Attack.prefab", (string path, Object obj, object param1, object param2, object param3) =>
+        {
+            tmpObj = obj as GameObject;
+        }, LoadResPriority.RES_HIGHT, true);
 
         float timer = Time.realtimeSinceStartup;
         //ObjectManager.Instance.PreloadGameObject("Assets/GameData/Prefabs/Attack.prefab", 10);
