@@ -15,13 +15,59 @@ public class BuffData : ExcelBase
 {
     public override void Construction()
     {
-        base.Construction();
+        AllBuffList = new List<BuffBase>();
+        for (int i = 0; i < 10; i++)
+        {
+            BuffBase tmpBuff = new BuffBase()
+            {
+                Id = i,
+                Name = "Name" + i,
+                OutLook = "Assets/GameData/Prefab" + i,
+                Time = Random.Range(0.5f, 4.5f),
+                BuffType = (BuffEnum)Random.Range(0, 4)
+            };
+            AllBuffList.Add(tmpBuff);
+        }
+
+        MonsterBuffList = new List<BuffBase>();
+        for (int i = 0; i < 5; i++)
+        {
+            BuffBase tmpBuff = new BuffBase()
+            {
+                Id = i,
+                Name = "Name" + i,
+                OutLook = "Assets/GameData/Prefab" + i,
+                Time = Random.Range(0.5f, 4.5f),
+                BuffType = (BuffEnum)Random.Range(0, 4)
+            };
+            MonsterBuffList.Add(tmpBuff);
+        }
+
     }
 
     public override void Init()
     {
-        base.Init();
+        m_AllBuffDic.Clear();
+        foreach (var buff in AllBuffList)
+        {
+            if (m_AllBuffDic.ContainsKey(buff.Id))
+            {
+                Debug.LogError("重复ID!");
+            }
+            else
+            {
+                m_AllBuffDic.Add(buff.Id, buff);
+            }
+        }
     }
+
+    public BuffBase FindBuffById(int id)
+    {
+        return m_AllBuffDic[id];
+    }
+
+    [XmlIgnore]
+    public Dictionary<int, BuffBase> m_AllBuffDic = new Dictionary<int, BuffBase>();
 
     [XmlElement("AllBuffList")]
     public List<BuffBase> AllBuffList { get; set; }

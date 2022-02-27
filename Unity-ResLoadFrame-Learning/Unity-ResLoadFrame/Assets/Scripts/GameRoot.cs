@@ -84,7 +84,8 @@ public class GameRoot : MonoBehaviour
 
     void LoadConfiger()
     {
-
+        ConfigManager.Instance.LoadData<MonsterData>("Assets/GameData/Data/Binary/MonsterData.bytes");
+        ConfigManager.Instance.LoadData<BuffData>("Assets/GameData/Data/Binary/BuffData.bytes");
     }
 
     private void Update()

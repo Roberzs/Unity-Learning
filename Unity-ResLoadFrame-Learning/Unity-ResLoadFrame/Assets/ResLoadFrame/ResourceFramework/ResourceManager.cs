@@ -12,7 +12,7 @@ using UnityEngine;
 
 public class ResourceManager :Singleton<ResourceManager>
 {
-    public bool m_LoadFormAssetBundle = true;
+    public bool m_LoadFormAssetBundle = false;
 
     protected long m_Guid = 0;
 
@@ -79,14 +79,25 @@ public class ResourceManager :Singleton<ResourceManager>
 #if UNITY_EDITOR
         if (!m_LoadFormAssetBundle)
         {
-
             item = AssetBundleManager.Instance.FindResourcesItem(crc);
-            if (item.m_Obj != null)
+            if (item != null && item.m_AssetBundle != null)
             {
-                obj = item.m_Obj as Object;
+                if (item.m_Obj != null)
+                {
+                    obj = item.m_Obj as Object;
+                }
+                else
+                {
+                    obj = item.m_AssetBundle.LoadAsset<Object>(item.m_AssetName);
+                }
             }
             else
             {
+                if (item == null)
+                {
+                    item = new ResourceItem();
+                    item.m_Crc = crc;
+                }
                 obj = LoadAssetByEditor<Object>(path);
             }
         }
@@ -136,17 +147,30 @@ public class ResourceManager :Singleton<ResourceManager>
 #if UNITY_EDITOR
         if (!m_LoadFormAssetBundle)
         {
-            
             item = AssetBundleManager.Instance.FindResourcesItem(crc);
-            if (item.m_Obj != null)
+            if (item != null && item.m_AssetBundle != null)
             {
-                obj = item.m_Obj as T;
+                if (item.m_Obj != null)
+                {
+                    obj = item.m_Obj as T;
+                }
+                else
+                {
+                    obj = item.m_AssetBundle.LoadAsset<T>(item.m_AssetName);
+                }
             }
             else
             {
+                if (item == null)
+                {
+                    item = new ResourceItem();
+                    item.m_Crc = crc;
+                }
                 obj = LoadAssetByEditor<T>(path);
             }
         }
+        
+        
 #endif
         if (obj == null)
         {

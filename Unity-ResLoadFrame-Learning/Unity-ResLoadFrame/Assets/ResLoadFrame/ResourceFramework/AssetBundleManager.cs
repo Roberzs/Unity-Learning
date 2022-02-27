@@ -36,6 +36,12 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
     /// <returns>是否加载成功</returns>
     public bool LoadAssetBundleConfig()
     {
+#if UNITY_EDITOR
+        if (!ResourceManager.Instance.m_LoadFormAssetBundle)
+        {
+            return false;
+        }
+#endif
         string configPath = m_ABRootPath + "/assetbundleconfig";
         AssetBundle configAB = AssetBundle.LoadFromFile(configPath);
         TextAsset textAsset = configAB.LoadAsset<TextAsset>("assetbundleconfig");
@@ -165,7 +171,12 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
 
     public ResourceItem FindResourcesItem(uint crc)
     {
-        return m_ResourceItemDic[crc];
+        ResourceItem res = null;
+        if (m_ResourceItemDic.TryGetValue(crc, out res))
+        {
+            return res;
+        }
+        return null;
     }
 }
 

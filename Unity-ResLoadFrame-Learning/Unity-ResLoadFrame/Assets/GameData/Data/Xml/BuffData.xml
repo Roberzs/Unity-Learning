@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BuffData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <AllBuffList Id="0" Name="Name0" OutLook="Assets/GameData/Prefab0" Time="2.92110038" BuffType="Ranshao" />
+  <AllBuffList Id="1" Name="Name1" OutLook="Assets/GameData/Prefab1" Time="0.818833351" BuffType="Bingdong" />
+  <AllBuffList Id="2" Name="Name2" OutLook="Assets/GameData/Prefab2" Time="2.77960467" BuffType="Ranshao" />
+  <AllBuffList Id="3" Name="Name3" OutLook="Assets/GameData/Prefab3" Time="3.690301" BuffType="Du" />
+  <AllBuffList Id="4" Name="Name4" OutLook="Assets/GameData/Prefab4" Time="3.2202332" BuffType="Ranshao" />
+  <AllBuffList Id="5" Name="Name5" OutLook="Assets/GameData/Prefab5" Time="1.04420424" BuffType="Du" />
+  <AllBuffList Id="6" Name="Name6" OutLook="Assets/GameData/Prefab6" Time="1.49964142" BuffType="Bingdong" />
+  <AllBuffList Id="7" Name="Name7" OutLook="Assets/GameData/Prefab7" Time="3.5856905" BuffType="Bingdong" />
+  <AllBuffList Id="8" Name="Name8" OutLook="Assets/GameData/Prefab8" Time="4.01084328" BuffType="Bingdong" />
+  <AllBuffList Id="9" Name="Name9" OutLook="Assets/GameData/Prefab9" Time="2.36445451" BuffType="Du" />
+  <MonsterBuffList Id="0" Name="Name0" OutLook="Assets/GameData/Prefab0" Time="0.729097843" BuffType="Bingdong" />
+  <MonsterBuffList Id="1" Name="Name1" OutLook="Assets/GameData/Prefab1" Time="2.93698716" BuffType="Du" />
+  <MonsterBuffList Id="2" Name="Name2" OutLook="Assets/GameData/Prefab2" Time="3.01298952" BuffType="Bingdong" />
+  <MonsterBuffList Id="3" Name="Name3" OutLook="Assets/GameData/Prefab3" Time="3.24906015" BuffType="Ranshao" />
+  <MonsterBuffList Id="4" Name="Name4" OutLook="Assets/GameData/Prefab4" Time="2.87908673" BuffType="Du" />
+</BuffData>

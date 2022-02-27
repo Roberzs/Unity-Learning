@@ -456,7 +456,7 @@ public class DataEditor
             {
 
                 string xmlPath = XMLPath + name + ".xml";
-                string binaryPath = BinaryPath + name + ".binary";
+                string binaryPath = BinaryPath + name + ".bytes";
                 var obj = BinarySerializeOption.XmlDeserializeEditor(xmlPath, type);
                 BinarySerializeOption.BinarySerilize(binaryPath, obj);
                 Debug.Log(name + "Xml转二进制成功, 路径:" + binaryPath);
