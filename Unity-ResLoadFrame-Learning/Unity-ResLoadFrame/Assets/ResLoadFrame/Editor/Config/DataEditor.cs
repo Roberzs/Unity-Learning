@@ -23,7 +23,7 @@ public class DataEditor
     private static string ScriptPath = "Assets/Script/Data/";
 
     [MenuItem("Assets/Class转Xml")]
-    public static void AssetClassToXml()
+    public static void AssetsClassToXml()
     {
         UnityEngine.Object[] objs = Selection.objects;
         for (int i = 0; i < objs.Length; i++)
@@ -37,7 +37,7 @@ public class DataEditor
     }
 
     [MenuItem("Assets/Xml转Binary")]
-    public static void AssetXmlToBinary()
+    public static void AssetsXmlToBinary()
     {
         UnityEngine.Object[] objs = Selection.objects;
         for (int i = 0; i < objs.Length; i++)
@@ -49,6 +49,20 @@ public class DataEditor
         EditorUtility.ClearProgressBar();
 
     }
+
+    [MenuItem("Assets/Xml转Excel")]
+    public static void AssetsXmlToExcel()
+    {
+        UnityEngine.Object[] objs = Selection.objects;
+        for (int i = 0; i < objs.Length; i++)
+        {
+            EditorUtility.DisplayProgressBar("文件夹下Xml转Excel", $"正在扫描{objs[i].name}...", 1.0f / objs.Length + i);
+            XmlToExcel(objs[i].name);
+        }
+        AssetDatabase.Refresh();
+        EditorUtility.ClearProgressBar();
+    }
+
 
     [MenuItem("Tools/Xml/全部Xml转Binary")]
     public static void AllXmlToBinary()
@@ -69,11 +83,8 @@ public class DataEditor
         EditorUtility.ClearProgressBar();
     }
 
-
-    [MenuItem("Tools/Xml/Xml转Excel")]
-    public static void XmlToExcel()
+    private static void XmlToExcel(string fileName)
     {
-        string fileName = "MonsterData";
         string regPath = Application.dataPath + $"/../Data/Reg/{fileName}.xml";
         if (!File.Exists(regPath))
         {
@@ -130,6 +141,7 @@ public class DataEditor
                     {
                         ExcelRange range = worksheet.Cells[1, i + 1];
                         range.Value = sheetData.AllName[i];
+                        range.AutoFitColumns();
                     }
                     for (int i = 0; i < sheetData.AllData.Count; i++)
                     {
@@ -138,6 +150,7 @@ public class DataEditor
                         {
                             ExcelRange range = worksheet.Cells[i + 2, j + 1];
                             range.Value = rowData.RowDataDic[sheetData.AllName[j]];
+                            range.AutoFitColumns();
                         }
                     }
                 }
