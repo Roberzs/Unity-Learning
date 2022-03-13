@@ -22,7 +22,7 @@ public class DataEditor
     private static string BinaryPath = "Assets/GameData/Data/Binary/";
     private static string ScriptPath = "Assets/Script/Data/";
 
-    [MenuItem("Assets/Class转Xml")]
+    [MenuItem("Assets/ResLoadFrame/Config/Class转Xml")]
     public static void AssetsClassToXml()
     {
         UnityEngine.Object[] objs = Selection.objects;
@@ -36,7 +36,7 @@ public class DataEditor
 
     }
 
-    [MenuItem("Assets/Xml转Binary")]
+    [MenuItem("Assets/ResLoadFrame/Config/Xml转Binary")]
     public static void AssetsXmlToBinary()
     {
         UnityEngine.Object[] objs = Selection.objects;
@@ -50,7 +50,7 @@ public class DataEditor
 
     }
 
-    [MenuItem("Assets/Xml转Excel")]
+    [MenuItem("Assets/ResLoadFrame/Config/Xml转Excel")]
     public static void AssetsXmlToExcel()
     {
         UnityEngine.Object[] objs = Selection.objects;
@@ -64,7 +64,7 @@ public class DataEditor
     }
 
 
-    [MenuItem("Tools/Xml/全部Xml转Binary")]
+    [MenuItem("ResLoadFrame/Config/全部Xml转Binary")]
     public static void AllXmlToBinary()
     {
         string path = Application.dataPath.Replace("Assets", "") + XMLPath;
@@ -275,6 +275,11 @@ public class DataEditor
                     SheetClass tmpSheetClass = allSheetClassDic[varList[j].ListSheetName];
                     ReadData(item, tmpSheetClass, allSheetClassDic, sheetDataDic);
                 }
+                else if (varList[j].Type == "listString" || varList[j].Type == "listInt" || varList[j].Type == "listFloat" || varList[j].Type == "listBool")
+                {
+                    string value = GetSplitListBase(item, varList[j]);
+                    rowData.RowDataDic.Add(varList[j].Col, value);
+                }
                 else
                 {
                     object value = GetMemberValue(item, varList[j].Name);
@@ -482,6 +487,35 @@ public class DataEditor
             Debug.LogError(name + "Xml转二进制失败");
         }
 
+    }
+
+    /// <summary>
+    /// 获取拼接基础List内所有值
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="varClass"></param>
+    /// <param name="split"></param>
+    /// <returns></returns>
+    private static string GetSplitListBase(object data, VarClass varClass)
+    {
+        if (string.IsNullOrEmpty(varClass.SplitStr))
+        {
+            Debug.LogError("基础List分隔符为空!");
+            return "";
+        }
+        string str = "";
+        object dataList = GetMemberValue(data, varClass.Name);
+        int listCount = System.Convert.ToInt32(dataList.GetType().InvokeMember("get_Count", BindingFlags.Default | BindingFlags.InvokeMethod, null, dataList, new object[] { }));
+        for (int i = 0; i < listCount; i++)
+        {
+            object item = dataList.GetType().InvokeMember("get_Item", BindingFlags.Default | BindingFlags.InvokeMethod, null, dataList, new object[] { i });
+            str += item.ToString();
+            if (i != listCount - 1)
+            {
+                str += varClass.SplitStr;
+            }
+        }
+        return str;
     }
 
     private static void ClassToXml(string name)

@@ -24,7 +24,12 @@ public class BuffData : ExcelBase
                 Name = "Name" + i,
                 OutLook = "Assets/GameData/Prefab" + i,
                 Time = Random.Range(0.5f, 4.5f),
-                BuffType = (BuffEnum)Random.Range(0, 4)
+                BuffType = (BuffEnum)Random.Range(0, 4),
+                AllString = new List<string>()
+                {
+                    "TestA" + i,
+                    "TestB" + i
+                }
             };
             AllBuffList.Add(tmpBuff);
         }
@@ -38,7 +43,12 @@ public class BuffData : ExcelBase
                 Name = "Name" + i,
                 OutLook = "Assets/GameData/Prefab" + i,
                 Time = Random.Range(0.5f, 4.5f),
-                BuffType = (BuffEnum)Random.Range(0, 4)
+                BuffType = (BuffEnum)Random.Range(0, 4),
+                AllString = new List<string>()
+                {
+                    "TestA" + i,
+                    "TestB" + i
+                }
             };
             MonsterBuffList.Add(tmpBuff);
         }
@@ -71,6 +81,7 @@ public class BuffData : ExcelBase
 
     [XmlElement("AllBuffList")]
     public List<BuffBase> AllBuffList { get; set; }
+
     [XmlElement("MonsterBuffList")]
     public List<BuffBase> MonsterBuffList { get; set; }
 }
@@ -88,7 +99,20 @@ public class BuffBase
     public float Time { get; set; }
     [XmlAttribute("BuffType")]
     public BuffEnum BuffType { get; set; }
+    [XmlAttribute("AllString")]
+    public List<string> AllString { get; set; }
+    [XmlElement("AllBuffTest")]
+    public List<BuffTest> AllBuffTest { get; set; }
 
+}
+
+[System.Serializable]
+public class BuffTest
+{
+    [XmlAttribute("Id")]
+    public int Id { get; set; }
+    [XmlAttribute("Name")]
+    public string Name { get; set; }
 }
 
 public enum BuffEnum

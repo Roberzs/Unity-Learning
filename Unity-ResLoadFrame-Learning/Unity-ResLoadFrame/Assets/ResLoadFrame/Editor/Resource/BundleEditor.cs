@@ -28,7 +28,7 @@ public class BundleEditor
     private static List<string> m_AllFileAB = new List<string>();
     private static List<string> m_ConfigFile = new List<string>();
 
-    [MenuItem("Tools/打包")]
+    [MenuItem("ResLoadFrame/打包AssetBundle")]
     public static void Build()
     {
 
@@ -335,5 +335,12 @@ public class BundleEditor
             return string.Empty;
         }
         return AssetDatabase.GUIDToAssetPath(path[0]).Replace((@"/" + scriptName + ".cs"), "");
+    }
+
+    [MenuItem("ResLoadFrame/打开AssetBundle配置文件")]
+    private static void OpenABConfigAsset()
+    {
+
+        Selection.activeObject = AssetDatabase.LoadAssetAtPath<ABConfig>(M_ABCONFIG_PATH);
     }
 }

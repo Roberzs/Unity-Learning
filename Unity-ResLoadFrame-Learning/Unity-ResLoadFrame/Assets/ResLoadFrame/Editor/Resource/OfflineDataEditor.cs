@@ -11,7 +11,7 @@ using UnityEditor;
 
 public class OfflineDataEditor
 {
-	[MenuItem("Assets/生成离线数据")]
+	[MenuItem("Assets/ResLoadFrame/离线数据/生成Prefab 离线数据")]
 	public static void AssetCreateOfflineData()
     {
 		GameObject[] objects = Selection.gameObjects;
@@ -37,7 +37,7 @@ public class OfflineDataEditor
 		AssetDatabase.Refresh();
     }
 
-    [MenuItem("Assets/生成UI离线数据")]
+    [MenuItem("Assets/ResLoadFrame/离线数据/生成UI Prefab 离线数据")]
     public static void AssetCreateUIOfflineData()
     {
         GameObject[] objects = Selection.gameObjects;
@@ -66,7 +66,7 @@ public class OfflineDataEditor
     }
 
 
-    [MenuItem("离线数据/生成所有UI Prefab 离线数据")]
+    [MenuItem("ResLoadFrame/离线数据/生成所有UI Prefab 离线数据")]
     public static void AllCreateUIOfflineData()
     {
         string[] allStr = AssetDatabase.FindAssets("t:prefab", new string[] { "Assets/GameData/Prefabs/UGUI" });
@@ -98,7 +98,7 @@ public class OfflineDataEditor
         AssetDatabase.Refresh();
     }
 
-    [MenuItem("Assets/生成Effect离线数据")]
+    [MenuItem("Assets/ResLoadFrame/离线数据/生成Effect Prefab 离线数据")]
     public static void AssetCreateEffectOfflineData()
     {
         GameObject[] objects = Selection.gameObjects;
@@ -110,7 +110,7 @@ public class OfflineDataEditor
         EditorUtility.ClearProgressBar();
     }
 
-    [MenuItem("离线数据/生成所有Effect Prefab 离线数据")]
+    [MenuItem("ResLoadFrame/离线数据/生成所有Effect Prefab 离线数据")]
     public static void AllCreateEffectOfflineData()
     {
         string[] allStr = AssetDatabase.FindAssets("t:prefab", new string[] { "Assets/GameData/Prefabs/Effect" });

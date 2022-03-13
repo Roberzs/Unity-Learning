@@ -7,6 +7,7 @@
 			<variable name = "OutLook" col = "路径" type = "string"/>
 			<variable name = "Time" col = "冷却时间" type = "float"/>
 			<variable name = "BuffType" col = "Buff类型" type = "enum"/>
+			<variable name = "AllString" col = "测试List" type = "listString" split = ";"/>
 		</list>
 	</variable>
 	<variable name = "MonsterBuffList" type = "list">
@@ -16,6 +17,7 @@
 			<variable name = "OutLook" col = "路径" type = "string"/>
 			<variable name = "Time" col = "冷却时间" type = "float"/>
 			<variable name = "BuffType" col = "Buff类型" type = "enum"/>
+			<variable name = "AllString" col = "测试List" type = "listString" split = ";"/>
 		</list>
 	</variable>
 </data>
