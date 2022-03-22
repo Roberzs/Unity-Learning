@@ -337,7 +337,7 @@ public class BundleEditor
         return AssetDatabase.GUIDToAssetPath(path[0]).Replace((@"/" + scriptName + ".cs"), "");
     }
 
-    [MenuItem("ResLoadFrame/打开AssetBundle配置文件")]
+    [MenuItem("ResLoadFrame/打开AssetBundle配置文件", priority = 10)]
     private static void OpenABConfigAsset()
     {
 

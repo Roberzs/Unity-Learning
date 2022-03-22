@@ -1,0 +1,16 @@
+{
+    "name": "ResLoadFrame.Config",
+    "references": [
+        "GUID:32f3bb0aa6d7cb343aee05f1c28422e8",
+        "GUID:8bc51caa39f9546469da00d84a2fb008"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
