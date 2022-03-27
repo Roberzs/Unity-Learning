@@ -1,18 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BuffData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <AllBuffList Id="0" Name="Name0" OutLook="Assets/GameData/Prefab0" Time="4.22583866" BuffType="Ranshao" AllString="TestA0 TestB0" />
-  <AllBuffList Id="1" Name="Name1" OutLook="Assets/GameData/Prefab1" Time="2.206836" BuffType="Bingdong" AllString="TestA1 TestB1" />
-  <AllBuffList Id="2" Name="Name2" OutLook="Assets/GameData/Prefab2" Time="1.78292918" BuffType="Du" AllString="TestA2 TestB2" />
-  <AllBuffList Id="3" Name="Name3" OutLook="Assets/GameData/Prefab3" Time="2.82398438" BuffType="None" AllString="TestA3 TestB3" />
-  <AllBuffList Id="4" Name="Name4" OutLook="Assets/GameData/Prefab4" Time="4.236364" BuffType="Du" AllString="TestA4 TestB4" />
-  <AllBuffList Id="5" Name="Name5" OutLook="Assets/GameData/Prefab5" Time="4.035848" BuffType="Bingdong" AllString="TestA5 TestB5" />
-  <AllBuffList Id="6" Name="Name6" OutLook="Assets/GameData/Prefab6" Time="1.2202034" BuffType="Ranshao" AllString="TestA6 TestB6" />
-  <AllBuffList Id="7" Name="Name7" OutLook="Assets/GameData/Prefab7" Time="3.898578" BuffType="Bingdong" AllString="TestA7 TestB7" />
-  <AllBuffList Id="8" Name="Name8" OutLook="Assets/GameData/Prefab8" Time="2.85802245" BuffType="None" AllString="TestA8 TestB8" />
-  <AllBuffList Id="9" Name="Name9" OutLook="Assets/GameData/Prefab9" Time="3.11234283" BuffType="Bingdong" AllString="TestA9 TestB9" />
-  <MonsterBuffList Id="0" Name="Name0" OutLook="Assets/GameData/Prefab0" Time="1.954747" BuffType="Ranshao" AllString="TestA0 TestB0" />
-  <MonsterBuffList Id="1" Name="Name1" OutLook="Assets/GameData/Prefab1" Time="4.04201269" BuffType="Ranshao" AllString="TestA1 TestB1" />
-  <MonsterBuffList Id="2" Name="Name2" OutLook="Assets/GameData/Prefab2" Time="1.82509971" BuffType="None" AllString="TestA2 TestB2" />
-  <MonsterBuffList Id="3" Name="Name3" OutLook="Assets/GameData/Prefab3" Time="4.06235075" BuffType="Ranshao" AllString="TestA3 TestB3" />
-  <MonsterBuffList Id="4" Name="Name4" OutLook="Assets/GameData/Prefab4" Time="2.02739024" BuffType="Ranshao" AllString="TestA4 TestB4" />
+  <AllBuffList Id="0" Name="Name0" OutLook="Assets/GameData/Prefab0" Time="1.75796771" BuffType="Bingdong" AllString="TestA0 TestB0">
+    <AllBuffTest Id="0" Name="TestName0" />
+  </AllBuffList>
+  <AllBuffList Id="1" Name="Name1" OutLook="Assets/GameData/Prefab1" Time="2.473275" BuffType="Bingdong" AllString="TestA1 TestB1">
+    <AllBuffTest Id="1" Name="TestName0" />
+    <AllBuffTest Id="2" Name="TestName1" />
+  </AllBuffList>
+  <AllBuffList Id="2" Name="Name2" OutLook="Assets/GameData/Prefab2" Time="1.37717676" BuffType="Bingdong" AllString="TestA2 TestB2" />
+  <AllBuffList Id="3" Name="Name3" OutLook="Assets/GameData/Prefab3" Time="2.67880559" BuffType="Bingdong" AllString="TestA3 TestB3">
+    <AllBuffTest Id="3" Name="TestName0" />
+  </AllBuffList>
+  <AllBuffList Id="4" Name="Name4" OutLook="Assets/GameData/Prefab4" Time="3.3959775" BuffType="Ranshao" AllString="TestA4 TestB4">
+    <AllBuffTest Id="4" Name="TestName0" />
+    <AllBuffTest Id="5" Name="TestName1" />
+  </AllBuffList>
+  <AllBuffList Id="5" Name="Name5" OutLook="Assets/GameData/Prefab5" Time="4.28227854" BuffType="Du" AllString="TestA5 TestB5">
+    <AllBuffTest Id="5" Name="TestName0" />
+  </AllBuffList>
+  <AllBuffList Id="6" Name="Name6" OutLook="Assets/GameData/Prefab6" Time="4.2605567" BuffType="Bingdong" AllString="TestA6 TestB6">
+    <AllBuffTest Id="6" Name="TestName0" />
+    <AllBuffTest Id="7" Name="TestName1" />
+  </AllBuffList>
+  <AllBuffList Id="7" Name="Name7" OutLook="Assets/GameData/Prefab7" Time="2.454738" BuffType="Ranshao" AllString="TestA7 TestB7">
+    <AllBuffTest Id="7" Name="TestName0" />
+    <AllBuffTest Id="8" Name="TestName1" />
+  </AllBuffList>
+  <AllBuffList Id="8" Name="Name8" OutLook="Assets/GameData/Prefab8" Time="1.61096358" BuffType="None" AllString="TestA8 TestB8">
+    <AllBuffTest Id="8" Name="TestName0" />
+    <AllBuffTest Id="9" Name="TestName1" />
+  </AllBuffList>
+  <AllBuffList Id="9" Name="Name9" OutLook="Assets/GameData/Prefab9" Time="4.212016" BuffType="Ranshao" AllString="TestA9 TestB9" />
+  <MonsterBuffList Id="0" Name="Name0" OutLook="Assets/GameData/Prefab0" Time="0.7741246" BuffType="Ranshao" AllString="TestA0 TestB0" />
+  <MonsterBuffList Id="1" Name="Name1" OutLook="Assets/GameData/Prefab1" Time="3.074667" BuffType="Ranshao" AllString="TestA1 TestB1">
+    <AllBuffTest Id="1" Name="TestName0" />
+  </MonsterBuffList>
+  <MonsterBuffList Id="2" Name="Name2" OutLook="Assets/GameData/Prefab2" Time="3.79689169" BuffType="Du" AllString="TestA2 TestB2">
+    <AllBuffTest Id="2" Name="TestName0" />
+  </MonsterBuffList>
+  <MonsterBuffList Id="3" Name="Name3" OutLook="Assets/GameData/Prefab3" Time="4.17086363" BuffType="Bingdong" AllString="TestA3 TestB3">
+    <AllBuffTest Id="3" Name="TestName0" />
+  </MonsterBuffList>
+  <MonsterBuffList Id="4" Name="Name4" OutLook="Assets/GameData/Prefab4" Time="4.1404767" BuffType="Du" AllString="TestA4 TestB4" />
 </BuffData>

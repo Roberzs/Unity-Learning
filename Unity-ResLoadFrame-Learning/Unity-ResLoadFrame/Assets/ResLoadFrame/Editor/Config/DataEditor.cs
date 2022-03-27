@@ -113,7 +113,7 @@ public class DataEditor
 
         for (int i = 0; i < outSheetList.Count; i++)
         {
-            ReadData(data, outSheetList[i], allSheetClassDic, sheetDataDic);
+            ReadData(data, outSheetList[i], allSheetClassDic, sheetDataDic, "");
         }
 
         string xlsxPath = Application.dataPath.Replace("Assets", "Data/Excel/") + excelName;
@@ -149,7 +149,16 @@ public class DataEditor
                         for (int j = 0; j < rowData.RowDataDic.Count; j++)
                         {
                             ExcelRange range = worksheet.Cells[i + 2, j + 1];
-                            range.Value = rowData.RowDataDic[sheetData.AllName[j]];
+                            string value = rowData.RowDataDic[sheetData.AllName[j]];
+                            range.Value = value;
+                            
+                            
+                            // 当数据包含换行时 设置自动换行
+                            if (value.Contains("\n") || value.Contains("\n\r"))
+                            {
+                                range.Style.WrapText = true;
+                            }
+
                             range.AutoFitColumns();
                         }
                     }
@@ -246,7 +255,7 @@ public class DataEditor
     /// <param name="sheetClass"></param>
     /// <param name="allSheetClassDic"></param>
     /// <param name="sheetDataDic"></param>
-    private static void ReadData(object data, SheetClass sheetClass, Dictionary<string, SheetClass> allSheetClassDic, Dictionary<string, SheetData> sheetDataDic)
+    private static void ReadData(object data, SheetClass sheetClass, Dictionary<string, SheetClass> allSheetClassDic, Dictionary<string, SheetData> sheetDataDic, string mainKey)
     {
         List<VarClass> varList = sheetClass.VarList;
         VarClass varClass = sheetClass.ParentVar;
@@ -255,6 +264,15 @@ public class DataEditor
         int listCnt = System.Convert.ToInt32(dataList.GetType().InvokeMember("get_Count", BindingFlags.Default | BindingFlags.InvokeMethod, null, dataList, null));
 
         SheetData sheetData = new SheetData();
+
+        if (!string.IsNullOrEmpty(varClass.Foregin))
+        {
+            sheetData.AllName.Add(varClass.Foregin);
+            sheetData.AllType.Add(varClass.Type);
+        }
+
+        string tmpKey = mainKey;
+
         for (int i = 0; i < varList.Count; i++)
         {
             if (!string.IsNullOrEmpty(varList[i].Col))
@@ -268,12 +286,27 @@ public class DataEditor
             object item = dataList.GetType().InvokeMember("get_Item", BindingFlags.Default | BindingFlags.InvokeMethod, null, dataList, new object[] { i });
 
             RowData rowData = new RowData();
+            if (!string.IsNullOrEmpty(varClass.Foregin) && !string.IsNullOrEmpty(tmpKey))
+            {
+                rowData.RowDataDic.Add(varClass.Foregin, tmpKey);
+            }
+            if (!string.IsNullOrEmpty(sheetClass.MainKey))
+            {
+                mainKey = GetMemberValue(item, sheetClass.MainKey).ToString();
+            }
+
             for (int j = 0; j < varList.Count; j++)
             {
-                if (varList[j].Type == "list")
+                if (varList[j].Type == "list" && string.IsNullOrEmpty(varList[j].SplitStr))
                 {
                     SheetClass tmpSheetClass = allSheetClassDic[varList[j].ListSheetName];
-                    ReadData(item, tmpSheetClass, allSheetClassDic, sheetDataDic);
+                    ReadData(item, tmpSheetClass, allSheetClassDic, sheetDataDic, mainKey);
+                }
+                else if (varList[j].Type == "list")
+                {
+                    SheetClass tmpSheetClass = allSheetClassDic[varList[j].ListSheetName];
+                    string value = GetSplitStrList(item, varList[j], tmpSheetClass);
+                    rowData.RowDataDic.Add(varList[j].Col, value);
                 }
                 else if (varList[j].Type == "listString" || varList[j].Type == "listInt" || varList[j].Type == "listFloat" || varList[j].Type == "listBool")
                 {
@@ -307,6 +340,47 @@ public class DataEditor
             }
         }
         
+    }
+
+    /// <summary>
+    /// 获取一个本身是一个类的列表（数据较少或无法判断父级结构的）
+    /// </summary>
+    /// <returns></returns>
+    private static string GetSplitStrList(object data, VarClass varClass, SheetClass sheetClass)
+    {
+        // 获取分隔符
+        string varSplit = varClass.SplitStr;
+        string sheetSplit = sheetClass.SplitStr;
+        if (string.IsNullOrEmpty(varSplit) || string.IsNullOrEmpty(sheetSplit))
+        {
+            Debug.LogError(varClass.ListName + "中某个分割符为空!");
+            return null;
+        }
+
+        string resStr = "";
+        object dataList = GetMemberValue(data, varClass.Name);
+        int listCnt = System.Convert.ToInt32(dataList.GetType().InvokeMember("get_Count", BindingFlags.Default | BindingFlags.InvokeMethod
+            , null, dataList, new object[] { }));
+        for (int i = 0; i < listCnt; i++)
+        {
+            object item = dataList.GetType().InvokeMember("get_Item", BindingFlags.Default | BindingFlags.InvokeMethod,
+                null, dataList, new object[] { i });
+            for (int j = 0; j < sheetClass.VarList.Count; j++)
+            {
+                object value = GetMemberValue(item, sheetClass.VarList[j].Name);
+
+                resStr += value;
+                if (j != sheetClass.VarList.Count - 1)
+                {
+                    resStr += sheetSplit.Replace("\\n", "\n").Replace("\\r", "\r");
+                }
+            }
+            if (i != listCnt - 1)
+            {
+                resStr += varSplit.Replace("\\n", "\n").Replace("\\r", "\r");
+            }
+        }
+        return resStr;
     }
 
     /// <summary>
@@ -512,7 +586,7 @@ public class DataEditor
             str += item.ToString();
             if (i != listCount - 1)
             {
-                str += varClass.SplitStr;
+                str += varClass.SplitStr.Replace("\\n", "\n").Replace("\\r", "\r"); ;
             }
         }
         return str;

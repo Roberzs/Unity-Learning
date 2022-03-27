@@ -31,6 +31,19 @@ public class BuffData : ExcelBase
                     "TestB" + i
                 }
             };
+            tmpBuff.AllBuffTest = new List<BuffTest>();
+            int cnt = Random.Range(0, 3);
+            for (int j = 0; j < cnt; j++)
+            {
+                BuffTest tmpBuffTest = new BuffTest()
+                {
+                    Id = j + i,
+                    Name = "TestName" + j,
+                };
+
+                tmpBuff.AllBuffTest.Add(tmpBuffTest);
+            }
+
             AllBuffList.Add(tmpBuff);
         }
 
@@ -50,6 +63,19 @@ public class BuffData : ExcelBase
                     "TestB" + i
                 }
             };
+
+            tmpBuff.AllBuffTest = new List<BuffTest>();
+            int cnt = Random.Range(0, 3);
+            for (int j = 0; j < cnt; j++)
+            {
+                BuffTest tmpBuffTest = new BuffTest()
+                {
+                    Id = j + i,
+                    Name = "TestName" + j,
+                };
+
+                tmpBuff.AllBuffTest.Add(tmpBuffTest);
+            }
             MonsterBuffList.Add(tmpBuff);
         }
 
