@@ -31,18 +31,18 @@ public class BuffData : ExcelBase
                     "TestB" + i
                 }
             };
-            //tmpBuff.AllBuffTest = new List<BuffTest>();
-            //int cnt = Random.Range(0, 3);
-            //for (int j = 0; j < cnt; j++)
-            //{
-            //    BuffTest tmpBuffTest = new BuffTest()
-            //    {
-            //        Id = j + i,
-            //        Name = "TestName" + j,
-            //    };
+            tmpBuff.AllBuffTest = new List<BuffTest>();
+            int cnt = Random.Range(0, 3);
+            for (int j = 0; j < cnt; j++)
+            {
+                BuffTest tmpBuffTest = new BuffTest()
+                {
+                    Id = j + i,
+                    Name = "TestName" + j,
+                };
 
-            //    tmpBuff.AllBuffTest.Add(tmpBuffTest);
-            //}
+                tmpBuff.AllBuffTest.Add(tmpBuffTest);
+            }
 
             AllBuffList.Add(tmpBuff);
         }
@@ -64,18 +64,18 @@ public class BuffData : ExcelBase
                 }
             };
 
-            //tmpBuff.AllBuffTest = new List<BuffTest>();
-            //int cnt = Random.Range(0, 3);
-            //for (int j = 0; j < cnt; j++)
-            //{
-            //    BuffTest tmpBuffTest = new BuffTest()
-            //    {
-            //        Id = j + i,
-            //        Name = "TestName" + j,
-            //    };
+            tmpBuff.AllBuffTest = new List<BuffTest>();
+            int cnt = Random.Range(0, 3);
+            for (int j = 0; j < cnt; j++)
+            {
+                BuffTest tmpBuffTest = new BuffTest()
+                {
+                    Id = j + i,
+                    Name = "TestName" + j,
+                };
 
-            //    tmpBuff.AllBuffTest.Add(tmpBuffTest);
-            //}
+                tmpBuff.AllBuffTest.Add(tmpBuffTest);
+            }
             MonsterBuffList.Add(tmpBuff);
         }
 
@@ -125,10 +125,10 @@ public class BuffBase
     public float Time { get; set; }
     [XmlAttribute("BuffType")]
     public BuffEnum BuffType { get; set; }
-    [XmlAttribute("AllString")]
+    [XmlElement("AllString")]
     public List<string> AllString { get; set; }
-    //[XmlElement("AllBuffTest")]
-    //public List<BuffTest> AllBuffTest { get; set; }
+    [XmlElement("AllBuffTest")]
+    public List<BuffTest> AllBuffTest { get; set; }
 
 }
 

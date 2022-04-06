@@ -8,6 +8,12 @@
 			<variable name = "Time" col = "冷却时间" type = "float"/>
 			<variable name = "BuffType" col = "Buff类型" type = "enum"/>
 			<variable name = "AllString" col = "测试List" type = "listString" split = ";"/>
+			<variable name = "AllBuffTest" type = "list" foregin = "ID">
+				<list name = "Bufft" sheetname = "所有Buff的测试list测试">
+					<variable name = "Id" col = "TestID" type = "int"/>
+					<variable name = "Name" col = "名字" type = "string"/>
+				</list>
+			</variable>
 		</list>
 	</variable>
 	<variable name = "MonsterBuffList" type = "list">
@@ -18,6 +24,12 @@
 			<variable name = "Time" col = "冷却时间" type = "float"/>
 			<variable name = "BuffType" col = "Buff类型" type = "enum"/>
 			<variable name = "AllString" col = "测试List" type = "listString" split = ";"/>
+			<variable name = "AllBuffTest" type = "list" foregin = "ID">
+				<list name = "Bufft" sheetname = "怪物Buff的测试list测试">
+					<variable name = "Id" col = "TestID" type = "int"/>
+					<variable name = "Name" col = "名字" type = "string"/>
+				</list>
+			</variable>
 		</list>
 	</variable>
 </data>

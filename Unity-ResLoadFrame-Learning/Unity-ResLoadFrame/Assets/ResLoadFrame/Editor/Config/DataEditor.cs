@@ -182,7 +182,7 @@ public class DataEditor
     private static void ExcelToXml()
     {
         //测试数据
-        string regPath = RegPath + "MonsterData.xml";
+        string regPath = RegPath + "BuffData.xml";
 
         string className = string.Empty;
         string xmlName = string.Empty;
@@ -303,7 +303,8 @@ public class DataEditor
                 }
                 else if (varClass.Type == "listString" || varClass.Type == "listInt" || varClass.Type == "listFloat" || varClass.Type == "listBool")
                 {
-                    
+                    string value = sheetData.AllData[i].RowDataDic[sheetData.AllName[j]];
+                    SetSplitBaseClass(addItem, varClass, value);
                 }
                 else
                 {
@@ -331,6 +332,51 @@ public class DataEditor
         }
 
         objClass.GetType().GetProperty(sheetClass.ParentVar.Name).SetValue(objClass, list);
+    }
+
+    /// <summary>
+    /// 基础List赋值
+    /// </summary>
+    /// <param name="objClass"></param>
+    /// <param name="varClass"></param>
+    /// <param name="value"></param>
+    private static void SetSplitBaseClass(object objClass, VarClass varClass, string value)
+    {
+        Type type = null;
+        if (varClass.Type == "listString")
+        {
+            type = typeof(string);
+            Debug.Log("一个string 列表");
+        }
+        else if (varClass.Type == "listInt")
+        {
+            type = typeof(int);
+        }
+        else if (varClass.Type == "listFloat")
+        {
+            type = typeof(float);
+        }
+        else if (varClass.Type == "listBool")
+        {
+            type = typeof(bool);
+        }
+        object list = CreatePropertyList(type);
+        string[] rowArray = value.Split(new string[] { varClass.SplitStr }, StringSplitOptions.None);
+        for (int i = 0; i < rowArray.Length; i++)
+        {
+            object addItem = rowArray[i].Trim();
+            try
+            {
+                list.GetType().InvokeMember("Add", BindingFlags.Default | BindingFlags.InvokeMethod, null,
+                    list, new object[] { addItem });
+            }
+            catch
+            {
+                Debug.Log(varClass.ListSheetName + "表中" + varClass.Name + "字段值添加失败, 值:" + addItem);
+            }
+            
+        }
+        objClass.GetType().GetProperty(varClass.Name).SetValue(objClass, list);
     }
 
     /// <summary>
