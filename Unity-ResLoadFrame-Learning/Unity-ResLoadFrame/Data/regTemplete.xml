@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data name = "类名" from = "Excel文件名(.xlsx)" to = "Xml文件名(.xml)">
+	<variable name = "List变量名" type = "list">
+		<list name = "类名" sheetname = "对应Excel表里的Sheet名" mainKey = "类主键">
+		</list>
+	</variable>
+</data>

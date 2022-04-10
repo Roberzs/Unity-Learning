@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<data name = "BuffData" from = "GBuff.xlsx" to = "BuffDataData.xml">
+<data name = "BuffData" from = "GBuff.xlsx" to = "BuffData.xml">
 	<variable name = "AllBuffList" type = "list">
 		<list name = "BuffBase" sheetname = "所有Buff配置表" mainKey = "Id">
 			<variable name = "Id" col = "ID" type = "int"/>
@@ -9,7 +9,7 @@
 			<variable name = "BuffType" col = "Buff类型" type = "enum"/>
 			<variable name = "AllString" col = "测试List" type = "listString" split = ";"/>
 			<variable name = "AllBuffTest" type = "list" foregin = "ID">
-				<list name = "Bufft" sheetname = "所有Buff的测试list测试">
+				<list name = "BuffTest" sheetname = "所有Buff的Testlist测试">
 					<variable name = "Id" col = "TestID" type = "int"/>
 					<variable name = "Name" col = "名字" type = "string"/>
 				</list>
@@ -24,8 +24,8 @@
 			<variable name = "Time" col = "冷却时间" type = "float"/>
 			<variable name = "BuffType" col = "Buff类型" type = "enum"/>
 			<variable name = "AllString" col = "测试List" type = "listString" split = ";"/>
-			<variable name = "AllBuffTest" type = "list" foregin = "ID">
-				<list name = "Bufft" sheetname = "怪物Buff的测试list测试">
+			<variable name = "AllBuffTest" col = "怪物Buff的Testlist测试" type = "list" split = "\n">
+				<list name = "BuffTest" sheetname = "怪物Buff的Testlist测试" split = ";">
 					<variable name = "Id" col = "TestID" type = "int"/>
 					<variable name = "Name" col = "名字" type = "string"/>
 				</list>
