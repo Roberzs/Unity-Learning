@@ -15,8 +15,9 @@ public class FactoryManager : MonoSingleton<FactoryManager>
     public BaseResourcesFactory<AudioClip> audioClipFactory;
     public BaseResourcesFactory<Sprite> spriteFactory;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         prefabsFactory = new BaseFactory(StringDefine.PrefabsRootPath, gameObject);
         audioClipFactory = new BaseResourcesFactory<AudioClip>(StringDefine.AudioClipsRootPath);
         spriteFactory = new BaseResourcesFactory<Sprite>(StringDefine.SpritesRootPath);

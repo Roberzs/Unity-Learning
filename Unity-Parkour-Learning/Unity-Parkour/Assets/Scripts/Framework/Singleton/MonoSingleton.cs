@@ -11,7 +11,8 @@ using UnityEngine;
 
 public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
 {
-    protected static T mInstance = null;
+    private static readonly object syslock = new object();
+    private static T mInstance = null;
 
     public static T Instance
     {
@@ -19,34 +20,50 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
         {
             if (mInstance == null)
             {
-                mInstance = FindObjectOfType<T>();
-
-                if (FindObjectsOfType<T>().Length > 1)
+                lock (syslock)
                 {
-                    Debug.LogError("More than 1!");
-                    return mInstance;
-                }
+                    if (mInstance == null)
+                    {
+                        T[] ts = FindObjectsOfType<T>();
+                        if (ts.Length == 0)
+                        {
+                            string instanceName = typeof(T).Name;
+                            Debug.Log("New Instance Name: " + instanceName);
 
-                if (mInstance == null)
-                {
-                    string instanceName = typeof(T).Name;
-                    Debug.Log("Instance Name: " + instanceName);
-                    GameObject instanceGo = GameObject.Find(instanceName);
+                            GameObject instanceGo = GameObject.Find(instanceName);
 
-                    if (instanceGo == null)
-                        instanceGo = new GameObject(instanceName);
+                            if (instanceGo == null)
+                                instanceGo = new GameObject(instanceName);
 
-                    mInstance = instanceGo.AddComponent<T>();
-                    DontDestroyOnLoad(instanceGo);
-                    Debug.Log("Add New Singleton " + mInstance.name + " in Game!");
-                }
-                else
-                {
-                    Debug.Log("Already exist: " + mInstance.name);
+                            mInstance = instanceGo.AddComponent<T>();
+
+                        }
+                        else if (ts.Length == 1)
+                        {
+                            Debug.Log("Already exist: " + mInstance.name);
+
+                            mInstance = ts[0];
+                        }
+                        else
+                        {
+                            Debug.LogError("More than 1!");
+
+                            return null;
+                        }
+
+                        // Set gameObject will DontDestroyOnLoad
+                        DontDestroyOnLoad(mInstance.gameObject);
+                    }
                 }
             }
+                
             return mInstance;
         }
+    }
+
+    protected virtual void Awake()
+    {
+        
     }
 
     protected virtual void OnDestroy()
