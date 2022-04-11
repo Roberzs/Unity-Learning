@@ -243,6 +243,11 @@ public class ResourceManager :Singleton<ResourceManager>
                     yield return new WaitForSeconds(0.5f);
 
                     item = AssetBundleManager.Instance.FindResourcesItem(loadingItem.m_Crc);
+                    if (item == null)
+                    {
+                        item = new ResourceItem();
+                        item.m_Crc = loadingItem.m_Crc;
+                    }
                 }
 #endif
                 if (obj == null)
@@ -596,14 +601,18 @@ public class ResourceManager :Singleton<ResourceManager>
 #if UNITY_EDITOR
         if (!m_LoadFormAssetBundle)
         {
-
             item = AssetBundleManager.Instance.FindResourcesItem(crc);
-            if (item.m_Obj != null)
+            if (item != null && item.m_Obj != null)
             {
                 obj = item.m_Obj;
             }
             else
             {
+                if (item == null)
+                {
+                    item = new ResourceItem();
+                    item.m_Crc = crc;
+                }
                 obj = LoadAssetByEditor<Object>(path);
             }
         }

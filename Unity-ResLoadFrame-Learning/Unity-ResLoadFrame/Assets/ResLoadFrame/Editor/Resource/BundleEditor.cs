@@ -39,6 +39,8 @@ public class BundleEditor
         AssetDatabase.Refresh();
         */
 
+        DataEditor.AllXmlToBinary();
+
         m_AllFileDir.Clear();
         m_AllPrefabDir.Clear();
         m_AllFileAB.Clear();

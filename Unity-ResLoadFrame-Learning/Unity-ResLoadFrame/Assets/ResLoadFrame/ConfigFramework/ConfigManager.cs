@@ -49,8 +49,7 @@ public class ConfigManager : Singleton<ConfigManager>
 			data.Init();
         }
 		m_AllExcelData.Add(path, data);
-
-		return null;
+		return data;
     }
 
 	public T FindData<T>(string path) where T : ExcelBase

@@ -18,6 +18,18 @@ public class MenuUI : Window
         AddButtonClickListener(m_MainPanel.m_StartBtn, OnClickStart);
         AddButtonClickListener(m_MainPanel.m_LoadBtn, OnClickLoad);
         AddButtonClickListener(m_MainPanel.m_ExitBtn, OnClickExit);
+
+        ReadMonsterData();
+    }
+
+    private void ReadMonsterData()
+    {
+        MonsterData monsterData = ConfigManager.Instance.FindData<MonsterData>("Assets/GameData/Data/Binary/MonsterData.bytes");
+        for (int i = 0; i < monsterData.AllMonster.Count; i++)
+        {
+            MonsterBase data = monsterData.AllMonster[i];
+            Debug.Log($"ID:{data.Id}  Name:{data.Name}  Level:{data.Level}");
+        }
     }
 
     #region 按钮事件示例

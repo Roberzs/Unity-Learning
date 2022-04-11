@@ -73,7 +73,7 @@ public class BinarySerializeOption
     }
 
     /// <summary>
-    /// 运行环境xml反序列化
+    /// XML反序列化
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="path"></param>
