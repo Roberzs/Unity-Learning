@@ -297,6 +297,10 @@ public class BundleEditor
                 {
                     File.Delete(files[i].FullName);
                 }
+                if (File.Exists(files[i].FullName + ".manifest"))
+                {
+                    File.Delete(files[i].FullName + ".manifest");
+                }
             }
         }
     }

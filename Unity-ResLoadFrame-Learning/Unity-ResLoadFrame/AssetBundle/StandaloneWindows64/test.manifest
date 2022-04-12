@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3686770013
+CRC: 3230074367
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 21b383d28f6642881f83809f1cb8c52b
+    Hash: 21d44398c2c56b404a44ba052bcf3b6c
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 0922ce72518dc7afd794959664049839
+    Hash: 810b91ab79b8a39ba9cf19356377975b
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -29,6 +29,7 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 199
   Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/GameData/Prefabs/Effect/Test.prefab
 Dependencies: []

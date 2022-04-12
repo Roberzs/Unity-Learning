@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 421a060feec39934da4817ac8db41d9f, type: 3}
   m_Name: ABConfig
   m_EditorClassIdentifier: 
-  m_AllScenePath: []
   m_AllPrefabPath:
   - Assets/GameData/Prefabs
   - Assets/GameData/Prefabs/UGUI/Panel
   m_AllFileDirAB:
-  - ABName: shader
+  - ABName: shaders
     Path: Assets/GameData/Shaders
-  - ABName: sound
+  - ABName: sounds
     Path: Assets/GameData/Sounds
+  - ABName: bytes
+    Path: Assets/GameData/Data/Binary

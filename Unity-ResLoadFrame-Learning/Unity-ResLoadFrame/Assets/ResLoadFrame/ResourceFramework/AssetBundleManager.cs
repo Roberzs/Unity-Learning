@@ -22,6 +22,8 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
     protected string m_ABRootPath = Application.streamingAssetsPath;
 #endif
 
+    protected string m_ABConfigABName = "assetbundleconfig";
+
     // 资源关系依赖配置表, 通过Crc查找
     protected Dictionary<uint, ResourceItem> m_ResourceItemDic = new Dictionary<uint, ResourceItem>();
     // 已加载的AB包
@@ -42,9 +44,9 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
             return false;
         }
 #endif
-        string configPath = m_ABRootPath + "/assetbundleconfig";
+        string configPath = m_ABRootPath + "/" + m_ABConfigABName;
         AssetBundle configAB = AssetBundle.LoadFromFile(configPath);
-        TextAsset textAsset = configAB.LoadAsset<TextAsset>("assetbundleconfig");
+        TextAsset textAsset = configAB.LoadAsset<TextAsset>(m_ABConfigABName);
         if (textAsset == null)
         {
             Debug.LogError("AssetBundleConfig is no exist!");

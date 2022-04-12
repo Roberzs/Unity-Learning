@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1277507548
+CRC: 3928128482
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e5efd0dd5ddb9ee8be30d8b862e86211
+    Hash: 0c153b70bf1e273861536b53b1ef0b29
   TypeTreeHash:
     serializedVersion: 2
-    Hash: bf6d95864c892c53196618043adceaf5
+    Hash: 03280df2c79e5a6eac2d07a835e668b6
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -37,20 +37,21 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 137
   Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/GameData/Modle/benghuai/Avatar_Kiana_C2_Texture_Hair_Color_Common.png
-- Assets/GameData/Modle/benghuai/Materials/Avatar_Kiana_C1_Texture_Face_Color_Common.mat
-- Assets/GameData/Modle/benghuai/Attack.FBX
-- Assets/GameData/Modle/benghuai/Materials/Weapon_Pistol_K9_62_2.mat
 - Assets/GameData/Modle/benghuai/Materials/Avatar_Kiana_C2_Texture_Body_Color_RGB2048.mat
-- Assets/GameData/Modle/benghuai/Materials/Avatar_Kiana_C2_Texture_Hair_Color_Common.mat
-- Assets/GameData/Modle/benghuai/Weapon_Pistol_K9_62_2.png
-- Assets/GameData/Modle/benghuai/ID_368.bmp
-- Assets/GameData/Modle/benghuai/Materials/No Name.mat
-- Assets/GameData/Modle/benghuai/ID_370.bmp
-- Assets/GameData/Modle/benghuai/Avatar_Kiana_C1_Texture_Face_Color_Common.png
-- Assets/GameData/Modle/benghuai/Avatar_Kiana_C2_Texture_Body_Color_RGB2048.png
-- Assets/GameData/Modle/benghuai/ID_362.bmp
 - Assets/GameData/Prefabs/Attack.prefab
+- Assets/GameData/Modle/benghuai/ID_370.bmp
+- Assets/GameData/Modle/benghuai/Attack.FBX
+- Assets/GameData/Modle/benghuai/ID_368.bmp
+- Assets/GameData/Modle/benghuai/Weapon_Pistol_K9_62_2.png
+- Assets/GameData/Modle/benghuai/Avatar_Kiana_C1_Texture_Face_Color_Common.png
+- Assets/GameData/Modle/benghuai/Materials/Weapon_Pistol_K9_62_2.mat
+- Assets/GameData/Modle/benghuai/Avatar_Kiana_C2_Texture_Body_Color_RGB2048.png
+- Assets/GameData/Modle/benghuai/Materials/Avatar_Kiana_C1_Texture_Face_Color_Common.mat
+- Assets/GameData/Modle/benghuai/Materials/Avatar_Kiana_C2_Texture_Hair_Color_Common.mat
+- Assets/GameData/Modle/benghuai/ID_362.bmp
+- Assets/GameData/Modle/benghuai/Avatar_Kiana_C2_Texture_Hair_Color_Common.png
+- Assets/GameData/Modle/benghuai/Materials/No Name.mat
 Dependencies:
-- E:/UnityCode/Unity-Learning/Unity-ResLoadFrame-Learning/Unity-ResLoadFrame/Assets/../AssetBundle/StandaloneWindows64/shader
+- E:/Unity/Unity-Learning/Unity-ResLoadFrame-Learning/Unity-ResLoadFrame/Assets/../AssetBundle/StandaloneWindows64/shader
