@@ -10,19 +10,22 @@ namespace FrameworkDesign
 {
     public class Singleton<T> : ISingleton where T : Singleton<T>
     {
-        protected static T mInstance;
+        private static T mInstance;
 
-        private static object mLock = new object(); 
+        private static readonly object syslock = new object(); 
 
         public static T Instance
         {
             get
             {
-                lock(mLock)
+                if (mInstance == null)
                 {
-                    if (mInstance == null)
+                    lock (syslock)
                     {
-                        mInstance = SingletonCreator.CreateSingleton<T>();
+                        if (mInstance == null)
+                        {
+                            mInstance = SingletonCreator.CreateSingleton<T>();
+                        }
                     }
                 }
                 return mInstance;
