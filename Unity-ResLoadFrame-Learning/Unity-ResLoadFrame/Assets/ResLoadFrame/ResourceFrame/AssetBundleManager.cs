@@ -112,10 +112,12 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
         {
             AssetBundle assetBundle = null;
             string fullPath = m_ABRootPath + "/" + name;
-            if (File.Exists(fullPath))
-            {
-                assetBundle = AssetBundle.LoadFromFile(fullPath);
-            }
+            // Android 与 IOS 不允许访问路径
+            //if (File.Exists(fullPath))
+            //{
+            //    assetBundle = AssetBundle.LoadFromFile(fullPath);
+            //}
+            assetBundle = AssetBundle.LoadFromFile(fullPath);
             if (assetBundle == null)
             {
                 Debug.LogError($"Load AssetBundle Error, path:{fullPath}");

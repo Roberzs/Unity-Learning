@@ -174,6 +174,7 @@ public class BundleEditor
                 if (allBundlePath[j].EndsWith(".cs") || !ValidPath(allBundlePath[j]))
                     continue;
                 //Debug.Log("AB包:" + allBundles[i] + "下所包含的文件路径:" + allBundlePath[j]);
+                
                 resPathDic.Add(allBundlePath[j], allBundles[i]);
             }
         }
@@ -208,6 +209,9 @@ public class BundleEditor
         config.ABList = new List<ABBase>();
         foreach (string path in resPathDic.Keys)
         {
+            if (!ValidPath(path))
+                continue;
+
             ABBase abBase = new ABBase();
             abBase.Path = path;
             abBase.Crc = CRC32.GetCRC32(path);
