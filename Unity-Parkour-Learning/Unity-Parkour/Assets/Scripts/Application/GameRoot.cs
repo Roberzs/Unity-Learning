@@ -3,7 +3,7 @@
     作者：zhyStay
     邮箱：zhy18125@163.com
     日期：#CreateTime#
-    功能：Nothing
+    功能：游戏入口
 *****************************************************/
 
 using System;
@@ -14,8 +14,8 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(SoundManager))]
 public class GameRoot : MonoSingleton<GameRoot>
 {
-    public FactoryManager factoryManager { get; set; }
-    public SoundManager soundManager { get; set; }
+    public FactoryManager factoryManager { get; private set; }
+    public SoundManager soundManager { get; private set; }
 
     private void Start()
     {
@@ -23,27 +23,48 @@ public class GameRoot : MonoSingleton<GameRoot>
 
         factoryManager = FactoryManager.Instance;
         soundManager = SoundManager.Instance;
+        // 添加场景加载回调
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
-        // 初始化
+        // 注册启动控制器
         MVC.RegisterController(StringDefine.E_StartUp, typeof(StartUpController));
 
-        LoadScene(1);
+        // 跳转
+        GameRoot.Instance.LoadScene(1);
     }
 
-    void LoadScene(int level)
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
+        // 删除场景加载回调
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    /// <summary>
+    /// 加载新场景, 发送当前场景退出事件
+    /// </summary>
+    /// <param name="level">场景索引</param>
+
+    public void LoadScene(int level)
+    {
+        /// 退出当前场景
         SceneArgs e = new SceneArgs();
         e.sceneIndex = SceneManager.GetActiveScene().buildIndex;
 
         SendEvent(StringDefine.E_ExitScene, e);
 
-        SceneManager.LoadScene(level);
+        SceneManager.LoadScene(level, LoadSceneMode.Single);
     }
 
-    private void OnLevelWasLoaded(int level)
+    /// <summary>
+    /// 场景加载完成回调
+    /// </summary>
+    /// <param name="scene"></param>
+    /// <param name="loadSceneMode"></param>
+    private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
         SceneArgs e = new SceneArgs();
-        e.sceneIndex = level;
+        e.sceneIndex = scene.buildIndex;
         SendEvent(StringDefine.E_EnterScene, e);
     }
 

@@ -40,9 +40,8 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
                         }
                         else if (ts.Length == 1)
                         {
-                            Debug.Log("Already exist: " + mInstance.name);
-
                             mInstance = ts[0];
+                            Debug.Log("Already exist: " + mInstance.name);
                         }
                         else
                         {

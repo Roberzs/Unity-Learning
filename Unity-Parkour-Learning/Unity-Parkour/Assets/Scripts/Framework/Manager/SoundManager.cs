@@ -12,8 +12,10 @@ public class SoundManager : MonoSingleton<SoundManager>
 {
     private AudioSource bgAudioSource, fgAudioSource;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         bgAudioSource = gameObject.AddComponent<AudioSource>();
         fgAudioSource = gameObject.AddComponent<AudioSource>();
         bgAudioSource.playOnAwake = false;
