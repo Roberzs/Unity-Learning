@@ -15,10 +15,23 @@ public static class StringDefine
     // 音频资源根目录
     public const string AudioClipsRootPath = "";
     // 游戏物体资源根目录
-    public const string PrefabsRootPath = "";
+    public const string PrefabsRootPath = "Prefabs/";
 
+    // Event
     public const string E_ExitScene = "E_ExitScene";
     public const string E_EnterScene = "E_EnterScene";
     public const string E_StartUp = "E_StartUp";
 
+
+    // View 
+    public const string V_PlayerMove = "V_PlayerMove";
+}
+
+public enum InputDirection
+{
+    NULL,
+    RIGHT,
+    LEFT,
+    DOWN,
+    UP
 }

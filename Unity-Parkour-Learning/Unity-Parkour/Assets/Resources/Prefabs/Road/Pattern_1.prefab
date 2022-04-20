@@ -55202,9 +55202,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4297135737862080}
   - component: {fileID: 1726667062}
+  - component: {fileID: 1773959140}
   m_Layer: 0
   m_Name: Pattern_1
-  m_TagString: Untagged
+  m_TagString: Road
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55242,6 +55243,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 6, y: 2, z: 160}
   m_Center: {x: 0, y: -1, z: 76}
+--- !u!65 &1773959140
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881600936995884}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6, y: 8, z: 2}
+  m_Center: {x: 0, y: 4, z: 165}
 --- !u!1 &1882957800865070
 GameObject:
   m_ObjectHideFlags: 0

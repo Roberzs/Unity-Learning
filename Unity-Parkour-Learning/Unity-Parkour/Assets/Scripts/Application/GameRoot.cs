@@ -30,7 +30,7 @@ public class GameRoot : MonoSingleton<GameRoot>
         MVC.RegisterController(StringDefine.E_StartUp, typeof(StartUpController));
 
         // 跳转
-        GameRoot.Instance.LoadScene(1);
+        GameRoot.Instance.LoadScene(2);
     }
 
     protected override void OnDestroy()
