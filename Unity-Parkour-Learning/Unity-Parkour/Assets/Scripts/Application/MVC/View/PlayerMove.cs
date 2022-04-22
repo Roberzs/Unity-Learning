@@ -17,10 +17,15 @@ public class PlayerMove : View
 
     #region 字段
     [SerializeField] float moveSpeed = 20f;
+    float moveXSpeed = 13f;
     private CharacterController m_Cc;
     private InputDirection m_InputDir = InputDirection.NULL;
     private bool activeInput = false;
     Vector3 m_MousePos = Vector3.zero;
+    int m_nowIndex = 1;
+    int m_TargetIndex = 1;
+    float m_XDistance;
+
     #endregion
 
     #region 回调函数
@@ -50,7 +55,8 @@ public class PlayerMove : View
         while (true)
         {
             m_Cc.Move(transform.forward * moveSpeed * Time.deltaTime);
-            GetInputDirection();
+            MoveToTargetPos();
+            UpdateMoveDirection();
             yield return 0;
         }
     }
@@ -91,7 +97,73 @@ public class PlayerMove : View
         {
             activeInput = false;
         }
+
+        /// 
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            m_InputDir = InputDirection.UP;
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            m_InputDir = InputDirection.DOWN;
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            m_InputDir = InputDirection.LEFT;
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            m_InputDir = InputDirection.RIGHT;
+        }
     }
+    void UpdateMoveDirection()
+    {
+        GetInputDirection();
+        switch (m_InputDir)
+        {
+            case InputDirection.NULL:
+                break;
+            case InputDirection.RIGHT:
+                if (m_TargetIndex < 2)
+                {
+                    m_TargetIndex++;
+                    m_XDistance = 2;
+                }
+                break;
+            case InputDirection.LEFT:
+                if (m_TargetIndex > 0)
+                {
+                    m_TargetIndex--;
+                    m_XDistance = -2;
+                }
+                break;
+            case InputDirection.DOWN:
+                break;
+            case InputDirection.UP:
+                break;
+            default:
+                break;
+        }
+        
+    }
+
+    void MoveToTargetPos()
+    {
+        if (m_TargetIndex != m_nowIndex)
+        {
+            float move = Mathf.Lerp(0, m_XDistance, moveXSpeed * Time.deltaTime);
+            transform.position += new Vector3(move, 0, 0);
+            m_XDistance -= move;
+            if (Mathf.Abs(m_XDistance) < 0.05f)
+            {
+                m_XDistance = 0;
+                m_nowIndex = m_TargetIndex;
+                transform.position = new Vector3(-2f + 2 * m_nowIndex, transform.position.y, transform.position.z);
+            }
+        }
+    }
+
     #endregion
 }
 

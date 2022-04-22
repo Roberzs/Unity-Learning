@@ -11,4 +11,5 @@ using UnityEngine;
 public static class TagDefine 
 {
 	public const string Road = "Road";
+	public const string Player = "Player";
 }
