@@ -17,12 +17,17 @@ public class GameRoot : MonoSingleton<GameRoot>
     public FactoryManager factoryManager { get; private set; }
     public SoundManager soundManager { get; private set; }
 
-    private void Start()
+    protected override void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-
+        base.Awake();
+        // Init
         factoryManager = FactoryManager.Instance;
         soundManager = SoundManager.Instance;
+    }
+
+    private void Start()
+    {
+        
         // 添加场景加载回调
         SceneManager.sceneLoaded += OnSceneLoaded;
 

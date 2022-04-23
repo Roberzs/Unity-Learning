@@ -392,6 +392,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttentionList: []
   moveSpeed: 20
+  m_nowIndex: 1
+  m_TargetIndex: 1
+  m_XYTargetPos: {x: 0, y: 0}
 --- !u!114 &545413493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -402,6 +405,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: efb2743b0c76f764faa60171dafb1b72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &545413494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545413490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb87b37963c6cb046aa64f907c5ff9db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &798510671
