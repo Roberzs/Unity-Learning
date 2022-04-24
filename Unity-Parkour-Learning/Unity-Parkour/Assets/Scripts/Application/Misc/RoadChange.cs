@@ -22,12 +22,12 @@ public class RoadChange : MonoBehaviour
             mParentObj.transform.position = Vector3.zero;
             mParentObj.name = "RoadParent";
         }
-        string newRoadName = "Pattern_" + Random.Range(1, 5).ToString();
-        roadNow = GameRoot.Instance.factoryManager.GetGameObjectResource("Road/" + newRoadName);
+        
+        roadNow = GetRandomRoad();
         roadNow.transform.position = Vector3.zero;
         roadNow.transform.SetParent(mParentObj.transform);
-        newRoadName = "Pattern_" + Random.Range(1, 5).ToString();
-        roadNext = GameRoot.Instance.factoryManager.GetGameObjectResource("Road/" + newRoadName);
+
+        roadNext = GetRandomRoad();
         roadNext.transform.position = roadNow.transform.position + new Vector3(0, 0, 160);
         roadNext.transform.SetParent(mParentObj.transform);
     }
@@ -46,9 +46,15 @@ public class RoadChange : MonoBehaviour
     private void GetNewRoad()
     {
         roadNow = roadNext;
-        string newRoadName = "Pattern_" + Random.Range(1, 5).ToString();
-        roadNext = GameRoot.Instance.factoryManager.GetGameObjectResource("Road/" + newRoadName);
+
+        roadNext = GetRandomRoad();
         roadNext.transform.position = roadNow.transform.position + new Vector3(0, 0, 160);
         roadNext.transform.SetParent(mParentObj.transform);
+    }
+
+    private GameObject GetRandomRoad()
+    {
+        string newRoadName = "Pattern_" + Random.Range(1, 5).ToString();
+        return GameRoot.Instance.factoryManager.GetGameObjectResource("Road/" + newRoadName);
     }
 }

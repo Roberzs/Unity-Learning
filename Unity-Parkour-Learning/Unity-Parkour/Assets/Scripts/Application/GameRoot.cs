@@ -23,6 +23,8 @@ public class GameRoot : MonoSingleton<GameRoot>
         // Init
         factoryManager = FactoryManager.Instance;
         soundManager = SoundManager.Instance;
+
+        
     }
 
     private void Start()

@@ -13,25 +13,25 @@ public class PlayerMove : View
 {
     #region 属性
     public override string Name => StringDefine.V_PlayerMove;
+    private const float m_Grivaty = 9.81f;
+    private const float moveXYSpeed = 15f;
+    private const float moveSpeed = 20f;
+    private const float rollAnimTimeLength = 0.733f;
     #endregion
 
     #region 字段
-    [SerializeField] float moveSpeed = 20f;
-    float moveXSpeed = 15f;
     private CharacterController m_Cc;
     private InputDirection m_InputDir = InputDirection.NULL;
     private bool activeInput = false;
-    Vector3 m_MousePos = Vector3.zero;
-    [SerializeField] int m_nowIndex = 1;
-    [SerializeField] int m_TargetIndex = 1;
-    [SerializeField] Vector2 m_XYTargetPos = new Vector2(0.0f, 0.0f);
-    float m_Grivaty = 9.81f;
-    bool isRolling = false;
-    float rollAnimTimeLength = 0.733f;
-    float rollAnimTimer;
+    private Vector3 m_MousePos = Vector3.zero;
+    private int m_nowIndex = 1;
+    private int m_TargetIndex = 1;
+    private Vector2 m_XYTargetPos = new Vector2(0.0f, 0.0f);
+    private bool isRolling = false;
+    private float rollAnimTimer;
     #endregion
 
-    #region 回调函数
+    #region 回调
     public override void HandleEvent(string name, object data)
     {
         throw new System.NotImplementedException();
@@ -39,7 +39,7 @@ public class PlayerMove : View
 
     #endregion
 
-    #region Unity
+    #region Mono
     private void Awake()
     {
         m_Cc = GetComponent<CharacterController>();
@@ -55,19 +55,21 @@ public class PlayerMove : View
     #region 方法
     IEnumerator UpdateAction()
     {
+        //Physics.autoSyncTransforms = true;
         while (true)
         {
-            // 向z轴移动
-            //m_Cc.Move(transform.forward * moveSpeed * Time.deltaTime);
+            // 向Z轴移动
+            //m_Cc.Move(Vector3.forward * moveSpeed * Time.deltaTime);
             transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
-            // xy轴移动
-            MoveToTargetPos();
+            // XY轴移动
+            MoveToXYTargetPos();
             // 更新输入
             UpdateMoveDirection();
             UpdateRollState();
             yield return 0;
         }
     }
+
     /// <summary>
     /// 获取输入方向
     /// </summary>
@@ -127,6 +129,7 @@ public class PlayerMove : View
             m_InputDir = InputDirection.RIGHT;
         }
     }
+
     /// <summary>
     /// 根据输入方向更新目标点位置
     /// </summary>
@@ -171,7 +174,7 @@ public class PlayerMove : View
         m_InputDir = InputDirection.NULL;
     }
 
-    void MoveToTargetPos()
+    void MoveToXYTargetPos()
     {
         if (m_TargetIndex != m_nowIndex || m_XYTargetPos.y != 0)
         {
@@ -180,7 +183,7 @@ public class PlayerMove : View
                 m_XYTargetPos.y -= m_Grivaty * Time.deltaTime;
             }
             Vector3 targetPos = new Vector3(m_XYTargetPos.x, m_XYTargetPos.y, transform.position.z);
-            transform.position = Vector3.Lerp(transform.position, targetPos, moveXSpeed * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, targetPos, moveXYSpeed * Time.deltaTime);
             if (Vector3.Distance(transform.position, targetPos) < 0.05f)
             {
                 m_nowIndex = m_TargetIndex;
@@ -195,6 +198,9 @@ public class PlayerMove : View
         }
     }
 
+    /// <summary>
+    /// 更新翻滚状态
+    /// </summary>
     void UpdateRollState()
     {
         if (isRolling)

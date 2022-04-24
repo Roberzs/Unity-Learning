@@ -57,7 +57,7 @@ public class GameRoot : MonoBehaviour
         BattleSys battleSys = GetComponent<BattleSys>();
         battleSys.InitSys();
 
-        // 物理设置
+        // 物理设置 (每当Transform组件更改时是否自动将变换更改与物理系统同步, 会有一定的性能消耗, 默认关闭)
         Physics.autoSyncTransforms = true;
 
         // 进入加载登录场景UI
