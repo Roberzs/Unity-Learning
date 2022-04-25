@@ -22,6 +22,8 @@ public static class StringDefine
     public const string E_EnterScene = "E_EnterScene";
     public const string E_StartUp = "E_StartUp";
 
+    // Model
+    public const string M_GameModel = "M_GameModel";
 
     // View 
     public const string V_PlayerMove = "V_PlayerMove";

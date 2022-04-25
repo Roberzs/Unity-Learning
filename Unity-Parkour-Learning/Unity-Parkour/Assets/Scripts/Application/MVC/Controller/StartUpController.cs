@@ -9,7 +9,7 @@ public class StartUpController : Controller
         // Register Controller
 
         // Register Model
-
+        RegisterModel(new GameModel());
         // Init
 
         

@@ -29,6 +29,7 @@ public class PlayerMove : View
     private Vector2 m_XYTargetPos = new Vector2(0.0f, 0.0f);
     private bool isRolling = false;
     private float rollAnimTimer;
+    private GameModel mGameModel;
     #endregion
 
     #region 回调
@@ -43,6 +44,7 @@ public class PlayerMove : View
     private void Awake()
     {
         m_Cc = GetComponent<CharacterController>();
+        mGameModel = GetModel<GameModel>();
     }
 
     private void Start()
@@ -58,14 +60,18 @@ public class PlayerMove : View
         //Physics.autoSyncTransforms = true;
         while (true)
         {
-            // 向Z轴移动
-            //m_Cc.Move(Vector3.forward * moveSpeed * Time.deltaTime);
-            transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
-            // XY轴移动
-            MoveToXYTargetPos();
-            // 更新输入
-            UpdateMoveDirection();
-            UpdateRollState();
+            if (mGameModel.IsPlay && !mGameModel.IsPause)
+            {
+                // 向Z轴移动
+                //m_Cc.Move(Vector3.forward * moveSpeed * Time.deltaTime);
+                transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
+                // XY轴移动
+                MoveToXYTargetPos();
+                // 更新输入
+                UpdateMoveDirection();
+                UpdateRollState();
+            }
+            
             yield return 0;
         }
     }
