@@ -9,7 +9,7 @@
 using System;
 using UnityEngine;
 
- public abstract class Controller : MonoBehaviour
+ public abstract class Controller
 {
     public abstract void Execute(object data);
 

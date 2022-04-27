@@ -22,6 +22,7 @@ public class EnterSceneController : Controller
             case 3:
                 // 游戏场景
                 RegisterView(GameObject.Find(TagDefine.Player).GetComponent<PlayerMove>());
+                RegisterView(GameObject.Find(TagDefine.Player).GetComponent<PlayerAnim>());
                 break;
             case 4:
                 break;

@@ -9,25 +9,29 @@
 using System;
 using UnityEngine;
 
-public class PlayerAnim : MonoBehaviour
+public class PlayerAnim : View
 {
 	private Animation m_Anim;
 	Action m_PlayedAnim;
+    GameModel m_GameModel;
+    public override string Name => StringDefine.V_PlayerAnim;
 
     private void Awake()
     {
 		m_Anim = GetComponent<Animation>();
 		m_PlayedAnim = PlayRun;
+        m_GameModel = GetModel<GameModel>();
 
-	}
+    }
 
     private void Update()
     {
         if (m_PlayedAnim != null)
         {
-			m_PlayedAnim();
-			//m_PlayedAnim = null;
-
+            if (m_GameModel != null && m_GameModel.IsPlay && !m_GameModel.IsPause)
+                m_PlayedAnim();
+            else
+                m_Anim.Stop();
 		}
     }
 
@@ -91,5 +95,10 @@ public class PlayerAnim : MonoBehaviour
                 m_PlayedAnim = PlayJump;
                 break;
         }
+    }
+
+    public override void HandleEvent(string name, object data)
+    {
+        throw new NotImplementedException();
     }
 }

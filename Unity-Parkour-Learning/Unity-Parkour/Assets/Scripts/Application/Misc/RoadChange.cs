@@ -13,6 +13,8 @@ public class RoadChange : MonoBehaviour
     private GameObject mParentObj;
     private GameObject roadNow;
     private GameObject roadNext;
+    private string roadNowName = string.Empty;
+    private string roadNextName = string.Empty;
 
     private void Start()
     {
@@ -24,6 +26,7 @@ public class RoadChange : MonoBehaviour
         }
         
         roadNow = GetRandomRoad();
+        roadNowName = roadNextName;
         roadNow.transform.position = Vector3.zero;
         roadNow.transform.SetParent(mParentObj.transform);
 
@@ -36,7 +39,7 @@ public class RoadChange : MonoBehaviour
     {
         if (other.CompareTag(TagDefine.Road))
         {
-            GameRoot.Instance.factoryManager.PushGameObjectToFactory("Road/" + roadNow.name.Replace("(Clone)", ""), roadNow);
+            GameRoot.Instance.factoryManager.PushGameObjectToFactory(roadNowName, roadNow);
 
             // 获取新道路
             GetNewRoad();
@@ -46,6 +49,7 @@ public class RoadChange : MonoBehaviour
     private void GetNewRoad()
     {
         roadNow = roadNext;
+        roadNowName = roadNextName;
 
         roadNext = GetRandomRoad();
         roadNext.transform.position = roadNow.transform.position + new Vector3(0, 0, 160);
@@ -54,7 +58,8 @@ public class RoadChange : MonoBehaviour
 
     private GameObject GetRandomRoad()
     {
-        string newRoadName = "Pattern_" + Random.Range(1, 5).ToString();
-        return GameRoot.Instance.factoryManager.GetGameObjectResource("Road/" + newRoadName);
+        string newRoadName = "Road/" + "Pattern_" + Random.Range(1, 5).ToString();
+        roadNextName = newRoadName; // 先设置到NextName 
+        return GameRoot.Instance.factoryManager.GetGameObjectResource(newRoadName);
     }
 }

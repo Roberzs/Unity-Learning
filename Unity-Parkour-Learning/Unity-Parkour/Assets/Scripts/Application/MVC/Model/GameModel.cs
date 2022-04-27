@@ -18,8 +18,8 @@ public class GameModel : Model
     #endregion
 
     #region Field
-    private bool m_IsPlay;
-    private bool m_IsPause;
+    private bool m_IsPlay = true;
+    private bool m_IsPause = false;
     #endregion
 
     #region Mono

@@ -40,7 +40,7 @@ public class SoundManager : MonoSingleton<SoundManager>
     }
 
     // 播放音效
-    public void PlayFgAudio(string audioName)
+    public void PlayEffectAudio(string audioName)
     {
         AudioClip audioClip = FactoryManager.Instance.GetAudioClip(audioName);
         fgAudioSource.PlayOneShot(audioClip);

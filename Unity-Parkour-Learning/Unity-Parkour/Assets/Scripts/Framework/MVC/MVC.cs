@@ -70,6 +70,7 @@ public static class MVC
             Type t = CommandMap[eventName];
             Controller c = Activator.CreateInstance(t) as Controller;
             c.Execute(data);
+            
         }
 
         foreach (var v in Views.Values)
@@ -77,6 +78,7 @@ public static class MVC
             if (v.AttentionList.Contains(eventName))
             {
                 v.HandleEvent(eventName, data);
+                
             }
         }
     }

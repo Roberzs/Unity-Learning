@@ -12,4 +12,7 @@ public static class TagDefine
 {
 	public const string Road = "Road";
 	public const string Player = "Player";
+	public const string SmallFance = "SmallFance";
+	public const string MediumFance = "MediumFance";
+	public const string BigFance = "BigFance";
 }

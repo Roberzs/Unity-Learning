@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Road
+  - Item
+  - SmallFance
+  - BigFance
+  - ItemBeforeTrigger
+  - MediumFance
   layers:
   - Default
   - TransparentFX

@@ -13,9 +13,14 @@ public static class StringDefine
     // 2D资源根目录
     public const string SpritesRootPath = "";
     // 音频资源根目录
-    public const string AudioClipsRootPath = "";
+    public const string AudioClipsRootPath = "Sound/";
     // 游戏物体资源根目录
     public const string PrefabsRootPath = "Prefabs/";
+
+    // Sound
+    public const string S_Jump = "Se_UI_Jump";
+    public const string S_Slide = "Se_UI_Slide";
+    public const string S_Huadong = "Se_UI_Huadong";
 
     // Event
     public const string E_ExitScene = "E_ExitScene";
@@ -27,6 +32,7 @@ public static class StringDefine
 
     // View 
     public const string V_PlayerMove = "V_PlayerMove";
+    public const string V_PlayerAnim = "PlayerAnim";
 }
 
 public enum InputDirection

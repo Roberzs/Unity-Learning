@@ -35,7 +35,8 @@ public class GameRoot : MonoSingleton<GameRoot>
 
         // 注册启动控制器
         MVC.RegisterController(StringDefine.E_StartUp, typeof(StartUpController));
-
+        // 
+        SendEvent(StringDefine.E_StartUp);
         // 跳转
         GameRoot.Instance.LoadScene(2);
     }

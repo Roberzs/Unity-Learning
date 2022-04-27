@@ -15,7 +15,6 @@ public class PlayerMove : View
     public override string Name => StringDefine.V_PlayerMove;
     private const float m_Grivaty = 9.81f;
     private const float moveXYSpeed = 15f;
-    private const float moveSpeed = 20f;
     private const float rollAnimTimeLength = 0.733f;
     #endregion
 
@@ -26,10 +25,15 @@ public class PlayerMove : View
     private Vector3 m_MousePos = Vector3.zero;
     private int m_nowIndex = 1;
     private int m_TargetIndex = 1;
-    private Vector2 m_XYTargetPos = new Vector2(0.0f, 0.0f);
+    public float m_TargetX = 0;
+    public float m_TargetY = 0;
     private bool isRolling = false;
+    private bool isHiting = false;
     private float rollAnimTimer;
     private GameModel mGameModel;
+    private float moveSpeed = 20f;
+    private float CurrMoveSpeed;
+    private float AcceleSpeed = 3;
     #endregion
 
     #region 回调
@@ -52,21 +56,42 @@ public class PlayerMove : View
         StartCoroutine(UpdateAction());
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag(TagDefine.SmallFance))
+        {
+            HitObstacles(other.gameObject);
+        }
+        if (other.CompareTag(TagDefine.MediumFance))
+        {
+
+        }
+        if (other.CompareTag(TagDefine.BigFance))
+        {
+            if (isRolling)
+                return;
+            HitObstacles(other.gameObject);
+        }
+    }
+
     #endregion
 
     #region 方法
+
+    #region 移动相关
     IEnumerator UpdateAction()
     {
         //Physics.autoSyncTransforms = true;
         while (true)
         {
-            if (mGameModel.IsPlay && !mGameModel.IsPause)
+            if (mGameModel != null && mGameModel.IsPlay && !mGameModel.IsPause)
             {
-                // 向Z轴移动
-                //m_Cc.Move(Vector3.forward * moveSpeed * Time.deltaTime);
-                transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
-                // XY轴移动
-                MoveToXYTargetPos();
+                if (!m_Cc.isGrounded)
+                    m_TargetY -= m_Grivaty * Time.deltaTime;
+                // YZ 轴移动
+                m_Cc.Move((transform.forward * moveSpeed + new Vector3(0, m_TargetY, 0)) * Time.deltaTime);
+                // X 轴移动
+                MoveToXTargetPos();
                 // 更新输入
                 UpdateMoveDirection();
                 UpdateRollState();
@@ -150,24 +175,28 @@ public class PlayerMove : View
                 if (m_TargetIndex < 2)
                 {
                     m_TargetIndex++;
-                    m_XYTargetPos.x += 2;
+                    m_TargetX += 2;
+                    GameRoot.Instance.soundManager.PlayEffectAudio(StringDefine.S_Huadong);
                 }
                 break;
             case InputDirection.LEFT:
                 if (m_TargetIndex > 0)
                 {
                     m_TargetIndex--;
-                    m_XYTargetPos.x -= 2;
+                    m_TargetX -= 2;
+                    GameRoot.Instance.soundManager.PlayEffectAudio(StringDefine.S_Huadong);
                 }
                 break;
             case InputDirection.DOWN:
                 isRolling = true;
                 rollAnimTimer = rollAnimTimeLength;
+                GameRoot.Instance.soundManager.PlayEffectAudio(StringDefine.S_Slide);
                 break;
             case InputDirection.UP:
-                if (m_XYTargetPos.y == 0)
+                if (m_Cc.isGrounded)
                 {
-                    m_XYTargetPos.y += 5;
+                    m_TargetY = 5;
+                    GameRoot.Instance.soundManager.PlayEffectAudio(StringDefine.S_Jump);
                 }
                 break;
             default:
@@ -180,28 +209,19 @@ public class PlayerMove : View
         m_InputDir = InputDirection.NULL;
     }
 
-    void MoveToXYTargetPos()
+    void MoveToXTargetPos()
     {
-        if (m_TargetIndex != m_nowIndex || m_XYTargetPos.y != 0)
+        if (m_TargetIndex != m_nowIndex)
         {
-            if (m_XYTargetPos.y != 0)
-            {
-                m_XYTargetPos.y -= m_Grivaty * Time.deltaTime;
-            }
-            Vector3 targetPos = new Vector3(m_XYTargetPos.x, m_XYTargetPos.y, transform.position.z);
-            transform.position = Vector3.Lerp(transform.position, targetPos, moveXYSpeed * Time.deltaTime);
-            if (Vector3.Distance(transform.position, targetPos) < 0.05f)
+            float targetPos = Mathf.Lerp(transform.position.x, m_TargetX, 1 / Mathf.Abs(transform.position.x - m_TargetX) * moveXYSpeed * Time.deltaTime);
+            transform.position = new Vector3(targetPos, transform.position.y, transform.position.z);
+            if (Mathf.Abs(transform.position.x - m_TargetX) < 0.05f)
             {
                 m_nowIndex = m_TargetIndex;
-                transform.position = targetPos;
-            }
-            if (m_XYTargetPos.y < -0.005f)
-            {
-                // 投机取巧 没想到好办法判断是跳起状态还是下落状态 但是当Y是负值时一定是下落
-                m_XYTargetPos.y = 0;
-                transform.position = targetPos;
+                transform.position = new Vector3(m_TargetX, transform.position.y, transform.position.z);
             }
         }
+
     }
 
     /// <summary>
@@ -219,6 +239,36 @@ public class PlayerMove : View
             }
         }
     }
+
+    #endregion
+
+    /// <summary>
+    /// 撞到障碍物
+    /// </summary>
+    private void HitObstacles(GameObject obstacles)
+    {
+        obstacles.SendMessage("HitPlayer", SendMessageOptions.DontRequireReceiver);
+        // 保护最大速度
+        if (!isHiting)
+        {
+            isHiting = true;
+            CurrMoveSpeed = moveSpeed;
+            StartCoroutine(RecoverSpeed());
+        }
+        moveSpeed = 0.0f;   
+    }
+
+    IEnumerator RecoverSpeed()
+    {
+        while (moveSpeed <= CurrMoveSpeed)
+        {
+            moveSpeed += AcceleSpeed * Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        isHiting = false;
+        moveSpeed = CurrMoveSpeed;
+    }
+
 
     #endregion
 }
