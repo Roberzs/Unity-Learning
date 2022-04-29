@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -39,18 +40,12 @@ public class ResLoadFrameConfigInspector : Editor
     }
 }
 
-public class ResLoadConfig 
+public static class ResLoadConfig 
 {
-    private const string ResLoadFrameConfigPath = "";
-
-    //private ResLoadFrameConfig m_ResLoadFrameConfig;
+    private static string ResLoadFrameConfigPath = BundleEditor.GetScriptInDirectory(nameof(ResLoadFrameConfig)) + "/ResLoadFrameConfig.asset";
 
     public static ResLoadFrameConfig GetResLoadConfig()
     {
-        //if (!m_ResLoadFrameConfig)
-        //{
-
-        //}
         return AssetDatabase.LoadAssetAtPath<ResLoadFrameConfig>(ResLoadFrameConfigPath);
     }
 }

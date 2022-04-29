@@ -336,15 +336,20 @@ public class BundleEditor
     /// </summary>
     /// <param name="scriptName"></param>
     /// <returns></returns>
-    private static string GetScriptInDirectory(string scriptName)
+    public static string GetScriptInDirectory(string scriptName)
     {
         string[] path = UnityEditor.AssetDatabase.FindAssets(scriptName);
-        if (path.Length > 1)
+        foreach (var item in path)
         {
-            Debug.LogError("文件名重复, 脚本所在目录获取失败!");
-            return string.Empty;
+            string tmpPtah = AssetDatabase.GUIDToAssetPath(item);
+            if (tmpPtah.EndsWith(".cs"))
+            {
+                return tmpPtah.Replace((@"/" + scriptName + ".cs"), "");
+            }
         }
-        return AssetDatabase.GUIDToAssetPath(path[0]).Replace((@"/" + scriptName + ".cs"), "");
+        return string.Empty;
+
+
     }
 
     [MenuItem("ResLoadFrame/打开AssetBundle配置文件", priority = 10)]

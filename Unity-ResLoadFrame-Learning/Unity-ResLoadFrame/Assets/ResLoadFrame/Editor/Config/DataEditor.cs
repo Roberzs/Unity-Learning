@@ -19,9 +19,9 @@ using System.Linq;
 
 public class DataEditor
 {
-    private static string XMLPath = "Assets/GameData/Data/Xml/";
-    private static string BinaryPath = "Assets/GameData/Data/Binary/";
-    private static string ScriptPath = "Assets/Script/Data/";
+    private static string XMLPath = ResLoadConfig.GetResLoadConfig().m_XmlDataPath;
+    private static string BinaryPath = ResLoadConfig.GetResLoadConfig().m_BinaryPath;
+    private static string ScriptPath = ResLoadConfig.GetResLoadConfig().m_ScriptDataPath;
 
     private static string ExcelPath = Application.dataPath + "/../Data/Excel/";
     private static string RegPath = Application.dataPath + "/../Data/Reg/";
