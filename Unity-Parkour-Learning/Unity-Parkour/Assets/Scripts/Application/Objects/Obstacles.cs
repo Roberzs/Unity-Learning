@@ -11,25 +11,27 @@ using UnityEngine;
 public class Obstacles : MonoBehaviour
 {
 	public string SelfPath;
-
-	public void OnEnable()
+	
+	protected virtual void Awake()
     {
 
     }
 
-	public void OnDisable()
+	protected virtual void OnEnable()
     {
 
     }
 
-	public void HitPlayer()
+	protected virtual void OnDisable()
+    {
+
+    }
+
+	public virtual void HitPlayer()
     {
 		// 播放特效
 		GameObject itemEff = GameRoot.Instance.factoryManager.GetGameObjectResource("Effect/FX_ZhuangJi");
 		itemEff.transform.position = transform.position;
-
-		// 播放声音
-		GameRoot.Instance.soundManager.PlayEffectAudio("");
 
 		// 资源回收
 		//GameRoot.Instance.factoryManager.PushGameObjectToFactory(SelfPath, gameObject);

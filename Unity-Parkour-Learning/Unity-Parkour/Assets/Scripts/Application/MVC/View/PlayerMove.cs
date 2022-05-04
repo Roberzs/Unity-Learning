@@ -34,6 +34,12 @@ public class PlayerMove : View
     private float moveSpeed = 20f;
     private float CurrMoveSpeed;
     private float AcceleSpeed = 3;
+    private IEnumerator MultiplyCor = null;
+    private bool IsMultiply = false;
+    private IEnumerator MagnetCor = null;
+    private SphereCollider MagnetCollider;
+    private IEnumerator InvincibleCor = null;
+    private bool IsInvincible = false;
     #endregion
 
     #region 回调
@@ -49,6 +55,8 @@ public class PlayerMove : View
     {
         m_Cc = GetComponent<CharacterController>();
         mGameModel = GetModel<GameModel>();
+        MagnetCollider = transform.Find("MagnetCollider").GetComponent<SphereCollider>();
+        MagnetCollider.enabled = false;
     }
 
     private void Start()
@@ -58,19 +66,61 @@ public class PlayerMove : View
 
     private void OnTriggerEnter(Collider other)
     {
+        // 撞击路障
         if (other.CompareTag(TagDefine.SmallFance))
         {
             HitObstacles(other.gameObject);
+            // 播放音效
+            GameRoot.Instance.soundManager.PlayEffectAudio("Se_UI_Hit");
         }
         if (other.CompareTag(TagDefine.MediumFance))
         {
-
+            if (isRolling)
+                return;
+            HitObstacles(other.gameObject);
+            // 播放音效
+            GameRoot.Instance.soundManager.PlayEffectAudio("Se_UI_Hit");
         }
         if (other.CompareTag(TagDefine.BigFance))
         {
             if (isRolling)
                 return;
             HitObstacles(other.gameObject);
+            // 播放音效
+            GameRoot.Instance.soundManager.PlayEffectAudio("Se_UI_Hit");
+        }
+
+        if (other.CompareTag(TagDefine.Block))
+        {
+            GameRoot.Instance.soundManager.PlayEffectAudio("Se_UI_End");
+            other.SendMessage("HitPlayer", SendMessageOptions.DontRequireReceiver);
+
+            if (IsInvincible)
+            {
+                // 无敌！
+                return;
+            }
+
+            // 游戏结束
+            SendEvent(StringDefine.E_EndGame);
+        }
+        if (other.CompareTag(TagDefine.ChildBlock))
+        {
+            GameRoot.Instance.soundManager.PlayEffectAudio("Se_UI_End");
+            other.transform.parent.parent.SendMessage("HitPlayer", SendMessageOptions.DontRequireReceiver);
+
+            if (IsInvincible)
+            {
+                // 无敌！
+                return;
+            }
+
+            // 游戏结束
+            SendEvent(StringDefine.E_EndGame);
+        }
+        if (other.CompareTag(TagDefine.HitTrigger))
+        {
+            other.transform.parent.SendMessage("HitTrigger", SendMessageOptions.DontRequireReceiver);
         }
     }
 
@@ -248,6 +298,13 @@ public class PlayerMove : View
     private void HitObstacles(GameObject obstacles)
     {
         obstacles.SendMessage("HitPlayer", SendMessageOptions.DontRequireReceiver);
+
+        if (IsInvincible)
+        {
+            // 无敌！
+            return;
+        }
+
         // 保护最大速度
         if (!isHiting)
         {
@@ -269,6 +326,66 @@ public class PlayerMove : View
         moveSpeed = CurrMoveSpeed;
     }
 
+    public void HitCoin()
+    {
+        Debug.Log("吃到金币");
+    }
+
+    public void HitMultiply()
+    {
+        if (MultiplyCor != null)
+        {
+            StopCoroutine(MultiplyCor);
+        }
+        MultiplyCor = MultiplyCoroutine();
+        StartCoroutine(MultiplyCor);
+    }
+
+    IEnumerator MultiplyCoroutine()
+    {
+        IsMultiply = true;
+        yield return new WaitForSeconds(mGameModel.MultiplyTime);
+        IsMultiply = false;
+    }
+
+    public void HitMagnet()
+    {
+        if (MagnetCor != null)
+        {
+            StopCoroutine(MagnetCor);
+        }
+        MagnetCor = MagnetCoroutine();
+        StartCoroutine(MagnetCor);
+    }
+
+    IEnumerator MagnetCoroutine()
+    {
+        MagnetCollider.enabled = true;
+        yield return new WaitForSeconds(mGameModel.MagnetTime);
+        MagnetCollider.enabled = false;
+    }
+
+    public void HitAddTimer()
+    {
+
+    }
+
+    public void HitInvincible()
+    {
+        if (InvincibleCor != null)
+        {
+            StopCoroutine(InvincibleCor);
+        }
+        InvincibleCor = InvincibleCoroutine();
+        StartCoroutine(InvincibleCor);
+    }
+
+    IEnumerator InvincibleCoroutine()
+    {
+        IsMultiply = true;
+        yield return new WaitForSeconds(mGameModel.Invincible);
+        IsMultiply = false;
+    }
 
     #endregion
 }
