@@ -6,8 +6,6 @@
     功能：Nothing
 *****************************************************/
 
-using System;
-using System.Collections.Generic;
 using PEProtocol;
 
 public class FubenSys
@@ -48,12 +46,12 @@ public class FubenSys
 
         PlayerData pd = cacheSvc.GetPlayerDataBySession(pack.session);
         int power = cfgSvc.GetMapData(data.fbId).power;
-        
+
         if (pd.fuben < data.fbId)
         {
             msg.err = (int)ErrorCode.ClientDataError;
         }
-        else if(pd.power < power)
+        else if (pd.power < power)
         {
             msg.err = (int)ErrorCode.LackPower;
         }

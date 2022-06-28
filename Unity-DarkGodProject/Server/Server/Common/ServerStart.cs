@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading;
 
 namespace Server
 {
@@ -17,7 +12,8 @@ namespace Server
              *  网络服务层当会话队列有消息时 根据消息类别 将消息传递到相应业务系统进行处理
              */
             ServerRoot.Instance.Init();
-            while(true) {
+            while (true)
+            {
                 ServerRoot.Instance.Update();
                 Thread.Sleep(20);
             };

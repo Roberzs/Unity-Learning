@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-public class ServerRoot
+﻿public class ServerRoot
 {
     private static ServerRoot instance = null;
     public static ServerRoot Instance
     {
         get
         {
-            if(instance == null)
+            if (instance == null)
             {
                 instance = new ServerRoot();
             }

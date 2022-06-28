@@ -9,7 +9,7 @@
 using PENet;
 using PEProtocol;
 
-public class ServerSession: PESession<GameMsg>
+public class ServerSession : PESession<GameMsg>
 {
     public int sessionID = 0;
 
@@ -21,7 +21,7 @@ public class ServerSession: PESession<GameMsg>
 
     protected override void OnReciveMsg(GameMsg msg)
     {
-        PECommon.Log("SessionID:" + sessionID + " RvPack CMD:" +((CMD)msg.cmd).ToString() );
+        PECommon.Log("SessionID:" + sessionID + " RvPack CMD:" + ((CMD)msg.cmd).ToString());
         NetSvc.Instance.AddMsgQue(this, msg);
     }
 

@@ -7,8 +7,6 @@
 *****************************************************/
 
 using PEProtocol;
-using System;
-using System.Collections.Generic;
 
 public class TaskSys
 {
@@ -59,7 +57,7 @@ public class TaskSys
             // 更新任务进度
             CalcTaskArr(pd, trd);
 
-            if (!cacheSvc.UpdatePlayerData(pd.id, pd)) 
+            if (!cacheSvc.UpdatePlayerData(pd.id, pd))
             {
                 msg.err = (int)ErrorCode.UpdateDBError;
             }

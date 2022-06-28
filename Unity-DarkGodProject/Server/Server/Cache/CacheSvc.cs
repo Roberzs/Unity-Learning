@@ -6,8 +6,8 @@
 	功能：数据缓存层
 *****************************************************/
 
-using System.Collections.Generic;
 using PEProtocol;
+using System.Collections.Generic;
 
 public class CacheSvc
 {
@@ -67,7 +67,7 @@ public class CacheSvc
     }
 
     // 账号上线 缓存数据
-    public void AcctOnLine(string acct,ServerSession session,PlayerData playerData)
+    public void AcctOnLine(string acct, ServerSession session, PlayerData playerData)
     {
         onLineAccDic.Add(acct, session);
         onLineSessionDic.Add(session, playerData);

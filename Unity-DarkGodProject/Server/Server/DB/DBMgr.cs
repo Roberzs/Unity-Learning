@@ -32,7 +32,7 @@ public class DBMgr
     {
         conn = new MySqlConnection("server=localhost;User Id = root;password= root;Database=darkgod;Charset=utf8");
         conn.Open();
-        
+
         PECommon.Log("DBMgr Init Done.");
 
         // 模拟登录
@@ -40,7 +40,7 @@ public class DBMgr
     }
 
     // 查找玩家数据
-    public PlayerData QueryPlayerData(string acct,string pass)
+    public PlayerData QueryPlayerData(string acct, string pass)
     {
         bool isNewAcct = true;      // 用于标志是否是新账号
         PlayerData playerData = null;
@@ -126,7 +126,7 @@ public class DBMgr
                 }
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             PECommon.Log("Query PlayData By Acct&Pass Error:" + e, LogType.Error);
         }
@@ -165,7 +165,7 @@ public class DBMgr
                     taskArr = new string[6],
 
                     fuben = 10001,
-                    
+
                 };
                 for (int i = 0; i < playerData.taskArr.Length; i++)
                 {
@@ -178,7 +178,7 @@ public class DBMgr
     }
 
     // 在数据库中插入新账号的数据并返回ID
-    private int InsertNewAcctData (string acct, string pass, PlayerData pd)
+    private int InsertNewAcctData(string acct, string pass, PlayerData pd)
     {
         int id = -1;
         try
@@ -226,7 +226,7 @@ public class DBMgr
 
             cmd.ExecuteNonQuery();
             id = (int)cmd.LastInsertedId;
-            
+
         }
         catch (Exception e)
         {
@@ -248,7 +248,7 @@ public class DBMgr
             reader = cmd.ExecuteReader();
             if (reader.Read()) isExist = true;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             PECommon.Log("Queue Name State Error:" + e, LogType.Error);
         }
@@ -260,7 +260,7 @@ public class DBMgr
     }
 
     // 更新玩家数据
-    public bool UpdatePlayerData (int id, PlayerData playerData)
+    public bool UpdatePlayerData(int id, PlayerData playerData)
     {
         try
         {
@@ -286,7 +286,7 @@ public class DBMgr
             cmd.Parameters.AddWithValue("guideid", playerData.guideid);
             cmd.Parameters.AddWithValue("time", playerData.time);
 
-            cmd.Parameters.AddWithValue("fuben", playerData.fuben); 
+            cmd.Parameters.AddWithValue("fuben", playerData.fuben);
 
             string strongInfo = "";
             for (int i = 0; i < playerData.strongArr.Length; i++)

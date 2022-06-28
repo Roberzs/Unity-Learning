@@ -32,7 +32,7 @@ public class LoginSys
         cacheSvc = CacheSvc.Instance;
         timerSvc = TimerSvc.Instance;
         PECommon.Log("LoginSys Init Done.");
-        
+
     }
 
     public void ReqLogin(MsgPack pack)
@@ -106,7 +106,7 @@ public class LoginSys
             // 更新缓存、数据库 然后返回客户端
             PlayerData playerData = cacheSvc.GetPlayerDataBySession(pack.session);
             playerData.name = data.name;
-            if(cacheSvc.UpdatePlayerData(playerData.id, playerData))
+            if (cacheSvc.UpdatePlayerData(playerData.id, playerData))
             {
                 // 更新成功
                 msg.rspRename = new RspRename
@@ -140,7 +140,7 @@ public class LoginSys
             pd.time = timerSvc.GetNowTime();
             if (!cacheSvc.UpdatePlayerData(pd.id, pd))
             {
-                PECommon.Log("数据更新失败",LogType.Error);
+                PECommon.Log("数据更新失败", LogType.Error);
             }
         }
         cacheSvc.AcctOfLine(session);

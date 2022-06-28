@@ -47,16 +47,19 @@ public class TimerSvc
         tpQue.Clear();
 
         // 日志输出
-        pt.SetLog((string info) => {
+        pt.SetLog((string info) =>
+        {
             PECommon.Log(info);
         });
 
-        pt.SetHandle((Action<int> cb, int tid) => {
+        pt.SetHandle((Action<int> cb, int tid) =>
+        {
             if (cb != null)
             {
-                lock (tpQueLock) {
+                lock (tpQueLock)
+                {
                     tpQue.Enqueue(new TaskPack(tid, cb));
-                } 
+                }
             }
         });
 

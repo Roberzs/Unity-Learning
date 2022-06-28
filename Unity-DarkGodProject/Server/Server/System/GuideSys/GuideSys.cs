@@ -7,8 +7,6 @@
 *****************************************************/
 
 using PEProtocol;
-using System;
-using System.Collections.Generic;
 
 public class GuideSys
 {
@@ -60,9 +58,10 @@ public class GuideSys
             pd.guideid += 1;
 
             pd.coin += gc.coin;
-           PECommon.CalcExp(pd, gc.exp);
+            PECommon.CalcExp(pd, gc.exp);
 
-            if (!cacheSvc.UpdatePlayerData(pd.id, pd)) {
+            if (!cacheSvc.UpdatePlayerData(pd.id, pd))
+            {
                 msg.err = (int)ErrorCode.UpdateDBError;
             }
             else
@@ -84,5 +83,5 @@ public class GuideSys
         pack.session.SendMsg(msg);
     }
 
-    
+
 }
