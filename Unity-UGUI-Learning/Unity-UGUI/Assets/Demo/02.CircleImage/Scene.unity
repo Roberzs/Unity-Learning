@@ -517,7 +517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: "\u5B98\u65B9\u906E\u7F69\u65B9\u5F0F(Mask\u7EC4\u4EF6)\n\n\u7F3A\u70B9: 
-    \u8FB9\u7F18\u952F\u9F7F\u5316\u4E25\u91CD\n          \u4F1A\u4EA7\u751F\u5927\u91CFDrawCall"
+    \u8FB9\u7F18\u952F\u9F7F\u5316\u4E25\u91CD\n           \u4F1A\u4EA7\u751F\u5927\u91CFDrawCall"
 --- !u!1 &1354341441
 GameObject:
   m_ObjectHideFlags: 0
