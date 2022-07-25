@@ -15,7 +15,7 @@ public abstract class View : MonoBehaviour
 
     public List<string> AttentionList = new List<string>();
 
-    public void RegisterAttentionEvent()
+    public virtual void RegisterAttentionEvent()
     {
 
     }

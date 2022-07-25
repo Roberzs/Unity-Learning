@@ -136,6 +136,9 @@ public class PlayerMove : View
         {
             if (mGameModel != null && mGameModel.IsPlay && !mGameModel.IsPause)
             {
+                // 更新UI
+                UpdateDis();
+
                 if (!m_Cc.isGrounded)
                     m_TargetY -= m_Grivaty * Time.deltaTime;
                 // YZ 轴移动
@@ -149,6 +152,15 @@ public class PlayerMove : View
             
             yield return 0;
         }
+    }
+
+    void UpdateDis()
+    {
+        DistanceArgs e = new DistanceArgs
+        {
+            distance = (int)transform.position.z
+        };
+        SendEvent(StringDefine.E_UpdateDis, e);
     }
 
     /// <summary>

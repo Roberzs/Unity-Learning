@@ -28,12 +28,17 @@ public static class StringDefine
     public const string E_StartUp = "E_StartUp";
     public const string E_EndGame = "E_EndGame";
 
+    public const string E_UpdateDis = "E_UpdateDis";
+    public const string E_UpdateCoin = "E_UpdateCoin";
+
     // Model
     public const string M_GameModel = "M_GameModel";
 
     // View 
     public const string V_PlayerMove = "V_PlayerMove";
-    public const string V_PlayerAnim = "PlayerAnim";
+    public const string V_PlayerAnim = "V_PlayerAnim";
+
+    public const string V_UIBoard = "V_UIBoard";
 }
 
 public enum InputDirection

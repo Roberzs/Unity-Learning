@@ -12,19 +12,21 @@ public class EnterSceneController : Controller
 {
     public override void Execute(object data)
     {
+        
 		SceneArgs e = data as SceneArgs;
         switch (e.sceneIndex)
         {
+            case 0:
+                break;
             case 1:
                 break;
             case 2:
-                break;
-            case 3:
                 // 游戏场景
                 RegisterView(GameObject.Find(TagDefine.Player).GetComponent<PlayerMove>());
                 RegisterView(GameObject.Find(TagDefine.Player).GetComponent<PlayerAnim>());
+                RegisterView(GameObject.Find("Canvas").transform.Find("UIBoard").GetComponent<UIBoard>());
                 break;
-            case 4:
+            case 3:
                 break;
             default:
                 break;
