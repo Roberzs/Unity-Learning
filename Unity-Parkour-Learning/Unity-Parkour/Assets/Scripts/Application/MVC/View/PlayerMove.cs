@@ -340,7 +340,12 @@ public class PlayerMove : View
 
     public void HitCoin()
     {
-        Debug.Log("吃到金币");
+        //Debug.Log("吃到金币");
+        CoinArgs e = new CoinArgs
+        {
+            coinCount = IsMultiply ? 2 : 1
+        };
+        SendEvent(StringDefine.E_UpdateCoin, e);
     }
 
     public void HitMultiply()
@@ -379,7 +384,7 @@ public class PlayerMove : View
 
     public void HitAddTimer()
     {
-
+        SendEvent(StringDefine.E_AddTimer);
     }
 
     public void HitInvincible()

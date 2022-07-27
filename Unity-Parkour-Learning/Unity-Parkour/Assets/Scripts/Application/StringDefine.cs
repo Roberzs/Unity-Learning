@@ -30,6 +30,7 @@ public static class StringDefine
 
     public const string E_UpdateDis = "E_UpdateDis";
     public const string E_UpdateCoin = "E_UpdateCoin";
+    public const string E_AddTimer = "E_AddTimer";
 
     // Model
     public const string M_GameModel = "M_GameModel";
