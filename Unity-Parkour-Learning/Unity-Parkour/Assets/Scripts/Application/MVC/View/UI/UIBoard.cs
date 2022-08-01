@@ -87,6 +87,8 @@ public class UIBoard : View
         CountDownTimer = m_InitTime;
     }
 
+    #region Mono
+
     private void Awake()
     {
         m_GameModel = GetModel<GameModel>();
@@ -101,4 +103,15 @@ public class UIBoard : View
             CountDownTimer -= Time.deltaTime;
         }
     }
+
+    #endregion
+
+    #region Func
+
+    public void OnClickPauseBtn()
+    {
+        SendEvent(StringDefine.E_PauseGame);
+    }
+
+    #endregion
 }

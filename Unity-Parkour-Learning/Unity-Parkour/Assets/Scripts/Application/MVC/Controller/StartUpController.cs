@@ -9,6 +9,7 @@ public class StartUpController : Controller
         // Register Controller
         RegisterController(StringDefine.E_EnterScene, typeof(EnterSceneController));
         RegisterController(StringDefine.E_EndGame, typeof(EndGameController));
+        RegisterController(StringDefine.E_PauseGame, typeof(GamePauseController));
 
         // Register Model
         RegisterModel(new GameModel());
