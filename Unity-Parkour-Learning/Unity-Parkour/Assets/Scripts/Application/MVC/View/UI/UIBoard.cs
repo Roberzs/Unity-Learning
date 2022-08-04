@@ -44,6 +44,7 @@ public class UIBoard : View
     #region Field
     int m_Coin = 0;
     int m_Distance = 0;
+    int m_Goal = 0;
 
     float m_InitTime = 50f;             // 初始倒计时
     float m_AddTime = 20f;              // 倒计时增加变量
@@ -64,6 +65,8 @@ public class UIBoard : View
 
     public int Coin { get => m_Coin; set { m_Coin = value; txtCoin.text = value.ToString(); } }
     public int Distance { get => m_Distance; set {  m_Distance = value; txtDistance.text = value.ToString() + "米"; } }
+
+    public int Goal { get => m_Goal; set => m_Goal = value; }
 
     public float CountDownTimer 
     { 
@@ -110,7 +113,13 @@ public class UIBoard : View
 
     public void OnClickPauseBtn()
     {
-        SendEvent(StringDefine.E_PauseGame);
+        PauseArgs e = new PauseArgs()
+        {
+            distance = Distance,
+            score = Coin * 3 + Distance+ Goal * 15,
+            coin = Coin
+        };
+        SendEvent(StringDefine.E_PauseGame, e);
     }
 
     #endregion

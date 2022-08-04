@@ -28,6 +28,7 @@ public static class StringDefine
     public const string E_StartUp = "E_StartUp";
     public const string E_EndGame = "E_EndGame";
     public const string E_PauseGame = "E_PauseGame";
+    public const string E_ResumeGame = "E_ResumeGame";
 
     public const string E_UpdateDis = "E_UpdateDis";
     public const string E_UpdateCoin = "E_UpdateCoin";
@@ -42,6 +43,7 @@ public static class StringDefine
 
     public const string V_UIBoard = "V_UIBoard";
     public const string V_UIPause = "V_UIPause";
+    public const string V_UIResume = "V_UIResume";
 }
 
 public enum InputDirection

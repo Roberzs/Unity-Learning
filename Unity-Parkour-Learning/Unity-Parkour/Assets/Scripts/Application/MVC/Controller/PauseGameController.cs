@@ -1,5 +1,5 @@
 /****************************************************
-	文件：GamePauseController.cs
+	文件：PauseGameController.cs
 	作者：zhystay
 	邮箱：zhy18125@163.com
 	日期：#CreateTime#
@@ -8,7 +8,7 @@
 
 using UnityEngine;
 
-public class GamePauseController : Controller
+public class PauseGameController : Controller
 {
     public override void Execute(object data)
     {
@@ -17,5 +17,6 @@ public class GamePauseController : Controller
 
 		UIPause uIPause = GetView<UIPause>();
 		uIPause.Show();
+		uIPause.SetPauseData(data as PauseArgs);
     }
 }

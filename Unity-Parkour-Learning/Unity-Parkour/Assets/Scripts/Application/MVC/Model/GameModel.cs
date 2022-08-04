@@ -18,14 +18,18 @@ public class GameModel : Model
     public float MultiplyTime { get => m_MultiplyTime; set => m_MultiplyTime = value; }
     public float MagnetTime { get => m_MagnetTime; set => m_MagnetTime = value; }
     public float Invincible { get => m_Invincible; set => m_Invincible = value; }
+    public float SkillTime { get => m_SkillTime; set => m_SkillTime = value; }
     #endregion
 
     #region Field
     private bool m_IsPlay = true;
     private bool m_IsPause = false;
+    
     private float m_MultiplyTime = 5f;
     private float m_MagnetTime = 3.5f;
     private float m_Invincible = 5.0f;
+    
+    private float m_SkillTime = 5.0f;
     #endregion
 
     #region Mono
@@ -33,6 +37,12 @@ public class GameModel : Model
     #endregion
 
     #region Func
-
+    public void Init()
+    {
+        m_MagnetTime = 0f;
+        m_MultiplyTime = 0f;
+        m_Invincible = 0f;
+        m_SkillTime = 5f;
+    }
     #endregion
 }
