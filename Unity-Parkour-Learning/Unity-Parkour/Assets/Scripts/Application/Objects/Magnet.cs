@@ -32,7 +32,8 @@ public class Magnet : Item
         //PlayEffect("FX_XingXing", player.position);
         GameRoot.Instance.soundManager.PlayEffectAudio("Se_UI_JinBi");
 
-        player.SendMessage("HitMagnet", SendMessageOptions.DontRequireReceiver);
+        //player.SendMessage("HitMagnet", SendMessageOptions.DontRequireReceiver);
+        player.SendMessage("HitItem", ItemKind.ItemMagnet, SendMessageOptions.DontRequireReceiver);
     }
 
 

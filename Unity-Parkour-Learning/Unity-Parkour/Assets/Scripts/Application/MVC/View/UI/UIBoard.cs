@@ -6,6 +6,7 @@
 	功能：Nothing
 *****************************************************/
 
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -50,7 +51,7 @@ public class UIBoard : View
     float m_AddTime = 20f;              // 倒计时增加变量
 
     float m_CountDownTimer = 0f;        // 倒计时
-
+    float m_SkillTimer = 0;
     GameModel m_GameModel = null;
 
     public Text txtCoin;
@@ -59,6 +60,17 @@ public class UIBoard : View
     public Text txtCountDownTimer;
     public Image imgCountDownTimer;
 
+    public Text txtGizmoMangent;
+    public Text txtGizmoMultiply;
+    public Text txtGizmoInvinclble;
+
+    public Button btnMagnet;
+    public Button btnMultiply;
+    public Button btnInvincible;
+
+    private IEnumerator MultiplyCor = null;
+    private IEnumerator MagnetCor = null;
+    private IEnumerator InvincibleCor = null;
     #endregion
 
     // 略: 封装属性快捷键 Ctrl + R,E
@@ -88,6 +100,7 @@ public class UIBoard : View
         Coin = 0;
         Distance = 0;
         CountDownTimer = m_InitTime;
+        m_SkillTimer = m_GameModel.SkillTime;
     }
 
     #region Mono
@@ -95,7 +108,7 @@ public class UIBoard : View
     private void Awake()
     {
         m_GameModel = GetModel<GameModel>();
-
+        UpdateUI();
         ResetData();
     }
 
@@ -110,6 +123,29 @@ public class UIBoard : View
     #endregion
 
     #region Func
+    /// <summary>
+    /// 更新按钮是否可用
+    /// </summary>
+    public void UpdateUI()
+    {
+        ShowOrHideBtn(m_GameModel.InvincibleCnt, btnInvincible);
+        ShowOrHideBtn(m_GameModel.MagnetCnt, btnMagnet);
+        ShowOrHideBtn(m_GameModel.MultiplyCnt, btnMultiply);
+    }
+
+    private void ShowOrHideBtn(float i, Button btn)
+    {
+        if (i > 0)
+        {
+            btn.interactable = true;
+            btn.transform.Find("Mask").gameObject.SetActive(false);
+        }
+        else
+        {
+            btn.interactable = false;
+            btn.transform.Find("Mask").gameObject.SetActive(true);
+        }
+    }
 
     public void OnClickPauseBtn()
     {

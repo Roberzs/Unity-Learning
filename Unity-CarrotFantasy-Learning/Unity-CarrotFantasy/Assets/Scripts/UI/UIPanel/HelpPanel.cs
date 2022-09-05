@@ -38,7 +38,7 @@ public class HelpPanel : BasePanel
     public override void InitPanel()
     {
         base.InitPanel();
-        transform.localPosition = new Vector3(1024, 0, 0);
+        transform.localPosition = new Vector3(Screen.width, 0, 0);
         transform.SetSiblingIndex(5);
 
         slideScrollView.Init();

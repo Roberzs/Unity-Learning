@@ -43,7 +43,7 @@ public class SetPanel : BasePanel
 
     public override void InitPanel()
     {
-        transform.localPosition = new Vector3(-1024, 0, 0);
+        transform.localPosition = new Vector3(-Screen.width, 0, 0);
         transform.SetSiblingIndex(3);
     }
 

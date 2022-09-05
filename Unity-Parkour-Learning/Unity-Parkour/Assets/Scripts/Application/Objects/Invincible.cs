@@ -14,6 +14,7 @@ public class Invincible : Item
     {
         base.HitPlayer(player);
 
-		player.SendMessage("HitInvincible", SendMessageOptions.DontRequireReceiver);
-    }
+		//player.SendMessage("HitInvincible", SendMessageOptions.DontRequireReceiver);
+		player.SendMessage("HitItem", ItemKind.ItemInvincible, SendMessageOptions.DontRequireReceiver);
+	}
 }

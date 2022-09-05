@@ -28,10 +28,10 @@ public class MainPanel : BasePanel
         cloudTrans = transform.Find("Img_Cloud");
 
         mainPanelTween = new Tween[2];
-        mainPanelTween[0] = transform.DOLocalMoveX(1024, 0.5f);
+        mainPanelTween[0] = transform.DOLocalMoveX(Screen.width, 0.5f);
         mainPanelTween[0].SetAutoKill(false);
         mainPanelTween[0].Pause();
-        mainPanelTween[1] = transform.DOLocalMoveX(-1024, 0.5f);
+        mainPanelTween[1] = transform.DOLocalMoveX(-Screen.width, 0.5f);
         mainPanelTween[1].SetAutoKill(false);
         mainPanelTween[1].Pause();
 

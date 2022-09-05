@@ -327,6 +327,24 @@ public class PlayerMove : View
         moveSpeed = 0.0f;   
     }
 
+    public void HitItem(ItemKind item)
+    {
+        switch (item)
+        {
+            case ItemKind.ItemInvincible:
+                HitInvincible();
+                break;
+            case ItemKind.ItemMagnet:
+                HitMagnet();
+                break;
+            case ItemKind.ItemMultiply:
+                HitMultiply();
+                break;
+            default:
+                break;
+        }
+    }
+
     IEnumerator RecoverSpeed()
     {
         while (moveSpeed <= CurrMoveSpeed)
@@ -361,7 +379,15 @@ public class PlayerMove : View
     IEnumerator MultiplyCoroutine()
     {
         IsMultiply = true;
-        yield return new WaitForSeconds(mGameModel.MultiplyTime);
+        float timer = mGameModel.MultiplyCnt;
+        while (timer > 0)
+        {
+            yield return new WaitForEndOfFrame();
+            if (mGameModel.IsPlay && !mGameModel.IsPause)
+            {
+                timer -= Time.deltaTime;
+            }
+        }
         IsMultiply = false;
     }
 
@@ -378,7 +404,15 @@ public class PlayerMove : View
     IEnumerator MagnetCoroutine()
     {
         MagnetCollider.enabled = true;
-        yield return new WaitForSeconds(mGameModel.MagnetTime);
+        float timer = mGameModel.MagnetCnt;
+        while (timer > 0)
+        {
+            yield return new WaitForEndOfFrame();
+            if (mGameModel.IsPlay && !mGameModel.IsPause)
+            {
+                timer -= Time.deltaTime;
+            }
+        }
         MagnetCollider.enabled = false;
     }
 
@@ -400,7 +434,15 @@ public class PlayerMove : View
     IEnumerator InvincibleCoroutine()
     {
         IsMultiply = true;
-        yield return new WaitForSeconds(mGameModel.Invincible);
+        float timer = mGameModel.InvincibleCnt;
+        while(timer > 0)
+        {
+            yield return new WaitForEndOfFrame();
+            if (mGameModel.IsPlay && !mGameModel.IsPause)
+            {
+                timer -= Time.deltaTime;
+            }
+        }
         IsMultiply = false;
     }
 

@@ -19,6 +19,8 @@ public class SoldierAttackState : ISoldierState
     {
         if (targets == null || targets.Count == 0 || targets[0].IsKilled == true) return;
 
+        
+
         mAttackTimer += Time.deltaTime;
         if (mAttackTimer >= mAttackTime)
         {

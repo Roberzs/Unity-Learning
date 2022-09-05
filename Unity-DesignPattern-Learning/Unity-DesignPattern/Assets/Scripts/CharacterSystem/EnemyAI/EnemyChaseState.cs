@@ -37,6 +37,7 @@ public class EnemyChaseState : IEnemyState
             float distance = Vector3.Distance(mCharacter.Position, targets[0].Position);
             if (distance <= mCharacter.AtkRang)
             {
+                mCharacter.StopMove();
                 mFSM.PerformTransition(EnemyTransition.CanAttack);
             }
         }

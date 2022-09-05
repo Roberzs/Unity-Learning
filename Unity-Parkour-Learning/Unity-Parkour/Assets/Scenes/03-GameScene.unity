@@ -1633,6 +1633,9 @@ MonoBehaviour:
   txtDistance: {fileID: 2051272851}
   txtCountDownTimer: {fileID: 1814091814}
   imgCountDownTimer: {fileID: 1837413846}
+  btnMagnet: {fileID: 671615184}
+  btnMultiply: {fileID: 383879172}
+  btnInvincible: {fileID: 1021893312}
 --- !u!1 &520104058
 GameObject:
   m_ObjectHideFlags: 0

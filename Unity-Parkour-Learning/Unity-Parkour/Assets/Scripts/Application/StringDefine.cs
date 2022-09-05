@@ -54,3 +54,10 @@ public enum InputDirection
     DOWN,
     UP
 }
+
+public enum ItemKind
+{
+    ItemInvincible,
+    ItemMagnet,
+    ItemMultiply,
+}

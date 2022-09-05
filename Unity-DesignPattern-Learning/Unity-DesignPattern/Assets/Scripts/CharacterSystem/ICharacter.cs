@@ -122,8 +122,16 @@ public abstract class ICharacter
 
     public void MoveTo(Vector3 targetPosition)
     {
+        mNavAgent.isStopped = false;
         mNavAgent.SetDestination(targetPosition);
         PlayAnim("move");
+    }
+
+    public void StopMove()
+    {
+        mNavAgent.isStopped = true;
+        mNavAgent.SetDestination(GameObject.transform.position);
+
     }
 
     // 播放特效

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public enum SoldierType
 {
@@ -21,8 +22,9 @@ public abstract class ISoldier : ICharacter
     // 刷新状态机
     public override void UpdateFSMAI(List<ICharacter> targets)
     {
+        
         if (mIsKilled) return;
-
+        
         mFSMSystem.CurrentState.Reason(targets);
         mFSMSystem.CurrentState.Act(targets);
     }

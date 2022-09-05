@@ -111,8 +111,12 @@ public class UIFacade
         foreach (var item in mUIManager.currentScenePanelDict)
         {
             item.Value.transform.SetParent(canvasTransform);
-            item.Value.transform.localPosition = Vector3.zero;
-            item.Value.transform.localScale = Vector3.one;
+            //item.Value.transform.localPosition = Vector3.zero;
+            var rect = item.Value.GetComponent<RectTransform>();
+            rect.localPosition = Vector3.zero;
+            rect.localScale = Vector3.one;
+            rect.sizeDelta = item.Value.transform.parent.GetComponent<RectTransform>().sizeDelta;
+            //item.Value.transform.localScale = Vector3.one;
 
             IBasePanel basePanel = item.Value.GetComponent<IBasePanel>();
             if(basePanel == null)

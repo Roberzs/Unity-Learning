@@ -27,8 +27,10 @@ public class SoldierChaseState : ISoldierState
 
         // 检查敌人是否进入攻击范围
         float distance = Vector3.Distance(mCharacter.Position, targets[0].Position);
+        
         if (distance <= mCharacter.AtkRang)
         {
+            mCharacter.StopMove();
             mFSM.PerformTransition(SoldierTransition.CanAttack);
         }
     }

@@ -32,7 +32,8 @@ public class Multiply : Item
         PlayEffect("FX_XingXing", player.position);
         GameRoot.Instance.soundManager.PlayEffectAudio("Se_UI_JinBi");
 
-        player.SendMessage("HitMultiply", SendMessageOptions.DontRequireReceiver);
+        //player.SendMessage("HitMultiply", SendMessageOptions.DontRequireReceiver);
+        player.SendMessage("HitItem", ItemKind.ItemMultiply, SendMessageOptions.DontRequireReceiver);
     }
 
 
