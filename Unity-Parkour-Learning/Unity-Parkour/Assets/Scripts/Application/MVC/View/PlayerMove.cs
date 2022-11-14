@@ -120,7 +120,13 @@ public class PlayerMove : View
         }
         if (other.CompareTag(TagDefine.HitTrigger))
         {
+            // 撞到汽车
             other.transform.parent.SendMessage("HitTrigger", SendMessageOptions.DontRequireReceiver);
+        }
+        if (other.CompareTag(TagDefine.beforeGoalTrigger))
+        {
+            // 射门
+
         }
     }
 
@@ -329,20 +335,12 @@ public class PlayerMove : View
 
     public void HitItem(ItemKind item)
     {
-        switch (item)
+        ItemArgs args = new ItemArgs
         {
-            case ItemKind.ItemInvincible:
-                HitInvincible();
-                break;
-            case ItemKind.ItemMagnet:
-                HitMagnet();
-                break;
-            case ItemKind.ItemMultiply:
-                HitMultiply();
-                break;
-            default:
-                break;
-        }
+            hitCount = 0,
+            kind = item
+        };
+        SendEvent(StringDefine.E_HitItem, args);
     }
 
     IEnumerator RecoverSpeed()
@@ -379,7 +377,7 @@ public class PlayerMove : View
     IEnumerator MultiplyCoroutine()
     {
         IsMultiply = true;
-        float timer = mGameModel.MultiplyCnt;
+        float timer = mGameModel.SkillTime;
         while (timer > 0)
         {
             yield return new WaitForEndOfFrame();
@@ -404,7 +402,7 @@ public class PlayerMove : View
     IEnumerator MagnetCoroutine()
     {
         MagnetCollider.enabled = true;
-        float timer = mGameModel.MagnetCnt;
+        float timer = mGameModel.SkillTime;
         while (timer > 0)
         {
             yield return new WaitForEndOfFrame();
@@ -434,7 +432,7 @@ public class PlayerMove : View
     IEnumerator InvincibleCoroutine()
     {
         IsMultiply = true;
-        float timer = mGameModel.InvincibleCnt;
+        float timer = mGameModel.SkillTime;
         while(timer > 0)
         {
             yield return new WaitForEndOfFrame();

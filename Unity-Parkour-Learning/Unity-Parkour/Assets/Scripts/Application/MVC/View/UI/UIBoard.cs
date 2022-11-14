@@ -9,6 +9,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class UIBoard : View
 {
@@ -30,6 +31,8 @@ public class UIBoard : View
             case StringDefine.E_AddTimer:
                 CountDownTimer += m_AddTime;
                 break;
+            case StringDefine.E_HitGoalTrigger:
+                break;
             default:
                 break;
         }
@@ -40,6 +43,7 @@ public class UIBoard : View
         AttentionList.Add(StringDefine.E_UpdateDis);
         AttentionList.Add(StringDefine.E_UpdateCoin);
         AttentionList.Add(StringDefine.E_AddTimer);
+        AttentionList.Add(StringDefine.E_HitGoalTrigger);
     }
 
     #region Field
@@ -64,9 +68,13 @@ public class UIBoard : View
     public Text txtGizmoMultiply;
     public Text txtGizmoInvinclble;
 
+    public Slider sliTime;
+    public Slider sliGoal;
+
     public Button btnMagnet;
     public Button btnMultiply;
     public Button btnInvincible;
+    public Button btnGoal;
 
     private IEnumerator MultiplyCor = null;
     private IEnumerator MagnetCor = null;
@@ -108,6 +116,7 @@ public class UIBoard : View
     private void Awake()
     {
         m_GameModel = GetModel<GameModel>();
+        m_SkillTimer = m_GameModel.SkillTime;
         UpdateUI();
         ResetData();
     }
@@ -156,6 +165,119 @@ public class UIBoard : View
             coin = Coin
         };
         SendEvent(StringDefine.E_PauseGame, e);
+    }
+
+    public void HitMultiply()
+    {
+        if (MultiplyCor != null)
+        {
+            StopCoroutine(MultiplyCor);
+        }
+        MultiplyCor = MultiplyCoroutine();
+        StartCoroutine(MultiplyCor);
+    }
+
+    IEnumerator MultiplyCoroutine()
+    {
+        float timer = m_SkillTimer;
+        txtGizmoMultiply.transform.parent.gameObject.SetActive(true);
+        while (timer > 0)
+        {
+            yield return new WaitForEndOfFrame();
+            if (m_GameModel.IsPlay && !m_GameModel.IsPause)
+            {
+                timer -= Time.deltaTime;
+                txtGizmoMultiply.text = GetTime(timer);
+            }
+        }
+        txtGizmoMultiply.transform.parent.gameObject.SetActive(false);
+    }
+
+    public void HitMagnet()
+    {
+        if (MagnetCor != null)
+        {
+            StopCoroutine(MagnetCor);
+        }
+        MagnetCor = MagnetCoroutine();
+        StartCoroutine(MagnetCor);
+    }
+
+    IEnumerator MagnetCoroutine()
+    {
+        float timer = m_SkillTimer;
+        txtGizmoMangent.transform.parent.gameObject.SetActive(true);
+        while (timer > 0)
+        {
+            yield return new WaitForEndOfFrame();
+            if (m_GameModel.IsPlay && !m_GameModel.IsPause)
+            {
+                timer -= Time.deltaTime;
+                txtGizmoMangent.text = GetTime(timer);
+            }
+        }
+        txtGizmoMangent.transform.parent.gameObject.SetActive(false);
+    }
+
+    public void HitInvincible()
+    {
+        if (InvincibleCor != null)
+        {
+            StopCoroutine(InvincibleCor);
+        }
+        InvincibleCor = InvincibleCoroutine();
+        StartCoroutine(InvincibleCor);
+    }
+
+    IEnumerator InvincibleCoroutine()
+    {
+        float timer = m_SkillTimer;
+        txtGizmoInvinclble.transform.parent.gameObject.SetActive(true);
+        while (timer > 0)
+        {
+            yield return new WaitForEndOfFrame();
+            if (m_GameModel.IsPlay && !m_GameModel.IsPause)
+            {
+                timer -= Time.deltaTime;
+                txtGizmoInvinclble.text = GetTime(timer);
+            }
+        }
+        txtGizmoInvinclble.transform.parent.gameObject.SetActive(false);
+    }
+
+    private string GetTime(float time)
+    {
+        return time.ToString("%f0");
+    }
+
+    public void OnClickMagnetBtn()
+    {
+        UseSkill(ItemKind.ItemMagnet);
+    }
+
+    public void OnClickInvincibleBtn()
+    {
+        UseSkill(ItemKind.ItemInvincible);
+    }
+
+    public void OnClickMultiplyBtn()
+    {
+        UseSkill(ItemKind.ItemMultiply);
+    }
+
+    private void UseSkill(ItemKind item)
+    {
+        ItemArgs args = new ItemArgs
+        {
+            hitCount = 1,
+            kind = item
+        };
+        SendEvent(StringDefine.E_HitItem, args);
+    }
+
+    private void ShowGoalUI()
+    {
+
     }
 
     #endregion

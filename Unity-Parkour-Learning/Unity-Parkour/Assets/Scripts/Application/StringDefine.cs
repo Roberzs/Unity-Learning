@@ -34,6 +34,10 @@ public static class StringDefine
     public const string E_UpdateCoin = "E_UpdateCoin";
     public const string E_AddTimer = "E_AddTimer";
 
+    public const string E_HitItem = "E_HitItem";
+
+    public const string E_HitGoalTrigger = "E_HitGoalTrigger";
+
     // Model
     public const string M_GameModel = "M_GameModel";
 
