@@ -9,7 +9,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class UIBoard : View
 {
@@ -32,6 +31,7 @@ public class UIBoard : View
                 CountDownTimer += m_AddTime;
                 break;
             case StringDefine.E_HitGoalTrigger:
+                ShowGoalUI();
                 break;
             default:
                 break;
@@ -62,14 +62,13 @@ public class UIBoard : View
     public Text txtDistance;
 
     public Text txtCountDownTimer;
-    public Image imgCountDownTimer;
 
     public Text txtGizmoMangent;
     public Text txtGizmoMultiply;
     public Text txtGizmoInvinclble;
 
-    public Slider sliTime;
-    public Slider sliGoal;
+    public Image imgPrgTime;
+    public Image imgPrgGoal;
 
     public Button btnMagnet;
     public Button btnMultiply;
@@ -99,7 +98,7 @@ public class UIBoard : View
             }
             m_CountDownTimer = Mathf.Min(value, m_InitTime);
             txtCountDownTimer.text = m_CountDownTimer.ToString("f2") + "s";
-            imgCountDownTimer.fillAmount = m_CountDownTimer / m_InitTime;
+            imgPrgTime.fillAmount = m_CountDownTimer / m_InitTime;
         } 
     }
 
@@ -277,7 +276,20 @@ public class UIBoard : View
 
     private void ShowGoalUI()
     {
+        StartCoroutine(StartCountDown());
+    }
 
+    IEnumerator StartCountDown()
+    {
+        btnGoal.interactable = true;
+        imgPrgGoal.fillAmount = 1;
+        while(imgPrgGoal.fillAmount > 0)
+        {
+            imgPrgGoal.fillAmount -= Time.deltaTime;
+            yield return 0;
+        }
+        btnGoal.interactable = false;
+        imgPrgGoal.fillAmount = 0;
     }
 
     #endregion

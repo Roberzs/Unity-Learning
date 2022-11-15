@@ -45,7 +45,12 @@ public class PlayerMove : View
     #region 回调
     public override void HandleEvent(string name, object data)
     {
-        throw new System.NotImplementedException();
+        
+    }
+
+    public override void RegisterAttentionEvent()
+    {
+        
     }
 
     #endregion
@@ -126,7 +131,7 @@ public class PlayerMove : View
         if (other.CompareTag(TagDefine.beforeGoalTrigger))
         {
             // 射门
-
+            SendEvent(StringDefine.E_HitGoalTrigger);
         }
     }
 
