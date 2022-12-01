@@ -15,6 +15,7 @@ TagManager:
   - MagnetCollider
   - Goalkeeper
   - BeforeGoalTrigger
+  - Ball
   layers:
   - Default
   - TransparentFX

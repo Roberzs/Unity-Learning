@@ -40,17 +40,28 @@ public class PlayerMove : View
     private SphereCollider MagnetCollider;
     private IEnumerator InvincibleCor = null;
     private bool IsInvincible = false;
+    // 射门相关
+    private GameObject ballGo;
+    private GameObject ballTrialGo;
+    private IEnumerator MoveBallCor = null;
     #endregion
 
     #region 回调
     public override void HandleEvent(string name, object data)
     {
-        
+        switch (name)
+        {
+            case StringDefine.E_ClickGoalButton:
+                OnGoalBall();
+                break;
+            default:
+                break;
+        }
     }
 
     public override void RegisterAttentionEvent()
     {
-        
+        AttentionList.Add(StringDefine.E_ClickGoalButton);
     }
 
     #endregion
@@ -62,6 +73,10 @@ public class PlayerMove : View
         mGameModel = GetModel<GameModel>();
         MagnetCollider = transform.Find("MagnetCollider").GetComponent<SphereCollider>();
         MagnetCollider.enabled = false;
+        // 射门相关
+        ballGo = transform.Find("Ball").gameObject;
+        ballTrialGo = transform.Find("Node/Ball").gameObject;
+        ballTrialGo.SetActive(false);
     }
 
     private void Start()
@@ -128,7 +143,7 @@ public class PlayerMove : View
             // 撞到汽车
             other.transform.parent.SendMessage("HitTrigger", SendMessageOptions.DontRequireReceiver);
         }
-        if (other.CompareTag(TagDefine.beforeGoalTrigger))
+        if (other.CompareTag(TagDefine.BeforeGoalTrigger))
         {
             // 射门
             SendEvent(StringDefine.E_HitGoalTrigger);
@@ -447,6 +462,37 @@ public class PlayerMove : View
             }
         }
         IsMultiply = false;
+    }
+
+    /// <summary>
+    /// 射门
+    /// </summary>
+    public void OnGoalBall()
+    {
+        Debug.Log("射门");
+        // 播放动作
+        SendMessage("PlayGoalAnim", SendMessageOptions.RequireReceiver);
+        // 球的相关操作
+        ballGo.SetActive(false);
+        if (MoveBallCor != null)
+        {
+            StopCoroutine(MoveBallCor);
+        }
+        MoveBallCor = MoveBall();
+        StartCoroutine(MoveBallCor);
+    }
+
+    IEnumerator MoveBall()
+    {
+        var startPos = new Vector3(0.6f, 0.55f, 1.3f);
+        ballTrialGo.SetActive(true);
+        ballTrialGo.transform.localPosition = startPos;
+        var speed = 50f;
+        while (true)
+        {
+            ballTrialGo.transform.Translate(ballTrialGo.transform.forward * speed * Time.deltaTime);
+            yield return 0;
+        }
     }
 
     #endregion

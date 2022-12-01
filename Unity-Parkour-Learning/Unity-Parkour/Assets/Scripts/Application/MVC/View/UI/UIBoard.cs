@@ -108,6 +108,8 @@ public class UIBoard : View
         Distance = 0;
         CountDownTimer = m_InitTime;
         m_SkillTimer = m_GameModel.SkillTime;
+        // 射门倒计时 Warning 赋值出现问题 还在排查
+        imgPrgGoal.fillAmount = 0;
     }
 
     #region Mono
@@ -116,8 +118,8 @@ public class UIBoard : View
     {
         m_GameModel = GetModel<GameModel>();
         m_SkillTimer = m_GameModel.SkillTime;
-        UpdateUI();
         ResetData();
+        UpdateUI();
     }
 
     private void Update()
@@ -126,6 +128,7 @@ public class UIBoard : View
         {
             CountDownTimer -= Time.deltaTime;
         }
+        
     }
 
     #endregion
@@ -290,6 +293,15 @@ public class UIBoard : View
         }
         btnGoal.interactable = false;
         imgPrgGoal.fillAmount = 0;
+    }
+
+    public void OnClickShotGoalBtn()
+    {
+        // 结束射门倒计时
+        imgPrgGoal.fillAmount = 0;
+
+        // 通知角色做射门操作
+        SendEvent(StringDefine.E_ClickGoalButton);
     }
 
     #endregion

@@ -19,5 +19,6 @@ public static class TagDefine
 	public const string ChildBlock = "ChildBlock";
 	public const string HitTrigger = "HitTrigger";
 	public const string MagnetCollider = "MagnetCollider";
-	public const string beforeGoalTrigger = "BeforeGoalTrigger";
+	public const string BeforeGoalTrigger = "BeforeGoalTrigger";
+	public const string Ball = "Ball";
 }
