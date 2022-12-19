@@ -97,6 +97,23 @@ public class PlayerAnim : View
         }
     }
 
+    /// <summary>
+    /// 射门动作的播放
+    /// </summary>
+    public void PlayGoalAnim()
+    {
+        m_PlayedAnim = PlayGoal;
+    }
+
+    private void PlayGoal()
+    {
+        m_Anim.Play("Shoot01");
+        if (m_Anim["Shoot01"].normalizedTime > 0.95f)
+        {
+            m_PlayedAnim = PlayRun;
+        }
+    }
+
     public override void HandleEvent(string name, object data)
     {
         throw new NotImplementedException();

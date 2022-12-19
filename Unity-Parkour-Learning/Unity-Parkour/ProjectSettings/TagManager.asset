@@ -13,6 +13,9 @@ TagManager:
   - HitTrigger
   - Item
   - MagnetCollider
+  - Goalkeeper
+  - BeforeGoalTrigger
+  - Ball
   layers:
   - Default
   - TransparentFX

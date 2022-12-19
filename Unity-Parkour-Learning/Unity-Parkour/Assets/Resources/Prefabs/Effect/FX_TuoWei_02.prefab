@@ -4808,6 +4808,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelfPath: 
+  rotateSpeed: 10
 --- !u!1 &100004
 GameObject:
   m_ObjectHideFlags: 0

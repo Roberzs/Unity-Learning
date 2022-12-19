@@ -11,6 +11,7 @@ public class StartUpController : Controller
         RegisterController(StringDefine.E_EndGame, typeof(EndGameController));
         RegisterController(StringDefine.E_PauseGame, typeof(PauseGameController));
         RegisterController(StringDefine.E_ResumeGame, typeof(ResumeGameController));
+        RegisterController(StringDefine.E_HitItem, typeof(HitItemController));
         // Register Model
         RegisterModel(new GameModel());
         // Init

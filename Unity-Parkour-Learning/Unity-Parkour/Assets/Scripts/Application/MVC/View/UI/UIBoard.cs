@@ -30,6 +30,9 @@ public class UIBoard : View
             case StringDefine.E_AddTimer:
                 CountDownTimer += m_AddTime;
                 break;
+            case StringDefine.E_HitGoalTrigger:
+                ShowGoalUI();
+                break;
             default:
                 break;
         }
@@ -40,6 +43,7 @@ public class UIBoard : View
         AttentionList.Add(StringDefine.E_UpdateDis);
         AttentionList.Add(StringDefine.E_UpdateCoin);
         AttentionList.Add(StringDefine.E_AddTimer);
+        AttentionList.Add(StringDefine.E_HitGoalTrigger);
     }
 
     #region Field
@@ -58,15 +62,18 @@ public class UIBoard : View
     public Text txtDistance;
 
     public Text txtCountDownTimer;
-    public Image imgCountDownTimer;
 
     public Text txtGizmoMangent;
     public Text txtGizmoMultiply;
     public Text txtGizmoInvinclble;
 
+    public Image imgPrgTime;
+    public Image imgPrgGoal;
+
     public Button btnMagnet;
     public Button btnMultiply;
     public Button btnInvincible;
+    public Button btnGoal;
 
     private IEnumerator MultiplyCor = null;
     private IEnumerator MagnetCor = null;
@@ -91,7 +98,7 @@ public class UIBoard : View
             }
             m_CountDownTimer = Mathf.Min(value, m_InitTime);
             txtCountDownTimer.text = m_CountDownTimer.ToString("f2") + "s";
-            imgCountDownTimer.fillAmount = m_CountDownTimer / m_InitTime;
+            imgPrgTime.fillAmount = m_CountDownTimer / m_InitTime;
         } 
     }
 
@@ -101,6 +108,8 @@ public class UIBoard : View
         Distance = 0;
         CountDownTimer = m_InitTime;
         m_SkillTimer = m_GameModel.SkillTime;
+        // 射门倒计时 Warning 赋值出现问题 还在排查
+        imgPrgGoal.fillAmount = 0;
     }
 
     #region Mono
@@ -108,8 +117,9 @@ public class UIBoard : View
     private void Awake()
     {
         m_GameModel = GetModel<GameModel>();
-        UpdateUI();
+        m_SkillTimer = m_GameModel.SkillTime;
         ResetData();
+        UpdateUI();
     }
 
     private void Update()
@@ -118,6 +128,7 @@ public class UIBoard : View
         {
             CountDownTimer -= Time.deltaTime;
         }
+        
     }
 
     #endregion
@@ -156,6 +167,141 @@ public class UIBoard : View
             coin = Coin
         };
         SendEvent(StringDefine.E_PauseGame, e);
+    }
+
+    public void HitMultiply()
+    {
+        if (MultiplyCor != null)
+        {
+            StopCoroutine(MultiplyCor);
+        }
+        MultiplyCor = MultiplyCoroutine();
+        StartCoroutine(MultiplyCor);
+    }
+
+    IEnumerator MultiplyCoroutine()
+    {
+        float timer = m_SkillTimer;
+        txtGizmoMultiply.transform.parent.gameObject.SetActive(true);
+        while (timer > 0)
+        {
+            yield return new WaitForEndOfFrame();
+            if (m_GameModel.IsPlay && !m_GameModel.IsPause)
+            {
+                timer -= Time.deltaTime;
+                txtGizmoMultiply.text = GetTime(timer);
+            }
+        }
+        txtGizmoMultiply.transform.parent.gameObject.SetActive(false);
+    }
+
+    public void HitMagnet()
+    {
+        if (MagnetCor != null)
+        {
+            StopCoroutine(MagnetCor);
+        }
+        MagnetCor = MagnetCoroutine();
+        StartCoroutine(MagnetCor);
+    }
+
+    IEnumerator MagnetCoroutine()
+    {
+        float timer = m_SkillTimer;
+        txtGizmoMangent.transform.parent.gameObject.SetActive(true);
+        while (timer > 0)
+        {
+            yield return new WaitForEndOfFrame();
+            if (m_GameModel.IsPlay && !m_GameModel.IsPause)
+            {
+                timer -= Time.deltaTime;
+                txtGizmoMangent.text = GetTime(timer);
+            }
+        }
+        txtGizmoMangent.transform.parent.gameObject.SetActive(false);
+    }
+
+    public void HitInvincible()
+    {
+        if (InvincibleCor != null)
+        {
+            StopCoroutine(InvincibleCor);
+        }
+        InvincibleCor = InvincibleCoroutine();
+        StartCoroutine(InvincibleCor);
+    }
+
+    IEnumerator InvincibleCoroutine()
+    {
+        float timer = m_SkillTimer;
+        txtGizmoInvinclble.transform.parent.gameObject.SetActive(true);
+        while (timer > 0)
+        {
+            yield return new WaitForEndOfFrame();
+            if (m_GameModel.IsPlay && !m_GameModel.IsPause)
+            {
+                timer -= Time.deltaTime;
+                txtGizmoInvinclble.text = GetTime(timer);
+            }
+        }
+        txtGizmoInvinclble.transform.parent.gameObject.SetActive(false);
+    }
+
+    private string GetTime(float time)
+    {
+        return time.ToString("%f0");
+    }
+
+    public void OnClickMagnetBtn()
+    {
+        UseSkill(ItemKind.ItemMagnet);
+    }
+
+    public void OnClickInvincibleBtn()
+    {
+        UseSkill(ItemKind.ItemInvincible);
+    }
+
+    public void OnClickMultiplyBtn()
+    {
+        UseSkill(ItemKind.ItemMultiply);
+    }
+
+    private void UseSkill(ItemKind item)
+    {
+        ItemArgs args = new ItemArgs
+        {
+            hitCount = 1,
+            kind = item
+        };
+        SendEvent(StringDefine.E_HitItem, args);
+    }
+
+    private void ShowGoalUI()
+    {
+        StartCoroutine(StartCountDown());
+    }
+
+    IEnumerator StartCountDown()
+    {
+        btnGoal.interactable = true;
+        imgPrgGoal.fillAmount = 1;
+        while(imgPrgGoal.fillAmount > 0)
+        {
+            imgPrgGoal.fillAmount -= Time.deltaTime;
+            yield return 0;
+        }
+        btnGoal.interactable = false;
+        imgPrgGoal.fillAmount = 0;
+    }
+
+    public void OnClickShotGoalBtn()
+    {
+        // 结束射门倒计时
+        imgPrgGoal.fillAmount = 0;
+
+        // 通知角色做射门操作
+        SendEvent(StringDefine.E_ClickGoalButton);
     }
 
     #endregion
