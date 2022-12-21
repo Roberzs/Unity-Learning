@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Sprites;
 using UnityEngine.UI;
+using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -19,12 +20,21 @@ public class CircleImage : Image
     private float fillPercent = 1;
 
     /// <summary>
+    /// 除圆心以外的所有顶点
+    /// </summary>
+    private List<Vector3> _vertexLst;
+
+    private static Color GRAY_COLOR = Color.gray;
+
+    /// <summary>
     /// 重绘Mesh
     /// </summary>
     /// <param name="toFill"></param>
     protected override void OnPopulateMesh(VertexHelper toFill)
     {
         toFill.Clear();
+
+        _vertexLst = new List<Vector3>();
 
         // 计算要显示的面片个数
         var realSegements = (int)(segements * fillPercent);
@@ -49,7 +59,9 @@ public class CircleImage : Image
         UIVertex origin = new UIVertex();
         // 计算原点颜色
         byte t = (byte)(255 * fillPercent);
-        origin.color = new Color32(t, t, t, 255);
+        Color32 tempColor = (Color.white - GRAY_COLOR) * fillPercent;
+        origin.color = new Color32((byte)(GRAY_COLOR.r + tempColor.r) , (byte)(GRAY_COLOR.g + tempColor.g), (byte)(GRAY_COLOR.b + tempColor.b), 255);
+
         Vector2 originPos = new Vector2((0.5f - rectTransform.pivot.x) * width, (0.5f - rectTransform.pivot.y) * height);
         Vector2 vertPos = Vector2.zero;
         origin.position = originPos;
@@ -73,11 +85,14 @@ public class CircleImage : Image
             }
             else
             {
-                tempVertex.color = new Color32(50, 50, 50, 255);
+                tempVertex.color = GRAY_COLOR;
             }
 
             
             tempVertex.position = new Vector2(x, y) + originPos;
+
+            _vertexLst.Add(tempVertex.position);
+
             tempVertex.uv0 = new Vector2(x * converRatio.x + uvCenter.x, y * converRatio.y + uvCenter.y);
             toFill.AddVert(tempVertex);
         }
@@ -89,6 +104,64 @@ public class CircleImage : Image
             id++;
         }
 
+    }
+
+    public override bool IsRaycastLocationValid(Vector2 screenPoint, Camera eventCamera)
+    {
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, screenPoint, eventCamera, out localPoint);
+
+
+        return IsValidPoint(localPoint);
+    }
+
+    private bool IsValidPoint(Vector2 localPoint)
+    {
+        return GetCrossPointCnt(localPoint, _vertexLst) % 2 == 1;
+    }
+
+    private int GetCrossPointCnt(Vector2 localPoint, List<Vector3> vertexLst)
+    {
+        var vert1 = Vector3.zero;
+        var vect2 = Vector3.zero;
+        var count = vertexLst.Count;
+        var ans = 0;
+
+        for (int i = 0; i < count; i++)
+        {
+            vert1 = vertexLst[i];
+            vect2 = vertexLst[(i + 1) % count];
+            if (IsYInRange(localPoint, vert1, vect2))
+            {
+                //if (localPoint.x < vert1.x && localPoint.x < vect2.x)
+                //{
+                //    ans++;
+                //}
+                if (GetIntersectX(vert1, vect2, localPoint.y) > localPoint.x)
+                {
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+
+    private bool IsYInRange(Vector2 localPoint,Vector3 vert1, Vector3 vert2)
+    {
+        if (vert1.y > vert2.y)
+        {
+            return localPoint.y > vert2.y && localPoint.y < vert1.y;
+        }
+        else
+        {
+            return localPoint.y < vert2.y && localPoint.y > vert1.y;
+        }
+    }
+
+    private float GetIntersectX(Vector3 vert1, Vector3 vert2, float y)
+    {
+        float k = (vert1.y - vert2.y) / (vert1.x - vert2.x);
+        return vert1.x + (y - vert1.y) / k;
     }
 }
 
