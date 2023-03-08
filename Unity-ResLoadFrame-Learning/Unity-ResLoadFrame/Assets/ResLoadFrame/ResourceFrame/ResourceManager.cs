@@ -315,6 +315,7 @@ public class ResourceManager :Singleton<ResourceManager>
                 lastYieldTime = System.DateTime.Now.Ticks;
             }
 
+            yield return 0;
         }
     }
 

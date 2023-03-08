@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(AudioSource))]
 public class GameRoot : MonoBehaviour
 {
     private AudioSource m_Audio;
@@ -34,14 +33,15 @@ public class GameRoot : MonoBehaviour
 
         //ResourceManager.Instance.PreloadRes("Assets/GameData/Sounds/senlin.mp3");
 
-        tmpObj = ObjectManager.Instance.InstantiateObject("Assets/GameData/Prefabs/Attack.prefab", true);
-        ObjectManager.Instance.InstantiateObjectAsync("Assets/GameData/Prefabs/Attack.prefab", (string path, Object obj, object param1, object param2, object param3) =>
-        {
-            tmpObj = obj as GameObject;
-        }, LoadResPriority.RES_HIGHT, true);
+        //tmpObj = ObjectManager.Instance.InstantiateObject("Assets/GameData/Prefabs/Attack.prefab", true);
+        //ObjectManager.Instance.InstantiateObjectAsync("Assets/GameData/Prefabs/Attack.prefab", (string path, Object obj, object param1, object param2, object param3) =>
+        //{
+        //    tmpObj = obj as GameObject;
+        //    tmpObj.SetActive(false);
+        //}, LoadResPriority.RES_HIGHT, true);
 
         float timer = Time.realtimeSinceStartup;
-        //ObjectManager.Instance.PreloadGameObject("Assets/GameData/Prefabs/Attack.prefab", 10);
+        ObjectManager.Instance.PreloadGameObject("Assets/GameData/Prefabs/Attack.prefab", LoadResPriority.RES_MIDDLE, 10);
         Debug.Log($"加载所需时间:{Time.realtimeSinceStartup - timer}");
 
         LoadConfiger();
@@ -60,11 +60,13 @@ public class GameRoot : MonoBehaviour
 
         ResourceManager.Instance.LoadResource<AudioClip>("Assets/GameData/Sounds/senlin.mp3");
 
-        tmpObj = ObjectManager.Instance.InstantiateObject("Assets/GameData/Prefabs/Attack.prefab", true, false);
-        ObjectManager.Instance.ReleaseResource(tmpObj);
+        
+        //ObjectManager.Instance.ReleaseResource(tmpObj);
+
+        //UIManager.Instance.PopUpWnd("MenuPanel.prefab");
 
         GameSceneManager.Instance.LoadSceen("MenuScene",
-            () =>
+        () =>
             {
                 UIManager.Instance.PopUpWnd("LoadingPanel.prefab", true);
             },

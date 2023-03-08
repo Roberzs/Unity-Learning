@@ -60,6 +60,36 @@ public class Window
         return true;
     }
 
+    public virtual void OnMessage(string msgName)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void OnMessage<T>(string msgName, T arg)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void OnMessage<T, X>(string msgName, T arg1, X arg2)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void OnMessage<T, X, Y>(string msgName, T arg1, X arg2, Y arg3)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void OnMessage<T, X, Y, Z>(string msgName, T arg1, X arg2, Y arg3, Z arg4)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void OnMessage<T, X, Y, Z, W>(string msgName, T arg1, X arg2, Y arg3, Z arg4, W arg5)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public virtual void OnClose()
     {
         RemoveAllButtonListener();

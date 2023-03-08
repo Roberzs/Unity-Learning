@@ -6,6 +6,7 @@
 	功能：Nothing
 *****************************************************/
 
+using log4net.Util;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -166,6 +167,7 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+
     /// <summary>
     /// 根据Panel名称查找Panel
     /// </summary>
@@ -262,22 +264,91 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-	/// <summary>
-	/// 发送消息给Panel
-	/// </summary>
-	/// <param name="name">窗口名称</param>
-	/// <param name="msgID">消息类型</param>
-	/// <param name="paramList">参数数组</param>
-	/// <returns></returns>
-	public bool SeedMessageToWnd(string name, UIMsgID msgID = 0, params object[] paramList)
+    public Vector2 WorldToUIPos(Vector3 worldPos)
     {
-		Window wnd = FindWndByName<Window>(name);
-		if (wnd != null)
-        {
-			return wnd.OnMessage(msgID, paramList);
-        }
-		return false;
+        Vector2 world2ScreenPos = Camera.main.WorldToScreenPoint(worldPos);
+        Vector2 uiPos = new Vector2();
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(m_UIRoot, world2ScreenPos, m_UICamera, out uiPos);
+        return uiPos;
     }
+
+
+
+    #region 向Panel发送事件
+
+    /// <summary>
+    /// 发送消息给Panel
+    /// </summary>
+    /// <param name="name">窗口名称</param>
+    /// <param name="msgID">消息类型</param>
+    /// <param name="paramList">参数数组</param>
+    /// <returns></returns>
+    public bool SeedMessageToWnd(string name, UIMsgID msgID = 0, params object[] paramList)
+    {
+        Window wnd = FindWndByName<Window>(name);
+        if (wnd != null)
+        {
+            return wnd.OnMessage(msgID, paramList);
+        }
+        return false;
+    }
+
+    public void SendMessageToWnd(string name, string UIMsgName)
+    {
+        Window wnd = FindWndByName<Window>(name);
+        if (wnd != null)
+        {
+            wnd.OnMessage(UIMsgName);
+        }
+    }
+
+    public void SendMessageToWnd<T>(string name, string UIMsgName, T arg)
+    {
+        Window wnd = FindWndByName<Window>(name);
+        if (wnd != null)
+        {
+            wnd.OnMessage<T>(UIMsgName, arg);
+        }
+    }
+
+    public void SendMessageToWnd<T, X>(string name, string UIMsgName, T arg1, X arg2)
+    {
+        Window wnd = FindWndByName<Window>(name);
+        if (wnd != null)
+        {
+            wnd.OnMessage(UIMsgName, arg1, arg2);
+        }
+    }
+
+    public void SendMessageToWnd<T, X, Y>(string name, string UIMsgName, T arg1, X arg2, Y arg3)
+    {
+        Window wnd = FindWndByName<Window>(name);
+        if (wnd != null)
+        {
+            wnd.OnMessage(UIMsgName, arg1, arg2, arg3);
+        }
+    }
+
+    public void SendMessageToWnd<T, X, Y, Z>(string name, string UIMsgName, T arg1, X arg2, Y arg3, Z arg4)
+    {
+        Window wnd = FindWndByName<Window>(name);
+        if (wnd != null)
+        {
+            wnd.OnMessage(UIMsgName, arg1, arg2, arg3, arg4);
+        }
+    }
+
+    public void SendMessageToWnd<T, X, Y, Z, W>(string name, string UIMsgName, T arg1, X arg2, Y arg3, Z arg4, W arg5)
+    {
+        Window wnd = FindWndByName<Window>(name);
+        if (wnd != null)
+        {
+            wnd.OnMessage(UIMsgName, arg1, arg2, arg3, arg4, arg5);
+        }
+    }
+
+
+    #endregion
 }
 
 public enum UIMsgID

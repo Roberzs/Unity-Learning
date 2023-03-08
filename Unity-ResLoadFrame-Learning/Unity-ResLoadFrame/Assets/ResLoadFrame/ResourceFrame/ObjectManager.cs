@@ -336,21 +336,28 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
-    public void PreloadGameObject(string path, int count = 1, bool clear = false)
+    public void PreloadGameObject(string path, LoadResPriority loadResPriority, int count = 1, bool clear = false)
     {
-        Debug.Log(count);
         List<GameObject> tmpGameObjectList = new List<GameObject>();
         for (int i = 0; i < count; i++)
         {
-            GameObject tmpGameObject = InstantiateObject(path, false, clear);
-            tmpGameObjectList.Add(tmpGameObject);
+            // 异步加载
+            InstantiateObjectAsync(path, (string path, UnityEngine.Object obj, object param1, object param2, object param3) =>
+            {
+                //tmpGameObjectList.Add(obj as GameObject);
+                ReleaseResource(obj as GameObject);
+                //if (tmpGameObjectList.Count == count)
+                //{
+                //    for (int i = 0; i < count; i++)
+                //    {
+                //        GameObject tmpGameObject = tmpGameObjectList[i];
+                //        ReleaseResource(tmpGameObject);
+                //    }
+                //    tmpGameObjectList.Clear();
+                //}
+            }, loadResPriority, clear);
         }
-        for (int i = 0; i< count; i++)
-        {
-            GameObject tmpGameObject = tmpGameObjectList[i];
-            ReleaseResource(tmpGameObject);
-        }
-        tmpGameObjectList.Clear();
+        
     }
 
     #region 类对象池管理

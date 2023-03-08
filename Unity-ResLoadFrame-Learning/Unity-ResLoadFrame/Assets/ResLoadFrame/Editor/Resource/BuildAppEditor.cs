@@ -32,16 +32,16 @@ public class BuildAppEditor
         switch (EditorUserBuildSettings.activeBuildTarget)
         {
             case BuildTarget.iOS:
-                savePath = $"{m_BuildIOSPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_{DateTime.Now:yyyy_MM_dd_HH_mm}";
+                savePath = $"{m_BuildIOSPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_v{m_AppVersion}_{DateTime.Now:yyyy_MM_dd_HH_mm}";
                 break;
             case BuildTarget.Android:
-                savePath = $"{m_BuildAndroidPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_{DateTime.Now:yyyy_MM_dd_HH_mm}.apk";
+                savePath = $"{m_BuildAndroidPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_v{m_AppVersion}_{DateTime.Now:yyyy_MM_dd_HH_mm}{(EditorUserBuildSettings.buildAppBundle ? ".aab" : ".apk")}";
                 break;
             case BuildTarget.StandaloneWindows:
-                savePath = $"{m_BuildWindowsPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_{DateTime.Now:yyyy_MM_dd_HH_mm}/{m_AppName}.exe";
+                savePath = $"{m_BuildWindowsPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_v{m_AppVersion}_{DateTime.Now:yyyy_MM_dd_HH_mm}/{m_AppName}.exe";
                 break;
             case BuildTarget.StandaloneWindows64:
-                savePath = $"{m_BuildWindowsPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_{DateTime.Now:yyyy_MM_dd_HH_mm}/{m_AppName}.exe";
+                savePath = $"{m_BuildWindowsPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_v{m_AppVersion}_{DateTime.Now:yyyy_MM_dd_HH_mm}/{m_AppName}.exe";
                 break;
         }
 
