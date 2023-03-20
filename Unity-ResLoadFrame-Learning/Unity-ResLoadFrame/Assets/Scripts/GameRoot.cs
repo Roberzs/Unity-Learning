@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,6 +11,7 @@ public class GameRoot : MonoBehaviour
     private AudioClip tmpClip;
 
     private GameObject tmpObj;
+
 
     private void Awake()
     {
@@ -41,7 +43,9 @@ public class GameRoot : MonoBehaviour
         //}, LoadResPriority.RES_HIGHT, true);
 
         float timer = Time.realtimeSinceStartup;
-        ObjectManager.Instance.PreloadGameObject("Assets/GameData/Prefabs/Attack.prefab", LoadResPriority.RES_MIDDLE, 10);
+        //ObjectManager.Instance.PreloadGameObject("Assets/GameData/Prefabs/Attack.prefab", LoadResPriority.RES_MIDDLE, 10);
+        //ObjectManager.Instance.PreloadGameObject("Assets/GameData/Prefabs/Attack.prefab", LoadResPriority.RES_MIDDLE, 100);
+        //ObjectManager.Instance.PreloadGameObject("Assets/GameData/Prefabs/Attack.prefab", LoadResPriority.RES_MIDDLE, 100);
         Debug.Log($"加载所需时间:{Time.realtimeSinceStartup - timer}");
 
         LoadConfiger();

@@ -338,6 +338,7 @@ public class ObjectManager : Singleton<ObjectManager>
 
     public void PreloadGameObject(string path, LoadResPriority loadResPriority, int count = 1, bool clear = false)
     {
+        /**
         List<GameObject> tmpGameObjectList = new List<GameObject>();
         for (int i = 0; i < count; i++)
         {
@@ -357,7 +358,19 @@ public class ObjectManager : Singleton<ObjectManager>
                 //}
             }, loadResPriority, clear);
         }
-        
+        */
+        List<GameObject> tmpGameObjectList = new List<GameObject>();
+        for (int i = 0; i < count; i++)
+        {
+            GameObject tmpGameObject = InstantiateObject(path, false, clear);
+            tmpGameObjectList.Add(tmpGameObject);
+        }
+        for (int i = 0; i < count; i++)
+        {
+            GameObject tmpGameObject = tmpGameObjectList[i];
+            ReleaseResource(tmpGameObject);
+        }
+        tmpGameObjectList.Clear();
     }
 
     #region 类对象池管理
