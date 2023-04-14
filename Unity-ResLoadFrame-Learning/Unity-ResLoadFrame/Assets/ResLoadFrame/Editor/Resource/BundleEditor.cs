@@ -19,6 +19,7 @@ public class BundleEditor
     private static string M_ABCONFIG_PATH = GetScriptInDirectory(MethodBase.GetCurrentMethod().DeclaringType.Name) + "/ABConfig.asset";
     private static string M_BUNDLETARGET_PATH = Application.dataPath + "/../AssetBundle/" + EditorUserBuildSettings.activeBuildTarget.ToString();
     private static string M_ABBYTEPATH = GetScriptInDirectory(MethodBase.GetCurrentMethod().DeclaringType.Name).Replace("ResLoadFrame/Editor/Resource", "ResLoadFrame/Temp/AssetBundleConfig.bytes");
+    private static string M_VERSIONMD5PATH = Application.dataPath + "/../Version/" + EditorUserBuildSettings.activeBuildTarget.ToString();
 
     /// <summary>
     /// 存储所有资源类AB包的路径 key:包名 value:路径
@@ -115,8 +116,48 @@ public class BundleEditor
             AssetDatabase.RemoveAssetBundleName(oldABNames[i], true);
             EditorUtility.DisplayProgressBar("清除AB包名", "包名:" + oldABNames[i], i * 1.0f / oldABNames.Length);
         }
+
+        WriteABMD5();
+
+        AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
         EditorUtility.ClearProgressBar();
+    }
+
+    static void WriteABMD5()
+    {
+        DirectoryInfo directoryInfo = new DirectoryInfo(M_BUNDLETARGET_PATH);
+        FileInfo[] fileInfos = directoryInfo.GetFiles("*", SearchOption.AllDirectories);
+        ABMD5 abMd5 = new ABMD5();
+        abMd5.ABMD5List = new List<ABMD5Base>();
+        foreach (var item in fileInfos)
+        {
+            if (!item.Name.EndsWith(".meta") && !item.Name.EndsWith(".manifest"))
+            {
+                var abMd5Base = new ABMD5Base();
+                
+                abMd5Base.Name = item.Name;
+                abMd5Base.Md5 = MD5Manager.Instance.BuildFileMd5(item.FullName);
+                abMd5Base.Size = item.Length / 1024.0f;
+
+                abMd5.ABMD5List.Add(abMd5Base);
+            }
+        }
+
+        string path = Path.Combine(Application.dataPath, "Resources/ABMD5.bytes");
+        BinarySerializeOption.BinarySerilize(path, abMd5);
+
+        // 拷贝到外部
+        if (!Directory.Exists(M_VERSIONMD5PATH))
+        {
+            Directory.CreateDirectory(M_VERSIONMD5PATH);
+        }
+        var targetPath = M_VERSIONMD5PATH + "/ABMD5_" + PlayerSettings.bundleVersion + ".byte";
+        if (File.Exists(targetPath))
+        {
+            File.Delete(targetPath);
+        }
+        File.Copy(path, targetPath);
     }
 
     static void SetABName(string name, string path)

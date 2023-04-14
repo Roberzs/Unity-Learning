@@ -25,6 +25,8 @@ public class BuildAppEditor
     {
         BundleEditor.Build();
 
+        SaveVersion(PlayerSettings.bundleVersion, PlayerSettings.applicationIdentifier);
+
         string abPath = Application.dataPath + "/../AssetBundle/" + EditorUserBuildSettings.activeBuildTarget.ToString() + "/";
         CopyDir(abPath, Application.streamingAssetsPath);
 
@@ -124,6 +126,44 @@ public class BuildAppEditor
         catch(Exception e)
         {
             Debug.LogError(e);
+        }
+    }
+
+    [MenuItem("TTT/Save Version")]
+    public static void TSaveVersion()
+    {
+        SaveVersion(PlayerSettings.bundleVersion, PlayerSettings.applicationIdentifier);
+    }
+
+    static void SaveVersion(string version, string packageName)
+    {
+        string path = Path.Combine(Application.dataPath, "Resources/Version.txt");
+
+        string targetContent = "Version|" + version + ";PackageName|" + packageName + ";";
+        string allContent = "";
+        string firstLineContent = "";
+        using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+        {
+            using(StreamReader sr = new StreamReader(fs, System.Text.Encoding.UTF8))
+            {
+                allContent = sr.ReadToEnd();
+                firstLineContent = allContent.Split('\r')[0];
+            }
+        }
+        using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+        {
+            using (StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8))
+            {
+                if (string.IsNullOrEmpty(allContent))
+                {
+                    allContent = targetContent;
+                }
+                else
+                {
+                    allContent.Replace(firstLineContent, targetContent);
+                }
+                sw.Write(allContent);
+            }
         }
     }
 }

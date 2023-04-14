@@ -6,7 +6,6 @@
 	功能：Nothing
 *****************************************************/
 
-using log4net.Util;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
