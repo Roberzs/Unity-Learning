@@ -23,7 +23,7 @@ public class BuildAppEditor
     [MenuItem("Build/标准包")]
     public static void Build()
     {
-        BundleEditor.Build();
+        BundleEditor.NormalBuild();
 
         SaveVersion(PlayerSettings.bundleVersion, PlayerSettings.applicationIdentifier);
 
