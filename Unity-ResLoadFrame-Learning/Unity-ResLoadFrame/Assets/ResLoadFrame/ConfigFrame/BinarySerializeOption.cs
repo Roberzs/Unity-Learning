@@ -131,7 +131,7 @@ public class BinarySerializeOption
         return false;
     }
 
-    public static System.Object XmlDeserializeEditor(string path, Type type)
+    public static System.Object XmlDeserializeInFile(string path, Type type)
     {
         System.Object obj = null;
         try

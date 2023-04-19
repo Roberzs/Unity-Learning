@@ -21,7 +21,7 @@ public class GameRoot : MonoBehaviour
         AssetBundleManager.Instance.LoadAssetBundleConfig();
         ResourceManager.Instance.Init(this);
         ObjectManager.Instance.Init(transform.Find("RecyclePoolTrs"), transform.Find("SceneTrs"));
-
+        HotFixManager.Instance.Init(this);
     }
 
     private void Start()

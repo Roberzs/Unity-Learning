@@ -515,7 +515,7 @@ public class DataEditor
         {
 
             string xmlPath = XMLPath + className + ".xml";
-            return BinarySerializeOption.XmlDeserializeEditor(xmlPath, type);
+            return BinarySerializeOption.XmlDeserializeInFile(xmlPath, type);
         }
         return null;
     }
@@ -854,7 +854,7 @@ public class DataEditor
 
                 string xmlPath = XMLPath + name + ".xml";
                 string binaryPath = BinaryPath + name + ".bytes";
-                var obj = BinarySerializeOption.XmlDeserializeEditor(xmlPath, type);
+                var obj = BinarySerializeOption.XmlDeserializeInFile(xmlPath, type);
                 BinarySerializeOption.BinarySerilize(binaryPath, obj);
                 Debug.Log(name + "Xml转二进制成功, 路径:" + binaryPath);
 
