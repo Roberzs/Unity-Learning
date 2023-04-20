@@ -111,7 +111,9 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
         if (!m_AssetBundleItemDic.TryGetValue(crc, out item))
         {
             AssetBundle assetBundle = null;
-            string fullPath = m_ABRootPath + "/" + name;
+            
+            string hotABPath = HotFixManager.Instance.ComputeABPath(name);
+            string fullPath = string.IsNullOrEmpty(hotABPath) ? m_ABRootPath + "/" + name : hotABPath;
             // Android 与 IOS 不允许访问路径
             //if (File.Exists(fullPath))
             //{

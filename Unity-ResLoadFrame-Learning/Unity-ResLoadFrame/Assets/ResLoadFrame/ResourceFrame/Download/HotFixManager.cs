@@ -25,6 +25,28 @@ public class HotFixManager : Singleton<HotFixManager>
     private Dictionary<string, Patch> m_HotFixDic = new Dictionary<string, Patch>();
     private List<Patch> m_DownloadList = new List<Patch>();
     private Dictionary<string, Patch> m_DownloadDic = new Dictionary<string, Patch>();
+    private Dictionary<string, string> m_DownloadMd5Dic = new Dictionary<string, string>();
+    // 服务器列表获取失败回调
+    public Action ServerInfoError;
+    /// <summary>
+    /// 资源下载失败
+    /// </summary>
+    public Action<string> ItemError;
+    public Action LoadOver;
+    // 下载完成的资源列表
+    public List<Patch> m_AlreadDownList = new List<Patch>();
+
+    private DownloadAssetBundle m_CurDownload;
+
+    // 是否开始下载
+    private bool m_IsStartDownLoad = false;
+
+    /// <summary>
+    /// 尝试下载的次数
+    /// </summary>
+    private int m_TryDownCount = 0;
+
+    private const int DOWNLOADCOUNT = 4;
 
     public int LoadFileCount { get; set; } = 0;
     /// <summary>
@@ -37,14 +59,27 @@ public class HotFixManager : Singleton<HotFixManager>
         m_Mono = mono;
     }
 
-    // 检查热更版本
+    /// <summary>
+    /// 检查热更版本
+    /// </summary>
+    /// <param name="hotCallBack"></param>
     public void CheckVersion(Action<bool> hotCallBack = null)
     {
+        m_TryDownCount = 0;
         m_HotFixDic.Clear();
 
         ReadVersion();
         m_Mono.StartCoroutine(ReadXml(() => 
         {
+            if (m_ServerInfo == null)
+            {
+                if (ServerInfoError != null)
+                {
+                    ServerInfoError();
+                }
+                return;
+            }
+
             if (m_ServerInfo == null)
             {
                 if (hotCallBack != null)
@@ -87,17 +122,6 @@ public class HotFixManager : Singleton<HotFixManager>
                 hotCallBack(m_DownloadList.Count > 0);
             }
         }));
-
-    }
-
-    /// <summary>
-    /// 检查本地资源是否与服务器下载列表信息一致
-    /// </summary>
-    private void CheckLocalResource()
-    {
-        m_DownloadList.Clear();
-        m_DownloadDic.Clear();
-
 
     }
 
@@ -184,6 +208,45 @@ public class HotFixManager : Singleton<HotFixManager>
         callBack?.Invoke();
     }
 
+    /// <summary>
+    /// 获取下载的总进度
+    /// </summary>
+    /// <returns></returns>
+    public float GetProgress()
+    {
+        return GetLoadSize() / LoadSumSize;
+    }
+
+    /// <summary>
+    /// 获取已下载总大小
+    /// </summary>
+    /// <returns></returns>
+    public float GetLoadSize()
+    {
+        float alreadySize = m_AlreadDownList.Sum(x => x.Size);
+        float curAlreadySize = 0;
+        if (m_CurDownload != null)
+        {
+            Patch patch = FindPatchByGamePath(m_CurDownload.FileName);
+            if (patch != null && !m_AlreadDownList.Contains(patch))
+            {
+                curAlreadySize = m_CurDownload.GetProcess() * patch.Size;
+            }
+        }
+        return alreadySize + curAlreadySize;
+    }
+
+    public string ComputeABPath(string name)
+    {
+        Patch patch = null;
+        m_HotFixDic.TryGetValue(name, out patch);
+        if (patch != null)
+        {
+            return m_DownloadPath + "/" + name;
+        }
+        return "";
+    }
+
     private void GetHotAB()
     {
         if (m_GameVersion!=null && m_GameVersion.Patches != null)
@@ -199,6 +262,7 @@ public class HotFixManager : Singleton<HotFixManager>
         }
     }
 
+
     /// <summary>
     /// 计算要下载的资源
     /// </summary>
@@ -206,7 +270,9 @@ public class HotFixManager : Singleton<HotFixManager>
     {
         m_DownloadDic.Clear();
         m_DownloadList.Clear();
-        if(m_GameVersion != null && m_GameVersion.Patches !=null && m_GameVersion.Patches.Length > 0)
+        m_DownloadMd5Dic.Clear();
+
+        if (m_GameVersion != null && m_GameVersion.Patches !=null && m_GameVersion.Patches.Length > 0)
         {
             m_CurrentPatches = m_GameVersion.Patches[m_GameVersion.Patches.Length - 1];
             if (m_CurrentPatches.Files != null && m_CurrentPatches.Files.Count > 0)
@@ -244,13 +310,130 @@ public class HotFixManager : Singleton<HotFixManager>
             {
                 m_DownloadList.Add(item);
                 m_DownloadDic.Add(item.Name, item);
+                m_DownloadMd5Dic.Add(item.Name, item.Md5);
             }
         }
         else
         {
             m_DownloadList.Add(item);
             m_DownloadDic.Add(item.Name, item);
+            m_DownloadMd5Dic.Add(item.Name, item.Md5);
         }
+    }
+
+    public IEnumerator StartDownloadAB(Action cb = null, List<Patch> allPatch = null)
+    {
+        m_AlreadDownList.Clear();
+        m_IsStartDownLoad = true;
+
+        if (allPatch == null)
+        {
+            allPatch = m_DownloadList;
+        }
+
+        if (!Directory.Exists(m_DownloadPath))
+        {
+            Directory.CreateDirectory(m_DownloadPath);
+        }
+        List<DownloadAssetBundle> downloadAssetBundles = new List<DownloadAssetBundle>();
+        foreach (var item in allPatch)
+        {
+            downloadAssetBundles.Add(new DownloadAssetBundle(item.Url, m_DownloadPath));
+        }
+
+        // 开始下载
+        foreach (var item in downloadAssetBundles)
+        {
+            m_CurDownload = item;
+            yield return m_Mono.StartCoroutine(item.Download());
+            Patch patch = FindPatchByGamePath(item.FileName);
+            if (patch != null)
+            {
+                m_AlreadDownList.Add(patch);
+            }
+            item.Destroy();
+        }
+
+        // MD5校验
+        VerifyMD5(downloadAssetBundles, cb);
+    }
+
+    private void VerifyMD5(List<DownloadAssetBundle> downloadAssetBundles, Action cb)
+    {
+        List<Patch> downloadList = new List<Patch>();
+        foreach (var item in downloadAssetBundles)
+        {
+            string md5 = "";
+            if (m_DownloadMd5Dic.TryGetValue(item.FileName, out md5))
+            {
+                if (MD5Manager.Instance.BuildFileMd5(item.SaveFilePath) != md5)
+                {
+                    Debug.Log("文件下载失败");
+                    Patch patch = FindPatchByGamePath(item.FileName);
+                    if (patch != null)
+                    {
+                        downloadList.Add(patch);
+                    }
+                }
+            }
+            
+        }
+        if (downloadList.Count <= 0)
+        {
+            m_DownloadMd5Dic.Clear();
+            if (cb != null)
+            {
+                cb();
+            }
+            if (LoadOver != null)
+            {
+                LoadOver();
+            }
+            m_IsStartDownLoad = false;
+        }
+        else
+        {
+            if (m_TryDownCount > DOWNLOADCOUNT)
+            {
+                m_IsStartDownLoad = false;
+
+                string allName = "";
+
+                foreach (var item in downloadList)
+                {
+                    allName += item.Name + ";";
+                }
+                if (ItemError != null)
+                {
+                    ItemError(allName);
+                }
+                Debug.Log("资源重复下载失败,请检查资源");
+            }
+            else
+            {
+                m_TryDownCount++;
+                m_DownloadMd5Dic.Clear();
+                foreach (var item in downloadList)
+                {
+                    m_DownloadMd5Dic.Add(item.Name, item.Md5);
+                }
+                // 重新下载
+                m_Mono.StartCoroutine(StartDownloadAB(cb, downloadList));
+            }
+            
+        }
+    }
+
+    /// <summary>
+    /// 根据名字查找对应Patch
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    private Patch FindPatchByGamePath(string name)
+    {
+        Patch patch = null;
+        m_DownloadDic.TryGetValue(name, out patch);
+        return patch;
     }
 }
 
