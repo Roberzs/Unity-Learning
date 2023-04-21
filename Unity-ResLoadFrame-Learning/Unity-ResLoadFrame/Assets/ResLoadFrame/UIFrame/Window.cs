@@ -25,6 +25,12 @@ public class Window
     /// Panel 名称
     /// </summary>
     public string Name { get; set; }
+
+    /// <summary>
+    /// 是否是从Resources文件夹加载的资源
+    /// </summary>
+    public bool IsResourceLoad { get; set; } = false;
+
     /// <summary>
     /// 所有的Button
     /// </summary>

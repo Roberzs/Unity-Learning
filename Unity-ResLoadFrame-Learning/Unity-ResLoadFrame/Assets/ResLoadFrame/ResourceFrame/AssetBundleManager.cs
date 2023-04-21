@@ -44,7 +44,8 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
             return false;
         }
 #endif
-        string configPath = m_ABRootPath + "/" + m_ABConfigABName;
+        string hotABPath = HotFixManager.Instance.ComputeABPath(m_ABConfigABName);
+        string configPath = string.IsNullOrEmpty(hotABPath) ? m_ABRootPath + "/" + m_ABConfigABName : hotABPath;
         AssetBundle configAB = AssetBundle.LoadFromFile(configPath);
         TextAsset textAsset = configAB.LoadAsset<TextAsset>(m_ABConfigABName);
         if (textAsset == null)

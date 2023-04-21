@@ -9,18 +9,23 @@ using UnityEngine.Networking;
 public class HotFixManager : Singleton<HotFixManager>
 {
     private string m_CurVersion;
+    public string CurVersion { get => m_CurVersion; }
     private string m_CurPackName;
 
     private MonoBehaviour m_Mono;
 
     private string m_ServerXmlPath = Application.persistentDataPath + "/ServerInfo.xml";
     private string m_LocalServerXmlPath = Application.persistentDataPath + "/LocalServerInfo.xml";
-    private string m_DownloadPath = Application.persistentDataPath + "/Download";
+    private string m_DownloadPath = Application.persistentDataPath + "/Download/";
 
     private ServerInfo m_ServerInfo;
     private ServerInfo m_LocalServerInfo;
     private VersionInfo m_GameVersion;
     private Patches m_CurrentPatches;
+    public Patches CurrentPatches
+    {
+        get { return m_CurrentPatches; }
+    }
 
     private Dictionary<string, Patch> m_HotFixDic = new Dictionary<string, Patch>();
     private List<Patch> m_DownloadList = new List<Patch>();
@@ -40,6 +45,10 @@ public class HotFixManager : Singleton<HotFixManager>
 
     // 是否开始下载
     private bool m_IsStartDownLoad = false;
+    public bool IsStartDownLoad
+    {
+        get => m_IsStartDownLoad;
+    }
 
     /// <summary>
     /// 尝试下载的次数
@@ -76,15 +85,6 @@ public class HotFixManager : Singleton<HotFixManager>
                 if (ServerInfoError != null)
                 {
                     ServerInfoError();
-                }
-                return;
-            }
-
-            if (m_ServerInfo == null)
-            {
-                if (hotCallBack != null)
-                {
-                    hotCallBack(false);
                 }
                 return;
             }

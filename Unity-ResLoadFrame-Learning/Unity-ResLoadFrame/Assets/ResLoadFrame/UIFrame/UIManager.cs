@@ -49,14 +49,19 @@ public class UIManager : Singleton<UIManager>
 	/// </summary>
 	private List<Window> m_WindowList = new List<Window>();
 
-	/// <summary>
-	/// 初始化
-	/// </summary>
-	/// <param name="uiRoot">UI根节点</param>
-	/// <param name="wndRoot">窗体根节点</param>
-	/// <param name="uiCamera">UI摄像机</param>
-	/// <param name="eventSystem">EventSystem节点</param>
-	public void Init(RectTransform uiRoot, RectTransform wndRoot, Camera uiCamera, EventSystem eventSystem)
+	public RectTransform WndRoot
+    {
+        get => m_WndRoot;
+    }
+
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    /// <param name="uiRoot">UI根节点</param>
+    /// <param name="wndRoot">窗体根节点</param>
+    /// <param name="uiCamera">UI摄像机</param>
+    /// <param name="eventSystem">EventSystem节点</param>
+    public void Init(RectTransform uiRoot, RectTransform wndRoot, Camera uiCamera, EventSystem eventSystem)
     {
 		m_UIRoot = uiRoot;
 		m_WndRoot = wndRoot;
@@ -65,7 +70,7 @@ public class UIManager : Singleton<UIManager>
 		m_CanvasRate = Screen.height / (m_UICamera.orthographicSize * 2);
     }
 
-	public Window PopUpWnd(string wndName, bool bTop = false, params object[] paramList)
+	public Window PopUpWnd(string wndName, bool bTop = false, bool bResourceLoad = false, params object[] paramList)
     {
 		Window wnd = FindWndByName<Window>(wndName);
 		if (wnd == null)
@@ -79,8 +84,16 @@ public class UIManager : Singleton<UIManager>
             {
 				Debug.LogError($"找不到窗口对应脚本, 窗口名:{wndName}");
             }
-
-			GameObject wndObj = ObjectManager.Instance.InstantiateObject(UIPREFABPATH + wndName, false, false);
+            GameObject wndObj = null;
+            if (bResourceLoad)
+            {
+                wndObj = GameObject.Instantiate(Resources.Load<GameObject>(wndName.Replace(".prefab",""))) as GameObject;
+            }
+            else
+            {
+                wndObj = ObjectManager.Instance.InstantiateObject(UIPREFABPATH + wndName, false, false);
+            }
+            
 			if (!wndObj)
             {
 				Debug.Log("创建Panel失败:" + wndName);
@@ -95,7 +108,9 @@ public class UIManager : Singleton<UIManager>
 			wnd.GameObject = wndObj;
 			wnd.Transform = wndObj.transform;
 			wnd.Name = wndName;
-			wnd.Awake(paramList);
+            wnd.IsResourceLoad = bResourceLoad;
+
+            wnd.Awake(paramList);
 			wndObj.transform.SetParent(m_WndRoot, false);
 
 			if (bTop)
@@ -153,14 +168,22 @@ public class UIManager : Singleton<UIManager>
 				m_WindowList.Remove(wnd);
 				m_WindowDic.Remove(wnd.Name);
             }
-			if (destory)
+            if (!wnd.IsResourceLoad)
             {
-				ObjectManager.Instance.ReleaseResource(wnd.GameObject, 0, true);
+                if (destory)
+                {
+                    ObjectManager.Instance.ReleaseResource(wnd.GameObject, 0, true);
+                }
+                else
+                {
+                    ObjectManager.Instance.ReleaseResource(wnd.GameObject, recycleParent: false);
+                }
             }
-			else
+            else
             {
-				ObjectManager.Instance.ReleaseResource(wnd.GameObject, recycleParent: false);
-			}
+                GameObject.Destroy(wnd.GameObject);
+            }
+			
 			wnd.GameObject = null;
 			wnd = null;
         }
@@ -207,10 +230,10 @@ public class UIManager : Singleton<UIManager>
 	/// <param name="name"></param>
 	/// <param name="bTop"></param>
 	/// <param name="paramList"></param>
-	public void SwitchStateByName(string name, bool bTop = true, params object[] paramList)
+	public void SwitchStateByName(string name, bool bTop = true,bool bResourceLoad = false, params object[] paramList)
     {
 		CloseAllWnd();
-		PopUpWnd(name, bTop, paramList);
+		PopUpWnd(name, bTop, bResourceLoad, paramList);
     }
 
 	public void HideWnd(string name)

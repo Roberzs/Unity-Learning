@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class GameRoot : MonoBehaviour
+public class GameRoot : MonoSingleton<GameRoot>
 {
     private AudioSource m_Audio;
 
@@ -13,19 +15,31 @@ public class GameRoot : MonoBehaviour
     private GameObject tmpObj;
 
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
+        Debug.Log(Application.persistentDataPath);
+
         DontDestroyOnLoad(gameObject);
         
         m_Audio = GetComponent<AudioSource>();
-        AssetBundleManager.Instance.LoadAssetBundleConfig();
+        
         ResourceManager.Instance.Init(this);
         ObjectManager.Instance.Init(transform.Find("RecyclePoolTrs"), transform.Find("SceneTrs"));
         HotFixManager.Instance.Init(this);
+        UIManager.Instance.Init(transform.Find("UIRoot") as RectTransform,
+            transform.Find("UIRoot/WndRoot") as RectTransform,
+            transform.Find("UIRoot/UICamera").GetComponent<Camera>(),
+            transform.Find("UIRoot/EventSystem").GetComponent<EventSystem>());
+        RegisterUI();
     }
 
     private void Start()
     {
+
+        UIManager.Instance.PopUpWnd("HotFixPanel.prefab", bResourceLoad: true);
+
         //ResourceManager.Instance.AsyncLoadResource("Assets/GameData/Sounds/senlin.mp3", (string path, Object obj, object param1, object parma2, object param3) =>
         //{
         //    tmpClip = obj as AudioClip;
@@ -42,50 +56,60 @@ public class GameRoot : MonoBehaviour
         //    tmpObj.SetActive(false);
         //}, LoadResPriority.RES_HIGHT, true);
 
-        float timer = Time.realtimeSinceStartup;
+        //float timer = Time.realtimeSinceStartup;
         //ObjectManager.Instance.PreloadGameObject("Assets/GameData/Prefabs/Attack.prefab", LoadResPriority.RES_MIDDLE, 10);
         //ObjectManager.Instance.PreloadGameObject("Assets/GameData/Prefabs/Attack.prefab", LoadResPriority.RES_MIDDLE, 100);
         //ObjectManager.Instance.PreloadGameObject("Assets/GameData/Prefabs/Attack.prefab", LoadResPriority.RES_MIDDLE, 100);
-        Debug.Log($"加载所需时间:{Time.realtimeSinceStartup - timer}");
-
-        LoadConfiger();
-
-        // UI加载
-        UIManager.Instance.Init(transform.Find("UIRoot") as RectTransform,
-            transform.Find("UIRoot/WndRoot") as RectTransform,
-            transform.Find("UIRoot/UICamera").GetComponent<Camera>(),
-            transform.Find("UIRoot/EventSystem").GetComponent<EventSystem>());
-
-        GameSceneManager.Instance.Init(this);
-
-        RegisterUI();
-
-        //UIManager.Instance.PopUpWnd("MenuPanel.prefab");
-
-        ResourceManager.Instance.LoadResource<AudioClip>("Assets/GameData/Sounds/senlin.mp3");
+        //Debug.Log($"加载所需时间:{Time.realtimeSinceStartup - timer}");
 
         
-        //ObjectManager.Instance.ReleaseResource(tmpObj);
+
+        // UI加载
+        
+
+        
+
+        
 
         //UIManager.Instance.PopUpWnd("MenuPanel.prefab");
 
-        GameSceneManager.Instance.LoadSceen("MenuScene",
-        () =>
-            {
-                UIManager.Instance.PopUpWnd("LoadingPanel.prefab", true);
-            },
-            () =>
-            {
-                //UIManager.Instance.OnUpdate
-                UIManager.Instance.CloseWnd("LoadingPanel.prefab");
-                UIManager.Instance.PopUpWnd("MenuPanel.prefab");
-            });
+        //ResourceManager.Instance.LoadResource<AudioClip>("Assets/GameData/Sounds/senlin.mp3");
+
+        
+        ////ObjectManager.Instance.ReleaseResource(tmpObj);
+
+        ////UIManager.Instance.PopUpWnd("MenuPanel.prefab");
+
+        //GameSceneManager.Instance.LoadSceen("MenuScene",
+        //() =>
+        //    {
+        //        UIManager.Instance.PopUpWnd("LoadingPanel.prefab", true);
+        //    },
+        //    () =>
+        //    {
+        //        //UIManager.Instance.OnUpdate
+        //        UIManager.Instance.CloseWnd("LoadingPanel.prefab");
+        //        UIManager.Instance.PopUpWnd("MenuPanel.prefab");
+        //    });
+    }
+
+    public IEnumerator StartGame(Image image, Text text)
+    {
+        AssetBundleManager.Instance.LoadAssetBundleConfig();
+        yield return 0;
+        LoadConfiger();
+        yield return 0;
+        
+        yield return 0;
+        GameSceneManager.Instance.Init(this);
+        yield return 0;
     }
 
     void RegisterUI()
     {
         UIManager.Instance.Register<LoadingUI>("LoadingPanel.prefab");
         UIManager.Instance.Register<MenuUI>("MenuPanel.prefab");
+        UIManager.Instance.Register<HotFixUI>("HotFixPanel.prefab");
     }
 
     void LoadConfiger()
@@ -127,5 +151,13 @@ public class GameRoot : MonoBehaviour
         }
 
         UIManager.Instance.OnUpdate();
+    }
+
+    public static void OpenCommonConfirm(string title, string content, UnityAction confirmAction, UnityAction cancleAction)
+    {
+        var item = Instantiate(Resources.Load<GameObject>("CommonConfirm"));
+        item.transform.SetParent(UIManager.Instance.WndRoot, false);
+        var script = item.GetComponent<CommonConfirm>();
+        script.OnShow(title, content, confirmAction, cancleAction);
     }
 }
