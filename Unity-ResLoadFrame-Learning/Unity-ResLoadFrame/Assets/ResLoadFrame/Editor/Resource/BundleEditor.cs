@@ -32,10 +32,42 @@ public class BundleEditor
 
     private static Dictionary<string, ABMD5Base> m_PackedMd5 = new Dictionary<string, ABMD5Base>();
 
+    private const string AESKEY = "tutou";
+
     [MenuItem("ResLoadFrame/打包AssetBundle")]
     public static void NormalBuild()
     {
         Build();
+    }
+
+    [MenuItem("TTT/加密AB包")]
+    public static void EncryptAB()
+    {
+        DirectoryInfo directory = new DirectoryInfo(M_BUNDLETARGET_PATH);
+        FileInfo[] files = directory.GetFiles("*", SearchOption.AllDirectories);
+        foreach (var item in files)
+        {
+            if (!item.Name.EndsWith(".meta") && !item.Name.EndsWith(".manifest"))
+            {
+                AES.AESFileEncrypt(item.FullName, AESKEY);
+            }
+        }
+        Debug.Log("加密完成");
+    }
+
+    [MenuItem("TTT/解密AB包")]
+    public static void DecryptAB()
+    {
+        DirectoryInfo directory = new DirectoryInfo(M_BUNDLETARGET_PATH);
+        FileInfo[] files = directory.GetFiles("*", SearchOption.AllDirectories);
+        foreach (var item in files)
+        {
+            if (!item.Name.EndsWith(".meta") && !item.Name.EndsWith(".manifest"))
+            {
+                AES.AESFileDecrypt(item.FullName, AESKEY);
+            }
+        }
+        Debug.Log("加密完成");
     }
 
     public static void Build(bool bHotFix = false, string filePath = "", string hotfixCount = "1")
@@ -327,6 +359,25 @@ public class BundleEditor
         else
         {
             Debug.LogError("AB包打包失败");
+        }
+
+        // 删除描述文件
+        DeleteManifest();
+
+        // 加密
+        EncryptAB();
+    }
+
+    private static void DeleteManifest()
+    {
+        DirectoryInfo directory = new DirectoryInfo(M_BUNDLETARGET_PATH);
+        var files = directory.GetFiles("*", SearchOption.AllDirectories);
+        foreach (var item in files)
+        {
+            if (item.Name.EndsWith(".manifest"))
+            {
+                File.Delete(item.FullName);
+            }
         }
     }
 

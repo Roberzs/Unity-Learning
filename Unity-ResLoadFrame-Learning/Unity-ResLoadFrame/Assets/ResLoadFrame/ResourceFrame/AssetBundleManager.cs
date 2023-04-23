@@ -46,7 +46,11 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
 #endif
         string hotABPath = HotFixManager.Instance.ComputeABPath(m_ABConfigABName);
         string configPath = string.IsNullOrEmpty(hotABPath) ? m_ABRootPath + "/" + m_ABConfigABName : hotABPath;
-        AssetBundle configAB = AssetBundle.LoadFromFile(configPath);
+
+        byte[] bytes = AES.AESFileByteDecrypt(configPath, "tutou");
+        AssetBundle configAB = AssetBundle.LoadFromMemory(bytes);
+
+        //AssetBundle configAB = AssetBundle.LoadFromFile(configPath);
         TextAsset textAsset = configAB.LoadAsset<TextAsset>(m_ABConfigABName);
         if (textAsset == null)
         {
@@ -120,7 +124,9 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
             //{
             //    assetBundle = AssetBundle.LoadFromFile(fullPath);
             //}
-            assetBundle = AssetBundle.LoadFromFile(fullPath);
+            byte[] bytes = AES.AESFileByteDecrypt(fullPath, "tutou");
+            assetBundle = AssetBundle.LoadFromMemory(bytes);
+            //assetBundle = AssetBundle.LoadFromFile(fullPath);
             if (assetBundle == null)
             {
                 Debug.LogError($"Load AssetBundle Error, path:{fullPath}");

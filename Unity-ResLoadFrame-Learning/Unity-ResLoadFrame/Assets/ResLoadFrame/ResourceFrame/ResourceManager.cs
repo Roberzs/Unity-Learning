@@ -12,7 +12,7 @@ using UnityEngine;
 
 public class ResourceManager :Singleton<ResourceManager>
 {
-    public bool m_LoadFormAssetBundle = false;
+    public bool m_LoadFormAssetBundle = true;
 
     protected long m_Guid = 0;
 

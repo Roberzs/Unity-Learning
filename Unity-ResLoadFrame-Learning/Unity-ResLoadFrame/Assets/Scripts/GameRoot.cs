@@ -38,6 +38,11 @@ public class GameRoot : MonoSingleton<GameRoot>
     private void Start()
     {
 
+        //AssetBundleManager.Instance.LoadAssetBundleConfig();
+        //LoadConfiger();
+
+        //GameSceneManager.Instance.Init(this);
+
         UIManager.Instance.PopUpWnd("HotFixPanel.prefab", bResourceLoad: true);
 
         //ResourceManager.Instance.AsyncLoadResource("Assets/GameData/Sounds/senlin.mp3", (string path, Object obj, object param1, object parma2, object param3) =>
@@ -62,20 +67,20 @@ public class GameRoot : MonoSingleton<GameRoot>
         //ObjectManager.Instance.PreloadGameObject("Assets/GameData/Prefabs/Attack.prefab", LoadResPriority.RES_MIDDLE, 100);
         //Debug.Log($"加载所需时间:{Time.realtimeSinceStartup - timer}");
 
-        
+
 
         // UI加载
-        
 
-        
 
-        
+
+
+
 
         //UIManager.Instance.PopUpWnd("MenuPanel.prefab");
 
         //ResourceManager.Instance.LoadResource<AudioClip>("Assets/GameData/Sounds/senlin.mp3");
 
-        
+
         ////ObjectManager.Instance.ReleaseResource(tmpObj);
 
         ////UIManager.Instance.PopUpWnd("MenuPanel.prefab");
