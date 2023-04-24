@@ -365,7 +365,11 @@ public class BundleEditor
         DeleteManifest();
 
         // 加密
-        EncryptAB();
+        if (ResourceManager.Instance.AssetBundleEncrypt)
+        {
+            EncryptAB();
+        }
+        
     }
 
     private static void DeleteManifest()

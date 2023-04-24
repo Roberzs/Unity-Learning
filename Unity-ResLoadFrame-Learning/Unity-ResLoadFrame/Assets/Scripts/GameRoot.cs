@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -50,7 +48,7 @@ public class GameRoot : MonoSingleton<GameRoot>
         //    tmpClip = obj as AudioClip;
         //    m_Audio.clip = tmpClip;
         //    m_Audio.Play();
-        //}, LoadResPriority.RES_MIDDLE);56
+        //}, LoadResPriority.RES_MIDDLE);
 
         //ResourceManager.Instance.PreloadRes("Assets/GameData/Sounds/senlin.mp3");
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -16,7 +17,8 @@ public class HotFixManager : Singleton<HotFixManager>
 
     private string m_ServerXmlPath = Application.persistentDataPath + "/ServerInfo.xml";
     private string m_LocalServerXmlPath = Application.persistentDataPath + "/LocalServerInfo.xml";
-    private string m_DownloadPath = Application.persistentDataPath + "/Download/";
+    private string m_DownloadPath = Application.persistentDataPath + "/Download";
+    //private string m_UnPackPath = Application.persistentDataPath + "/Origin";
 
     private ServerInfo m_ServerInfo;
     private ServerInfo m_LocalServerInfo;
@@ -63,9 +65,35 @@ public class HotFixManager : Singleton<HotFixManager>
     /// </summary>
     public float LoadSumSize { get; set; } = 0;
 
+    /// <summary>
+    /// 需要解压的文件
+    /// </summary>
+    private List<string> m_UnpackList = new List<string>();
+
+    /// <summary>
+    /// 原文件的MD5
+    /// </summary>
+    private Dictionary<string, ABMD5Base> m_PackedMd5 = new Dictionary<string, ABMD5Base>();
+
+    /// <summary>
+    /// 是否开始解压
+    /// </summary>
+    public bool IsStartUnPack = false;
+
+    /// <summary>
+    /// 解压文件总大小
+    /// </summary>
+    public float UnPackSumSize { get; set; } = 0;
+
+    /// <summary>
+    /// 已解压文件大小
+    /// </summary>
+    public float AlreadyUnPackSize { get; set; } = 0;
+
     public void Init(MonoBehaviour mono)
     {
         m_Mono = mono;
+        ReadLocalFileMd5();
     }
 
     /// <summary>
@@ -158,7 +186,118 @@ public class HotFixManager : Singleton<HotFixManager>
 
         return false;
     }
-         
+    
+    /// <summary>
+    /// 计算需要解压的文件
+    /// </summary>
+    /// <returns></returns>
+    public bool ComputeUnPackPath()
+    {
+        if (!Directory.Exists(AssetBundleManager.Instance.m_ABLoadPath))
+        {
+            Directory.CreateDirectory(AssetBundleManager.Instance.m_ABLoadPath);
+        }
+        m_UnpackList.Clear();
+        foreach (var item in m_PackedMd5.Keys)
+        {
+            string filePath = m_UnpackList + "/" + item;
+            if (File.Exists(filePath))
+            {
+                string md5 = MD5Manager.Instance.BuildFileMd5(filePath);
+                if (md5 != m_PackedMd5[item].Md5)
+                {
+                    m_UnpackList.Add(item);
+                }
+            }
+            else
+            {
+                m_UnpackList.Add(item);
+            }
+        }
+
+        UnPackSumSize = 0;
+        foreach (var item in m_UnpackList)
+        {
+            if (m_PackedMd5.ContainsKey(item))
+            {
+                UnPackSumSize += m_PackedMd5[item].Size;
+            }
+        }
+        return m_UnpackList.Count > 0;
+    }
+
+    /// <summary>
+    /// 获取解压进度
+    /// </summary>
+    /// <returns></returns>
+    public float GetUnpackProgress()
+    {
+        return AlreadyUnPackSize / UnPackSumSize;
+    }
+
+    /// <summary>
+    /// 开始解压
+    /// </summary>
+    /// <param name="cb"></param>
+    public void StartUnpackFile(Action cb)
+    {
+        IsStartUnPack = true;
+        m_Mono.StartCoroutine(UnPackToPersistentDataPath(cb));
+    }
+
+    IEnumerator UnPackToPersistentDataPath(Action cb)
+    {
+        foreach (var item in m_UnpackList)
+        {
+            UnityWebRequest unityWebRequest = UnityWebRequest.Get(AssetBundleManager.Instance.m_ABRootPath + "/" + item);
+            unityWebRequest.timeout = 30;
+            yield return unityWebRequest.SendWebRequest();
+            if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.LogError("解压出错:" + unityWebRequest.error);
+            }
+            else
+            {
+                byte[] bytes = unityWebRequest.downloadHandler.data;
+                FileTool.CreateFile(AssetBundleManager.Instance.m_ABLoadPath + "/" + item, bytes);
+            }
+
+            if (m_PackedMd5.ContainsKey(item))
+            {
+                AlreadyUnPackSize += m_PackedMd5[item].Size;
+            }
+            unityWebRequest.Dispose();
+        }
+        if (cb !=null)
+        {
+            cb();
+        }
+        IsStartUnPack = false;
+    }
+
+    /// <summary>
+    /// 读取本地文件的MD5
+    /// </summary>
+    private void ReadLocalFileMd5()
+    {
+        m_PackedMd5.Clear();
+
+        TextAsset md5 = Resources.Load<TextAsset>("ABMD5");
+        if (md5 == null)
+        {
+            Debug.LogError("未读取到本地MD5数据");
+            return;
+        }
+        using(MemoryStream stream = new MemoryStream(md5.bytes))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            ABMD5 aBMD5 = bf.Deserialize(stream) as ABMD5;
+            foreach (var item in aBMD5.ABMD5List)
+            {
+                m_PackedMd5.Add(item.Name, item);
+            }
+        }
+    }
 
     /// <summary>
     /// 读取当前打包版本

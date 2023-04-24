@@ -90,7 +90,7 @@ public abstract class DownloadItem
         m_FileNameWithoutExt = Path.GetFileNameWithoutExtension(m_Url);
         m_FileExt = Path.GetExtension(m_Url);
         m_FileName = string.Format("{0}{1}", m_FileNameWithoutExt, m_FileExt);
-        m_SaveFilePath = string.Format("{0}{1}", m_SavePath, m_FileName);
+        m_SaveFilePath = string.Format("{0}/{1}", m_SavePath, m_FileName);
     }
 
     public virtual IEnumerator Download(Action cb = null)

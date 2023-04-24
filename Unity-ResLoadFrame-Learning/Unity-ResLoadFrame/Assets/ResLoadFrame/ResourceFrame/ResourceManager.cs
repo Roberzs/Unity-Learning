@@ -14,6 +14,12 @@ public class ResourceManager :Singleton<ResourceManager>
 {
     public bool m_LoadFormAssetBundle = true;
 
+    private bool m_AssetBundleEncrypt = false;
+    public bool AssetBundleEncrypt
+    {
+        get => m_AssetBundleEncrypt;
+    }
+
     protected long m_Guid = 0;
 
     // 缓存使用的资源列表

@@ -16,10 +16,18 @@ using UnityEngine;
 
 public class AssetBundleManager :Singleton<AssetBundleManager>
 {
+    // 原文件目录
 #if UNITY_EDITOR
-    protected string m_ABRootPath = Application.dataPath + "/../AssetBundle/" + EditorUserBuildSettings.activeBuildTarget.ToString();
+    public string m_ABRootPath = Application.dataPath + "/../AssetBundle/" + EditorUserBuildSettings.activeBuildTarget.ToString();
 #else
-    protected string m_ABRootPath = Application.streamingAssetsPath;
+    public string m_ABRootPath = Application.streamingAssetsPath;
+#endif
+
+    // 资源加载目录
+#if UNITY_EDITOR
+    public string m_ABLoadPath = Application.persistentDataPath + "/Origin";
+#else
+    public string m_ABLoadPath = Application.persistentDataPath + "/Origin";
 #endif
 
     protected string m_ABConfigABName = "assetbundleconfig";
@@ -45,10 +53,20 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
         }
 #endif
         string hotABPath = HotFixManager.Instance.ComputeABPath(m_ABConfigABName);
-        string configPath = string.IsNullOrEmpty(hotABPath) ? m_ABRootPath + "/" + m_ABConfigABName : hotABPath;
+        //string configPath = string.IsNullOrEmpty(hotABPath) ? m_ABRootPath + "/" + m_ABConfigABName : hotABPath;
+        string configPath = string.IsNullOrEmpty(hotABPath) ? m_ABLoadPath + "/" + m_ABConfigABName : hotABPath;
+        AssetBundle configAB = null;
+        if (ResourceManager.Instance.AssetBundleEncrypt)
+        {
+            byte[] bytes = AES.AESFileByteDecrypt(configPath, "tutou");
+            configAB = AssetBundle.LoadFromMemory(bytes);
+        }
+        else
+        {
+            configAB = AssetBundle.LoadFromFile(configPath);
+        }
 
-        byte[] bytes = AES.AESFileByteDecrypt(configPath, "tutou");
-        AssetBundle configAB = AssetBundle.LoadFromMemory(bytes);
+            
 
         //AssetBundle configAB = AssetBundle.LoadFromFile(configPath);
         TextAsset textAsset = configAB.LoadAsset<TextAsset>(m_ABConfigABName);
@@ -89,10 +107,9 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
         ResourceItem item = null;
         if (m_ResourceItemDic.TryGetValue(crc, out item))
         {
-            if (item.m_AssetBundle == null)
-            {
-                item.m_AssetBundle = LoadAssetBundle(item.m_ABName);
-            }
+            // 主要目的 自身AB包引用计数++
+            item.m_AssetBundle = LoadAssetBundle(item.m_ABName);
+            // 引用文件AB包引用计数++
             if (item.m_DependAssetBundle != null)
             {
                 foreach (var dependName in item.m_DependAssetBundle)
@@ -107,6 +124,7 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
             Debug.LogError($"LoadResourceAssetBundle Error: can not find crc: {crc} in AssetBundleConfig");
         }
         return item;
+
     }
 
     private AssetBundle LoadAssetBundle(string name)
@@ -118,14 +136,23 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
             AssetBundle assetBundle = null;
             
             string hotABPath = HotFixManager.Instance.ComputeABPath(name);
-            string fullPath = string.IsNullOrEmpty(hotABPath) ? m_ABRootPath + "/" + name : hotABPath;
+            //string fullPath = string.IsNullOrEmpty(hotABPath) ? m_ABRootPath + "/" + name : hotABPath;
+            string fullPath = string.IsNullOrEmpty(hotABPath) ? m_ABLoadPath + "/" + name : hotABPath;
             // Android 与 IOS 不允许访问路径
             //if (File.Exists(fullPath))
             //{
             //    assetBundle = AssetBundle.LoadFromFile(fullPath);
             //}
-            byte[] bytes = AES.AESFileByteDecrypt(fullPath, "tutou");
-            assetBundle = AssetBundle.LoadFromMemory(bytes);
+            if (ResourceManager.Instance.AssetBundleEncrypt)
+            {
+                byte[] bytes = AES.AESFileByteDecrypt(fullPath, "tutou");
+                assetBundle = AssetBundle.LoadFromMemory(bytes);
+            }
+            else
+            {
+                assetBundle = AssetBundle.LoadFromFile(fullPath);
+            }
+                
             //assetBundle = AssetBundle.LoadFromFile(fullPath);
             if (assetBundle == null)
             {

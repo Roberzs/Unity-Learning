@@ -20,7 +20,22 @@ public class HotFixUI : Window
         HotFixManager.Instance.ServerInfoError += ServerInfoError;
         HotFixManager.Instance.ItemError += ItemError;
 
-        HotFix();
+        //HotFix();
+
+        if (HotFixManager.Instance.ComputeUnPackPath())
+        {
+            
+            m_hotFixPanel.txt_Tip.text = "½âÑ¹ÖÐ...";
+            HotFixManager.Instance.StartUnpackFile(() => 
+            {
+                m_SumTime = 0;
+                HotFix();
+            });
+        }
+        else
+        {
+            HotFix();
+        }
     }
 
     private void HotFix()
@@ -99,6 +114,13 @@ public class HotFixUI : Window
             float speed = HotFixManager.Instance.GetLoadSize() / 1024.0f / m_SumTime;
             m_hotFixPanel.txt_Speed.text = String.Format("{0:F}M/s", speed);
         }
+        else if (HotFixManager.Instance.IsStartUnPack)
+        {
+            m_SumTime += Time.deltaTime;
+            m_hotFixPanel.img_Prg.fillAmount = HotFixManager.Instance.GetUnpackProgress();
+            float speed = HotFixManager.Instance.AlreadyUnPackSize / 1024.0f / m_SumTime;
+            m_hotFixPanel.txt_Speed.text = String.Format("{0:F}M/s", speed);
+        }
 
     }
 
@@ -113,6 +135,18 @@ public class HotFixUI : Window
 
         HotFixManager.Instance.ServerInfoError -= ServerInfoError;
         HotFixManager.Instance.ItemError -= ItemError;
+
+        GameSceneManager.Instance.LoadSceen("MenuScene",
+        () =>
+            {
+                UIManager.Instance.PopUpWnd("LoadingPanel.prefab", true);
+            },
+            () =>
+            {
+                //UIManager.Instance.OnUpdate
+                UIManager.Instance.CloseWnd("LoadingPanel.prefab");
+                UIManager.Instance.PopUpWnd("MenuPanel.prefab");
+            });
     }
 
     private void ServerInfoError()

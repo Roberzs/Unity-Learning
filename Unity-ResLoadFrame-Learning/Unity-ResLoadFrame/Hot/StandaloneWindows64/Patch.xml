@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Patches xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="1">
-  <Files Name="attack" Url="http://127.0.0.1/AssetBundle/0.1/1/attack" Platform="StandaloneWindows64" Md5="0e019cf5a76e795620524a869698f8a1" Size="663.15625" />
-  <Files Name="loadingpanel" Url="http://127.0.0.1/AssetBundle/0.1/1/loadingpanel" Platform="StandaloneWindows64" Md5="36c4e0bfeb3aa5522eb2c45f1956b53e" Size="11.5478516" />
-  <Files Name="StandaloneWindows64" Url="http://127.0.0.1/AssetBundle/0.1/1/StandaloneWindows64" Platform="StandaloneWindows64" Md5="f6f25500c2c4077757032b41b19d7f2a" Size="1.80664063" />
+  <Files Name="assetbundleconfig" Url="http://127.0.0.1/AssetBundle/0.1/1/assetbundleconfig" Platform="StandaloneWindows64" Md5="94456145551638ea5a2ac29cf21c79b5" Size="2.18164063" />
+  <Files Name="bytes" Url="http://127.0.0.1/AssetBundle/0.1/1/bytes" Platform="StandaloneWindows64" Md5="bbbd75323c40cd747df862dc49329eb6" Size="3.43164063" />
+  <Files Name="loadingpanel" Url="http://127.0.0.1/AssetBundle/0.1/1/loadingpanel" Platform="StandaloneWindows64" Md5="193ca39945adc5013c01f6e78ebc473a" Size="11.5722656" />
+  <Files Name="shaders" Url="http://127.0.0.1/AssetBundle/0.1/1/shaders" Platform="StandaloneWindows64" Md5="fbb69ab3888ff91d2c05b8cda0094454" Size="41.6972656" />
+  <Files Name="sounds" Url="http://127.0.0.1/AssetBundle/0.1/1/sounds" Platform="StandaloneWindows64" Md5="eb517a2384ece1f5d1dccb7f123496dd" Size="5549.44727" />
+  <Files Name="StandaloneWindows64" Url="http://127.0.0.1/AssetBundle/0.1/1/StandaloneWindows64" Platform="StandaloneWindows64" Md5="aa36256cd7697edb2c745e552ad0220b" Size="1.82226563" />
 </Patches>
