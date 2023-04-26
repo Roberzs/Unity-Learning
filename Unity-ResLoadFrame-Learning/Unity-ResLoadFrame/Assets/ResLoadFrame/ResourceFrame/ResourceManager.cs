@@ -12,7 +12,7 @@ using UnityEngine;
 
 public class ResourceManager :Singleton<ResourceManager>
 {
-    public bool m_LoadFormAssetBundle = true;
+    public bool m_LoadFormAssetBundle = false;
 
     private bool m_AssetBundleEncrypt = false;
     public bool AssetBundleEncrypt
@@ -366,6 +366,13 @@ public class ResourceManager :Singleton<ResourceManager>
 
     }
 
+    /// <summary>
+    /// 异步加载资源
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="resObj"></param>
+    /// <param name="dealFinish"></param>
+    /// <param name="priority"></param>
     public void AsyncLoadResource(string path, ResourceObj resObj, OnAsyncResObjFinish dealFinish, LoadResPriority priority)
     {
         ResourceItem item = GetCacheResouceItem(resObj.m_Crc);

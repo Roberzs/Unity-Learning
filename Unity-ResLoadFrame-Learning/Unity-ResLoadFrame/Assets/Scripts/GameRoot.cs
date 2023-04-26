@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -11,6 +12,8 @@ public class GameRoot : MonoSingleton<GameRoot>
     private AudioClip tmpClip;
 
     private GameObject tmpObj;
+
+    private Stack<GameObject> pool = new Stack<GameObject>();
 
 
     protected override void Awake()
@@ -36,12 +39,12 @@ public class GameRoot : MonoSingleton<GameRoot>
     private void Start()
     {
 
-        //AssetBundleManager.Instance.LoadAssetBundleConfig();
-        //LoadConfiger();
+        AssetBundleManager.Instance.LoadAssetBundleConfig();
+        LoadConfiger();
 
-        //GameSceneManager.Instance.Init(this);
+        GameSceneManager.Instance.Init(this);
 
-        UIManager.Instance.PopUpWnd("HotFixPanel.prefab", bResourceLoad: true);
+        //UIManager.Instance.PopUpWnd("HotFixPanel.prefab", bResourceLoad: true);
 
         //ResourceManager.Instance.AsyncLoadResource("Assets/GameData/Sounds/senlin.mp3", (string path, Object obj, object param1, object parma2, object param3) =>
         //{
@@ -83,17 +86,17 @@ public class GameRoot : MonoSingleton<GameRoot>
 
         ////UIManager.Instance.PopUpWnd("MenuPanel.prefab");
 
-        //GameSceneManager.Instance.LoadSceen("MenuScene",
-        //() =>
-        //    {
-        //        UIManager.Instance.PopUpWnd("LoadingPanel.prefab", true);
-        //    },
-        //    () =>
-        //    {
-        //        //UIManager.Instance.OnUpdate
-        //        UIManager.Instance.CloseWnd("LoadingPanel.prefab");
-        //        UIManager.Instance.PopUpWnd("MenuPanel.prefab");
-        //    });
+        GameSceneManager.Instance.LoadSceen("MenuScene",
+        () =>
+            {
+                UIManager.Instance.PopUpWnd("LoadingPanel.prefab", true);
+            },
+            () =>
+            {
+                //UIManager.Instance.OnUpdate
+                UIManager.Instance.CloseWnd("LoadingPanel.prefab");
+                UIManager.Instance.PopUpWnd("MenuPanel.prefab");
+            });
     }
 
     public IEnumerator StartGame(Image image, Text text)
@@ -131,16 +134,21 @@ public class GameRoot : MonoSingleton<GameRoot>
             //m_Audio.clip = tmpClip;
             //m_Audio.Play();
 
-            tmpObj = ObjectManager.Instance.InstantiateObject("Assets/GameData/Prefabs/Attack.prefab", true);
+            var tmpObj = ObjectManager.Instance.InstantiateObject("Assets/GameData/Prefabs/Attack.prefab", true);
+            pool.Push(tmpObj);
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
             //m_Audio.Stop();
             //m_Audio.clip = null;
             //ResourceManager.Instance.ReleaseResource(tmpClip, true);
+            if (pool.Count > 0)
+            {
+                var item = pool.Pop();
 
-            ObjectManager.Instance.ReleaseResource(tmpObj);
-            tmpObj = null;
+                ObjectManager.Instance.ReleaseResource(item);
+            }
+            
         }
 
         if (Input.GetKeyDown(KeyCode.S))
@@ -149,7 +157,16 @@ public class GameRoot : MonoSingleton<GameRoot>
             //m_Audio.clip = null;
             //ResourceManager.Instance.ReleaseResource(tmpClip, true);
 
-            ObjectManager.Instance.ReleaseResource(tmpObj, 0, true);
+            ObjectManager.Instance.PreloadGameObject("Assets/GameData/Prefabs/Attack.prefab", 10);
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            //m_Audio.Stop();
+            //m_Audio.clip = null;
+            //ResourceManager.Instance.ReleaseResource(tmpClip, true);
+
+            ObjectManager.Instance.ReleaseResource(tmpObj);
             tmpObj = null;
         }
 

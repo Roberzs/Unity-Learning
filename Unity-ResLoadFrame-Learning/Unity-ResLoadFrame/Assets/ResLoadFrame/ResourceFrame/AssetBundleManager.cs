@@ -257,6 +257,7 @@ public class ResourceItem
         set
         {
             m_RefCount = value;
+            Debug.Log(m_RefCount + "name:" + m_Obj.name);
             if (m_RefCount < 0)
             {
                 Debug.LogError($"refCount < 0, {((m_Obj != null) ? m_Obj.name : "name is null")}");

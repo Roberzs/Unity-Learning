@@ -336,29 +336,15 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
-    public void PreloadGameObject(string path, LoadResPriority loadResPriority, int count = 1, bool clear = false)
+    /// <summary>
+    /// 预加载游戏物体
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="loadResPriority"></param>
+    /// <param name="count"></param>
+    /// <param name="clear"></param>
+    public void PreloadGameObject(string path, int count = 1, bool clear = false)
     {
-        /**
-        List<GameObject> tmpGameObjectList = new List<GameObject>();
-        for (int i = 0; i < count; i++)
-        {
-            // 异步加载
-            InstantiateObjectAsync(path, (string path, UnityEngine.Object obj, object param1, object param2, object param3) =>
-            {
-                //tmpGameObjectList.Add(obj as GameObject);
-                ReleaseResource(obj as GameObject);
-                //if (tmpGameObjectList.Count == count)
-                //{
-                //    for (int i = 0; i < count; i++)
-                //    {
-                //        GameObject tmpGameObject = tmpGameObjectList[i];
-                //        ReleaseResource(tmpGameObject);
-                //    }
-                //    tmpGameObjectList.Clear();
-                //}
-            }, loadResPriority, clear);
-        }
-        */
         List<GameObject> tmpGameObjectList = new List<GameObject>();
         for (int i = 0; i < count; i++)
         {
@@ -371,6 +357,37 @@ public class ObjectManager : Singleton<ObjectManager>
             ReleaseResource(tmpGameObject);
         }
         tmpGameObjectList.Clear();
+    }
+
+    private const long MAXLOADRESTIME = (long)(2 * 1e5);
+
+    private IEnumerator PreloadGameObject(string path, int count = 1, bool clear = false)
+    {
+        long lastYieldTime = System.DateTime.Now.Ticks;
+        List<GameObject> tmpGameObjectList = new List<GameObject>();
+        for (int i = 0; i < count; i++)
+        {
+            GameObject tmpGameObject = InstantiateObject(path, false, clear);
+            tmpGameObject.SetActive(false);
+            tmpGameObjectList.Add(tmpGameObject);
+            if (System.DateTime.Now.Ticks - lastYieldTime > MAXLOADRESTIME)
+            {
+                yield return null;
+                lastYieldTime = System.DateTime.Now.Ticks
+            }
+        }
+        for (int i = 0; i < count; i++)
+        {
+            GameObject tmpGameObject = tmpGameObjectList[i];
+            ReleaseResource(tmpGameObject);
+            if (System.DateTime.Now.Ticks - lastYieldTime > MAXLOADRESTIME)
+            {
+                yield return null;
+                lastYieldTime = System.DateTime.Now.Ticks
+            }
+        }
+        tmpGameObjectList.Clear();
+
     }
 
     #region 类对象池管理
