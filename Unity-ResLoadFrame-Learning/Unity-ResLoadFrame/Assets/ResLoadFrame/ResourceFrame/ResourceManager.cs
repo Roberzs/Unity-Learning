@@ -15,10 +15,16 @@ public class ResourceManager :Singleton<ResourceManager>
     public bool m_LoadFormAssetBundle = false;
 
     private bool m_AssetBundleEncrypt = false;
+
+    private bool m_ABCopyToPersistent = false;
+
     public bool AssetBundleEncrypt
     {
         get => m_AssetBundleEncrypt;
     }
+
+    public bool ABCopyToPersistent 
+    { get => m_ABCopyToPersistent; }
 
     protected long m_Guid = 0;
 
@@ -56,9 +62,19 @@ public class ResourceManager :Singleton<ResourceManager>
         }
         m_Startmono = mono;
         m_Startmono.StartCoroutine(AsyncLoadCor()); 
+        
     }
 
-    
+    /// <summary>
+    /// 协程启动器
+    /// </summary>
+    /// <param name="coro"></param>
+    public void StartCoroutine(IEnumerator coro)
+    {
+        m_Startmono.StartCoroutine(coro);
+    }
+
+
     public long CreateGuid()
     {
         return m_Guid++;

@@ -7,7 +7,10 @@
 *****************************************************/
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class ObjectManager : Singleton<ObjectManager>
@@ -336,59 +339,88 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
-    /// <summary>
-    /// 预加载游戏物体
-    /// </summary>
-    /// <param name="path"></param>
-    /// <param name="loadResPriority"></param>
-    /// <param name="count"></param>
-    /// <param name="clear"></param>
-    public void PreloadGameObject(string path, int count = 1, bool clear = false)
-    {
-        List<GameObject> tmpGameObjectList = new List<GameObject>();
-        for (int i = 0; i < count; i++)
-        {
-            GameObject tmpGameObject = InstantiateObject(path, false, clear);
-            tmpGameObjectList.Add(tmpGameObject);
-        }
-        for (int i = 0; i < count; i++)
-        {
-            GameObject tmpGameObject = tmpGameObjectList[i];
-            ReleaseResource(tmpGameObject);
-        }
-        tmpGameObjectList.Clear();
-    }
+    #region 预加载相关
 
     private const long MAXLOADRESTIME = (long)(2 * 1e5);
+    private bool m_IsStartPreload = false;
+    private float m_PreloadPrg;
 
-    private IEnumerator PreloadGameObject(string path, int count = 1, bool clear = false)
+    public float PreloadPrg
     {
+        get => m_PreloadPrg;
+    }
+
+    public bool IsStartPreload
+    {
+        get => m_IsStartPreload;
+    }
+
+
+    public void PreloadGameObject(params PreloadValue[] values)
+    {
+        //List<GameObject> tmpGameObjectList = new List<GameObject>();
+        //for (int i = 0; i < count; i++)
+        //{
+        //    GameObject tmpGameObject = InstantiateObject(path, false, clear);
+        //    tmpGameObjectList.Add(tmpGameObject);
+        //}
+        //for (int i = 0; i < count; i++)
+        //{
+        //    GameObject tmpGameObject = tmpGameObjectList[i];
+        //    ReleaseResource(tmpGameObject);
+        //}
+        //tmpGameObjectList.Clear();
+        ResourceManager.Instance.StartCoroutine(AsyncPreloadGameObject(values));
+    }
+
+
+
+    private IEnumerator AsyncPreloadGameObject(PreloadValue[] values)
+    {
+        m_IsStartPreload = true;
+        m_PreloadPrg = 0;
+
         long lastYieldTime = System.DateTime.Now.Ticks;
+        // 防止精度出现问题 *10
+        int sum = values.Sum(values => values.Count) * 10;       // 要生成物体的总数 用于计算进度
+        float curCount = 0f;    // 存储当前的进度 生成一个物体进度+0.8 回收一个物体进度+0.2 总进度为sum
+        float spawnPrgValue = 8f, recyclePrgValue = 2f;
+
         List<GameObject> tmpGameObjectList = new List<GameObject>();
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < values.Length; i++)
         {
-            GameObject tmpGameObject = InstantiateObject(path, false, clear);
-            tmpGameObject.SetActive(false);
-            tmpGameObjectList.Add(tmpGameObject);
-            if (System.DateTime.Now.Ticks - lastYieldTime > MAXLOADRESTIME)
+            PreloadValue itemValue = values[i];
+            for (int j = 0; j < itemValue.Count; j++)
             {
-                yield return null;
-                lastYieldTime = System.DateTime.Now.Ticks
+                GameObject tmpGameObject = InstantiateObject(itemValue.Path, false, itemValue.IsClear);
+                tmpGameObject.SetActive(false);
+                tmpGameObjectList.Add(tmpGameObject);
+                curCount += spawnPrgValue;
+                m_PreloadPrg = (float)(curCount / sum);
+                if (System.DateTime.Now.Ticks - lastYieldTime > MAXLOADRESTIME)
+                {
+                    yield return null;
+                    lastYieldTime = System.DateTime.Now.Ticks;
+                }
             }
         }
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < tmpGameObjectList.Count; i++)
         {
             GameObject tmpGameObject = tmpGameObjectList[i];
             ReleaseResource(tmpGameObject);
+            curCount += recyclePrgValue;
+            m_PreloadPrg = (float)(curCount / sum);
             if (System.DateTime.Now.Ticks - lastYieldTime > MAXLOADRESTIME)
             {
                 yield return null;
-                lastYieldTime = System.DateTime.Now.Ticks
+                lastYieldTime = System.DateTime.Now.Ticks;
             }
         }
         tmpGameObjectList.Clear();
-
+        m_IsStartPreload = false;
     }
+
+    #endregion
 
     #region 类对象池管理
     protected Dictionary<Type, object> m_ClassPoolDic = new Dictionary<Type, object>();
@@ -414,4 +446,21 @@ public class ObjectManager : Singleton<ObjectManager>
     }
     #endregion
 
+}
+
+/// <summary>
+/// 预加载相关数据
+/// </summary>
+public class PreloadValue
+{
+    public PreloadValue(string path, int count = 1, bool bClear = false)
+    {
+        Path = path;
+        Count = count;
+        IsClear = bClear;
+    }
+
+    public string Path;
+    public int Count = 1;
+    public bool IsClear = false;
 }

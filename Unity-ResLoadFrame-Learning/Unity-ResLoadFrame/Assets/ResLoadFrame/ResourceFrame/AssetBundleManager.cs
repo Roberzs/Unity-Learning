@@ -14,20 +14,29 @@ using UnityEditor;
 #endif
 using UnityEngine;
 
+/***
+ * 优化方向
+ * Android 在安装后酌情需要解压(例如加载加密AB包)
+ * IOS 暂不做修改
+ * Win 不需要将文件下载到PersistentDataPath
+ ***/
+
 public class AssetBundleManager :Singleton<AssetBundleManager>
 {
     // 原文件目录
-#if UNITY_EDITOR
+#if UNITY_EDITOR1
     public string m_ABRootPath = Application.dataPath + "/../AssetBundle/" + EditorUserBuildSettings.activeBuildTarget.ToString();
 #else
     public string m_ABRootPath = Application.streamingAssetsPath;
 #endif
 
     // 资源加载目录
-#if UNITY_EDITOR
-    public string m_ABLoadPath = Application.persistentDataPath + "/Origin";
+#if UNITY_EDITOR1
+    public string m_ABLoadPath = Application.dataPath + "/../AssetBundle/" + EditorUserBuildSettings.activeBuildTarget.ToString();
+#elif UNITY_ANDROID
+    public string m_ABLoadPath = ResourceManager.Instance.ABCopyToPersistent ? (Application.persistentDataPath + "/Origin") : Application.streamingAssetsPath;
 #else
-    public string m_ABLoadPath = Application.persistentDataPath + "/Origin";
+    public string m_ABLoadPath = Application.streamingAssetsPath;
 #endif
 
     protected string m_ABConfigABName = "assetbundleconfig";
@@ -65,8 +74,6 @@ public class AssetBundleManager :Singleton<AssetBundleManager>
         {
             configAB = AssetBundle.LoadFromFile(configPath);
         }
-
-            
 
         //AssetBundle configAB = AssetBundle.LoadFromFile(configPath);
         TextAsset textAsset = configAB.LoadAsset<TextAsset>(m_ABConfigABName);
@@ -257,7 +264,6 @@ public class ResourceItem
         set
         {
             m_RefCount = value;
-            Debug.Log(m_RefCount + "name:" + m_Obj.name);
             if (m_RefCount < 0)
             {
                 Debug.LogError($"refCount < 0, {((m_Obj != null) ? m_Obj.name : "name is null")}");

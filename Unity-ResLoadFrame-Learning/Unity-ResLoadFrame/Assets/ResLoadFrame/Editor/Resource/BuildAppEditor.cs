@@ -52,6 +52,34 @@ public class BuildAppEditor
         DeleteDir(Application.streamingAssetsPath);
     }
 
+    [MenuItem("TTT/标准包(不重新打AB包)")]
+    public static void OldBuild()
+    {
+        string abPath = Application.dataPath + "/../AssetBundle/" + EditorUserBuildSettings.activeBuildTarget.ToString() + "/";
+        CopyDir(abPath, Application.streamingAssetsPath);
+
+        string savePath = "";
+        switch (EditorUserBuildSettings.activeBuildTarget)
+        {
+            case BuildTarget.iOS:
+                savePath = $"{m_BuildIOSPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_v{m_AppVersion}_{DateTime.Now:yyyy_MM_dd_HH_mm}";
+                break;
+            case BuildTarget.Android:
+                savePath = $"{m_BuildAndroidPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_v{m_AppVersion}_{DateTime.Now:yyyy_MM_dd_HH_mm}{(EditorUserBuildSettings.buildAppBundle ? ".aab" : ".apk")}";
+                break;
+            case BuildTarget.StandaloneWindows:
+                savePath = $"{m_BuildWindowsPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_v{m_AppVersion}_{DateTime.Now:yyyy_MM_dd_HH_mm}/{m_AppName}.exe";
+                break;
+            case BuildTarget.StandaloneWindows64:
+                savePath = $"{m_BuildWindowsPath}{m_AppName}_{EditorUserBuildSettings.activeBuildTarget}_v{m_AppVersion}_{DateTime.Now:yyyy_MM_dd_HH_mm}/{m_AppName}.exe";
+                break;
+        }
+
+        BuildPipeline.BuildPlayer(FindEnableEditorScenes(), savePath, EditorUserBuildSettings.activeBuildTarget, BuildOptions.None);
+
+        DeleteDir(Application.streamingAssetsPath);
+    }
+
 
 	private static string[] FindEnableEditorScenes()
     {

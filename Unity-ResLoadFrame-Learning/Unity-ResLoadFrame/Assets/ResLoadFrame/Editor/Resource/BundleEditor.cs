@@ -276,7 +276,7 @@ public class BundleEditor
             patch.Name = item.Name;
             patch.Size = item.Length / 1024.0f;
             patch.Platform = EditorUserBuildSettings.activeBuildTarget.ToString();
-            patch.Url = "http://127.0.0.1/AssetBundle/" + PlayerSettings.bundleVersion + "/" + hotFixCount + "/" + item.Name;
+            patch.Url = "AssetBundle/" + PlayerSettings.bundleVersion + "/" + hotFixCount + "/" + item.Name;
             patches.Files.Add(patch);
         }
         BinarySerializeOption.XmlSerialize(M_HOTPATH + "/Patch.xml", patches);

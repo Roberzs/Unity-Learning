@@ -17,8 +17,15 @@ public class HotFixManager : Singleton<HotFixManager>
 
     private string m_ServerXmlPath = Application.persistentDataPath + "/ServerInfo.xml";
     private string m_LocalServerXmlPath = Application.persistentDataPath + "/LocalServerInfo.xml";
+#if UNITY_EDITOR
+    public string m_DownloadPath = Application.dataPath + "/../TempDownload/Download";
+#elif UNITY_STANDALONE_WIN
+    private string m_DownloadPath = Application.streamingAssetsPath + "/Download";
+#else
     private string m_DownloadPath = Application.persistentDataPath + "/Download";
-    //private string m_UnPackPath = Application.persistentDataPath + "/Origin";
+#endif
+
+    public const string ServerPath = "http://192.168.50.121/";
 
     private ServerInfo m_ServerInfo;
     private ServerInfo m_LocalServerInfo;
@@ -93,7 +100,10 @@ public class HotFixManager : Singleton<HotFixManager>
     public void Init(MonoBehaviour mono)
     {
         m_Mono = mono;
+        // 只有在Android环境下才有可能复制文件
+#if UNITY_ANDROID
         ReadLocalFileMd5();
+#endif
     }
 
     /// <summary>
@@ -193,6 +203,15 @@ public class HotFixManager : Singleton<HotFixManager>
     /// <returns></returns>
     public bool ComputeUnPackPath()
     {
+#if !UNITY_ANDROID
+        return false;
+
+#else
+        // 判断是否需要解压
+        if (!ResourceManager.Instance.ABCopyToPersistent)
+        {
+            return false;
+        }
         if (!Directory.Exists(AssetBundleManager.Instance.m_ABLoadPath))
         {
             Directory.CreateDirectory(AssetBundleManager.Instance.m_ABLoadPath);
@@ -224,6 +243,7 @@ public class HotFixManager : Singleton<HotFixManager>
             }
         }
         return m_UnpackList.Count > 0;
+#endif
     }
 
     /// <summary>
@@ -323,7 +343,7 @@ public class HotFixManager : Singleton<HotFixManager>
 
     IEnumerator ReadXml(Action callBack)
     {
-        string xmlUrl = "http://127.0.0.1/ServerInfo.xml";
+        string xmlUrl = ServerPath + "ServerInfo.xml";
         UnityWebRequest webRequest = UnityWebRequest.Get(xmlUrl);
         webRequest.timeout = 30;
         yield return webRequest.SendWebRequest();
@@ -477,7 +497,7 @@ public class HotFixManager : Singleton<HotFixManager>
         List<DownloadAssetBundle> downloadAssetBundles = new List<DownloadAssetBundle>();
         foreach (var item in allPatch)
         {
-            downloadAssetBundles.Add(new DownloadAssetBundle(item.Url, m_DownloadPath));
+            downloadAssetBundles.Add(new DownloadAssetBundle(ServerPath + item.Url, m_DownloadPath));
         }
 
         // 开始下载
