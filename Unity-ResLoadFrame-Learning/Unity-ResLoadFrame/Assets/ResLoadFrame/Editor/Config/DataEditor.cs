@@ -16,6 +16,8 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
 public class DataEditor
 {
@@ -224,6 +226,12 @@ public class DataEditor
 
                         string sheetName = worksheet.Name;
 
+                        if (!allSheetClassDic.ContainsKey(sheetName))
+                        {
+                            // 映射表不存在该页签 跳过
+                            continue;
+                        }
+
                         SheetClass sheetClass = allSheetClassDic[sheetName];
                         // 获取列数与行数
                         int colCnt = worksheet.Dimension.End.Column;
@@ -251,9 +259,20 @@ public class DataEditor
 
                             for (; n < colCnt; n++)
                             {
-                                ExcelRange range = worksheet.Cells[m + 1, n + 1];
-                                string colValue = worksheet.Cells[1, n + 1].Value.ToString().Trim();
+                                object colObject = worksheet.Cells[1, n + 1].Value;
+                                if (colObject == null) 
+                                {
+                                    continue;
+                                }
+                                string colValue = colObject.ToString().Trim();
+
                                 string key = GetNameFormCol(sheetClass.VarList, colValue);
+                                if (string.IsNullOrEmpty(key))
+                                {
+                                    // 键值不能为空
+                                    continue;
+                                }
+                                ExcelRange range = worksheet.Cells[m + 1, n + 1];
                                 string value = "";
                                 if (range.Value != null)
                                 {
@@ -264,7 +283,12 @@ public class DataEditor
                                     value
                                     );
                             }
-                            sheetData.AllData.Add(rowData);
+                            if (!string.IsNullOrEmpty(rowData.RowDataDic[sheetClass.MainKey]))
+                            {
+                                // 当前行MainKey值不为空 添加进列表 
+                                sheetData.AllData.Add(rowData);
+                            }
+                            
                         }
 
                         sheetDataDic.Add(worksheet.Name, sheetData);
@@ -326,6 +350,7 @@ public class DataEditor
             for (int j = 0; j < sheetClass.VarList.Count; j++)
             {
                 VarClass varClass = sheetClass.VarList[j];
+
                 if (varClass.Type == "list" && string.IsNullOrEmpty(varClass.SplitStr))
                 {
                     ReadDataToClass(addItem,
@@ -335,20 +360,28 @@ public class DataEditor
                         sheetDataDic,
                         GetMemberValue(addItem,sheetClass.MainKey)
                         );
+                    continue;
                 }
-                else if (varClass.Type == "list")
+
+                // 获取列名
+                var colName = sheetData.AllName[j];
+                if (!sheetData.AllData[i].RowDataDic.ContainsKey(colName))
                 {
-                    string value = sheetData.AllData[i].RowDataDic[sheetData.AllName[j]];
+                    continue;
+                }
+                string value = sheetData.AllData[i].RowDataDic[colName];
+
+                if (varClass.Type == "list")
+                {
                     SetSplitClass(addItem, allSheetClassDic[varClass.ListSheetName], value);
                 }
                 else if (varClass.Type == "listString" || varClass.Type == "listInt" || varClass.Type == "listFloat" || varClass.Type == "listBool")
                 {
-                    string value = sheetData.AllData[i].RowDataDic[sheetData.AllName[j]];
+                    
                     SetSplitBaseClass(addItem, varClass, value);
                 }
                 else
                 {
-                    string value = sheetData.AllData[i].RowDataDic[sheetData.AllName[j]];
                     if (string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(varClass.DefultValue))
                     {
                         value = varClass.DefultValue;
@@ -439,21 +472,41 @@ public class DataEditor
         }
         object list = CreatePropertyList(type);
         string[] rowArray = value.Split(new string[] { varClass.SplitStr }, StringSplitOptions.None);
+        
         for (int i = 0; i < rowArray.Length; i++)
         {
-            object addItem = rowArray[i].Trim();
+            object addItem = GetObjectWithType(type, rowArray[i]);
             try
             {
                 list.GetType().InvokeMember("Add", BindingFlags.Default | BindingFlags.InvokeMethod, null,
                     list, new object[] { addItem });
             }
-            catch
+            catch (Exception e)
             {
-                Debug.Log(varClass.ListSheetName + "表中" + varClass.Name + "字段值添加失败, 值:" + addItem);
+                Debug.Log(varClass.ListSheetName + "表中" + varClass.Name + "字段值添加失败, 值:" + addItem + " log:" + e);
             }
             
         }
         objClass.GetType().GetProperty(varClass.Name).SetValue(objClass, list);
+    }
+
+    private static object GetObjectWithType(Type type, string val)
+    {
+        object obj = null;
+        val = val.Trim();
+        switch (type.FullName)
+        {
+            case "System.String":
+                obj = System.Convert.ToString(val);
+                break;
+            case "System.Int32":
+                obj = System.Convert.ToInt32(val);
+                break;
+            case "System.Single":
+                obj = System.Convert.ToSingle(val);
+                break;
+        }
+        return obj;
     }
 
     /// <summary>
