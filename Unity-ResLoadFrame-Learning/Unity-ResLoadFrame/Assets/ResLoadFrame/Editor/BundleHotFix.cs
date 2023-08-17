@@ -8,7 +8,7 @@ using System.Threading;
 
 public class BundleHotFix : EditorWindow
 {
-    [MenuItem("TTT/打包热更新")]
+    [MenuItem("ResLoadFrame/TTT/打包热更新")]
     static void ShowWnd()
     {
         var window = (BundleHotFix)EditorWindow.GetWindow(typeof(BundleHotFix), false, "热更新", true);

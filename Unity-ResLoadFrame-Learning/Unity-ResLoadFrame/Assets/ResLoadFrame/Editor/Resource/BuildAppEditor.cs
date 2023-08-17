@@ -20,7 +20,7 @@ public class BuildAppEditor
     public static string m_BuildIOSPath = Application.dataPath + "/../BuildTarget/IOS/";
     public static string m_BuildWindowsPath = Application.dataPath + "/../BuildTarget/Windows/";
 
-    [MenuItem("Build/标准包")]
+    [MenuItem("ResLoadFrame/Build/标准包")]
     public static void Build()
     {
         BundleEditor.NormalBuild();
@@ -52,7 +52,7 @@ public class BuildAppEditor
         DeleteDir(Application.streamingAssetsPath);
     }
 
-    [MenuItem("TTT/标准包(不重新打AB包)")]
+    [MenuItem("ResLoadFrame/TTT/标准包(不重新打AB包)")]
     public static void OldBuild()
     {
         string abPath = Application.dataPath + "/../AssetBundle/" + EditorUserBuildSettings.activeBuildTarget.ToString() + "/";
@@ -157,7 +157,7 @@ public class BuildAppEditor
         }
     }
 
-    [MenuItem("TTT/Save Version")]
+    [MenuItem("ResLoadFrame/TTT/Save Version")]
     public static void TSaveVersion()
     {
         SaveVersion(PlayerSettings.bundleVersion, PlayerSettings.applicationIdentifier);

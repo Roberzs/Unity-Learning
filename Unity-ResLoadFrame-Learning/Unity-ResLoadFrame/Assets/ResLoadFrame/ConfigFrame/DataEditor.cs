@@ -6,18 +6,16 @@
 	功能：Nothing
 *****************************************************/
 
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
 using System.Xml;
-using OfficeOpenXml;
 using System.Reflection;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+using OfficeOpenXml;
 
 public class DataEditor
 {
@@ -197,25 +195,49 @@ public class DataEditor
 
     private static void ExcelToXml(string fileName)
     {
-
         string className = string.Empty;
         string xmlName = string.Empty;
         string excelName = string.Empty;
         // 读取Reg文件 确认类结构
         Dictionary<string, SheetClass> allSheetClassDic = ReadRegFromDict(fileName, ref excelName, ref xmlName, ref className);
+        if (allSheetClassDic == null)
+        {
+            return;
+        }
+
+
+        object objClass = GetObjectFromExcel(fileName);
+
+        // 序列化
+        BinarySerializeOption.XmlSerialize(XMLPath + xmlName, objClass);
+        Debug.Log(excelName + "表导入Unity成功！");
+        AssetDatabase.Refresh();
+    }
+
+    public static object GetObjectFromExcel(string fileName)
+    {
+        string className = string.Empty;
+        string xmlName = string.Empty;
+        string excelName = string.Empty;
+        // 读取Reg文件 确认类结构
+        Dictionary<string, SheetClass> allSheetClassDic = ReadRegFromDict(fileName, ref excelName, ref xmlName, ref className);
+        if (allSheetClassDic == null)
+        {
+            return null;
+        }
         // 读取Excel文件数据
         string excelPath = ExcelPath + excelName;
         if (!File.Exists(excelPath))
         {
             Debug.LogError("不存在的Excel表:" + excelPath);
-            return;
+            return null;
         }
         Dictionary<string, SheetData> sheetDataDic = new Dictionary<string, SheetData>();
         try
         {
-            using(FileStream stream = new FileStream(excelPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (FileStream stream = new FileStream(excelPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
-                using(ExcelPackage package = new ExcelPackage(stream))
+                using (ExcelPackage package = new ExcelPackage(stream))
                 {
                     ExcelWorksheets worksheetArray = package.Workbook.Worksheets;
                     // 遍历页签
@@ -260,7 +282,7 @@ public class DataEditor
                             for (; n < colCnt; n++)
                             {
                                 object colObject = worksheet.Cells[1, n + 1].Value;
-                                if (colObject == null) 
+                                if (colObject == null)
                                 {
                                     continue;
                                 }
@@ -288,7 +310,7 @@ public class DataEditor
                                 // 当前行MainKey值不为空 添加进列表 
                                 sheetData.AllData.Add(rowData);
                             }
-                            
+
                         }
 
                         sheetDataDic.Add(worksheet.Name, sheetData);
@@ -299,7 +321,7 @@ public class DataEditor
         catch (Exception e)
         {
             Debug.LogError(e);
-            return;
+            return null;
         }
         // 根据类结构创建类 并通过Excel文件数据对类变量赋值
         object objClass = CreateClass(className);
@@ -315,7 +337,7 @@ public class DataEditor
             }
         }
 
-        
+
         // 将数据递归写入类
         for (int i = 0; i < outKeyList.Count; i++)
         {
@@ -327,10 +349,7 @@ public class DataEditor
                 null
                 );
         }
-        // 序列化
-        BinarySerializeOption.XmlSerialize(XMLPath + xmlName, objClass);
-        Debug.Log(excelName + "表导入Unity成功！");
-        AssetDatabase.Refresh();
+        return objClass;
     }
 
     private static void ReadDataToClass(object objClass, SheetClass sheetClass, SheetData sheetData, Dictionary<string, SheetClass> allSheetClassDic, Dictionary<string, SheetData> sheetDataDic, object keyValue)
@@ -405,6 +424,7 @@ public class DataEditor
         }
 
         objClass.GetType().GetProperty(sheetClass.ParentVar.Name).SetValue(objClass, list);
+        
     }
 
     /// <summary>
@@ -1100,3 +1120,4 @@ public class RowData
     public string ParentValue = "";
     public Dictionary<string, string> RowDataDic = new Dictionary<string, string>();
 }
+#endif

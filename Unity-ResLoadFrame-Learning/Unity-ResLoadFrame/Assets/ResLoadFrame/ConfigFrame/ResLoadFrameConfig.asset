@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e7ddea8b61155e4fa1bd0e261ac14ba, type: 3}
+  m_Script: {fileID: 11500000, guid: 669d361110094e144be8fa2ca5cbe279, type: 3}
   m_Name: ResLoadFrameConfig
   m_EditorClassIdentifier: 
-  m_XmlDataPath: Assets/GameData/Data\Xml/
+  m_XmlDataPath: Assets/GameData/Data/Xml/
   m_BinaryPath: Assets/GameData/Data/Binary/
   m_ScriptDataPath: Assets/Scripts/Data/

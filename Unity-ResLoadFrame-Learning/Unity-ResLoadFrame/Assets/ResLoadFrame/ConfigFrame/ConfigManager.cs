@@ -16,6 +16,8 @@ public class ConfigManager : Singleton<ConfigManager>
 	/// </summary>
 	protected Dictionary<string, ExcelBase> m_AllExcelData = new Dictionary<string, ExcelBase>();
 
+	private bool m_IsLoadInExcel = true;
+
 	/// <summary>
 	/// 加载配置表
 	/// </summary>
@@ -37,7 +39,16 @@ public class ConfigManager : Singleton<ConfigManager>
 
 		T data = BinarySerializeOption.BinaryDeserialize<T>(path);
 #if UNITY_EDITOR
-		if (object.ReferenceEquals(data, null))
+		if (m_IsLoadInExcel)
+		{
+			var splits = path.Replace(".bytes", "").Split('/');
+			var name = splits[splits.Length - 1];
+			//Debug.Log(path);
+			data = DataEditor.GetObjectFromExcel(name) as T;
+
+
+		}
+		else if (object.ReferenceEquals(data, null))
         {
 			Debug.Log($"{path}不存在，将尝试从xml加载数据");
 			string xmlPath = path.Replace("Binary", "Xml").Replace(".bytes", ".xml");

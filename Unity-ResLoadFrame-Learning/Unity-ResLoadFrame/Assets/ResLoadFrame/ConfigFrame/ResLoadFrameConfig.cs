@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#if UNITY_EDITOR
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
@@ -42,10 +43,34 @@ public class ResLoadFrameConfigInspector : Editor
 
 public static class ResLoadConfig 
 {
-    private static string ResLoadFrameConfigPath = BundleEditor.GetScriptInDirectory(nameof(ResLoadFrameConfig)) + "/ResLoadFrameConfig.asset";
+    private static string ResLoadFrameConfigPath = GetScriptInDirectory(nameof(ResLoadFrameConfig)) + "/ResLoadFrameConfig.asset";
 
     public static ResLoadFrameConfig GetResLoadConfig()
     {
+        //Debug.Log(ResLoadFrameConfigPath);
+        //Debug.Log(AssetDatabase.LoadAssetAtPath<ResLoadFrameConfig>(ResLoadFrameConfigPath));
         return AssetDatabase.LoadAssetAtPath<ResLoadFrameConfig>(ResLoadFrameConfigPath);
     }
+
+    /// <summary>
+    /// 根据脚本名称获取所在目录
+    /// </summary>
+    /// <param name="scriptName"></param>
+    /// <returns></returns>
+    public static string GetScriptInDirectory(string scriptName)
+    {
+        string[] path = UnityEditor.AssetDatabase.FindAssets(scriptName);
+        foreach (var item in path)
+        {
+            string tmpPtah = AssetDatabase.GUIDToAssetPath(item);
+            if (tmpPtah.EndsWith(".cs") && tmpPtah.Contains("ResLoadFrame"))
+            {
+                return tmpPtah.Replace((@"/" + scriptName + ".cs"), "");
+            }
+        }
+        return string.Empty;
+
+
+    }
 }
+#endif

@@ -5,7 +5,7 @@
     日期：#CreateTime#
     功能：Nothing
 *****************************************************/
-
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
@@ -14,11 +14,12 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Reflection;
 
+
 public class BundleEditor
 {
-    private static string M_ABCONFIG_PATH = GetScriptInDirectory(MethodBase.GetCurrentMethod().DeclaringType.Name) + "/ABConfig.asset";
+    private static string M_ABCONFIG_PATH = ResLoadConfig.GetScriptInDirectory(MethodBase.GetCurrentMethod().DeclaringType.Name) + "/ABConfig.asset";
     private static string M_BUNDLETARGET_PATH = Application.dataPath + "/../AssetBundle/" + EditorUserBuildSettings.activeBuildTarget.ToString();
-    private static string M_ABBYTEPATH = GetScriptInDirectory(MethodBase.GetCurrentMethod().DeclaringType.Name).Replace("ResLoadFrame/Editor/Resource", "ResLoadFrame/Temp/AssetBundleConfig.bytes");
+    private static string M_ABBYTEPATH = ResLoadConfig.GetScriptInDirectory(MethodBase.GetCurrentMethod().DeclaringType.Name).Replace("ResLoadFrame/Editor/Resource", "ResLoadFrame/Temp/AssetBundleConfig.bytes");
     private static string M_VERSIONMD5PATH = Application.dataPath + "/../Version/" + EditorUserBuildSettings.activeBuildTarget.ToString();
     private static string M_HOTPATH = Application.dataPath + "/../Hot/" + EditorUserBuildSettings.activeBuildTarget.ToString();
 
@@ -40,7 +41,7 @@ public class BundleEditor
         Build();
     }
 
-    [MenuItem("TTT/加密AB包")]
+    [MenuItem("ResLoadFrame/TTT/加密AB包")]
     public static void EncryptAB()
     {
         DirectoryInfo directory = new DirectoryInfo(M_BUNDLETARGET_PATH);
@@ -55,7 +56,7 @@ public class BundleEditor
         Debug.Log("加密完成");
     }
 
-    [MenuItem("TTT/解密AB包")]
+    [MenuItem("ResLoadFrame/TTT/解密AB包")]
     public static void DecryptAB()
     {
         DirectoryInfo directory = new DirectoryInfo(M_BUNDLETARGET_PATH);
@@ -538,26 +539,7 @@ public class BundleEditor
         return false;
     }
 
-    /// <summary>
-    /// 根据脚本名称获取所在目录
-    /// </summary>
-    /// <param name="scriptName"></param>
-    /// <returns></returns>
-    public static string GetScriptInDirectory(string scriptName)
-    {
-        string[] path = UnityEditor.AssetDatabase.FindAssets(scriptName);
-        foreach (var item in path)
-        {
-            string tmpPtah = AssetDatabase.GUIDToAssetPath(item);
-            if (tmpPtah.EndsWith(".cs"))
-            {
-                return tmpPtah.Replace((@"/" + scriptName + ".cs"), "");
-            }
-        }
-        return string.Empty;
-
-
-    }
+    
 
     [MenuItem("ResLoadFrame/打开AssetBundle配置文件", priority = 10)]
     private static void OpenABConfigAsset()
@@ -566,3 +548,4 @@ public class BundleEditor
         Selection.activeObject = AssetDatabase.LoadAssetAtPath<ABConfig>(M_ABCONFIG_PATH);
     }
 }
+#endif

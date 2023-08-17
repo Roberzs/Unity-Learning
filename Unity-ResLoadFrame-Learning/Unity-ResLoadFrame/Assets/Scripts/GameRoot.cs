@@ -20,19 +20,21 @@ public class GameRoot : MonoSingleton<GameRoot>
     {
         base.Awake();
 
-        Debug.Log(Application.persistentDataPath);
+        //Debug.Log(Application.persistentDataPath);
 
         DontDestroyOnLoad(gameObject);
         
         m_Audio = GetComponent<AudioSource>();
         
         ResourceManager.Instance.Init(this);
-        ObjectManager.Instance.Init(transform.Find("RecyclePoolTrs"), transform.Find("SceneTrs"));
-        HotFixManager.Instance.Init(this);
-        UIManager.Instance.Init(transform.Find("UIRoot") as RectTransform,
-            transform.Find("UIRoot/WndRoot") as RectTransform,
-            transform.Find("UIRoot/UICamera").GetComponent<Camera>(),
-            transform.Find("UIRoot/EventSystem").GetComponent<EventSystem>());
+        //ObjectManager.Instance.Init(transform.Find("RecyclePoolTrs"), transform.Find("SceneTrs"));
+        //HotFixManager.Instance.Init(this);
+        //UIManager.Instance.Init(transform.Find("UIRoot") as RectTransform,
+        //    transform.Find("UIRoot/WndRoot") as RectTransform,
+        //    transform.Find("UIRoot/UICamera").GetComponent<Camera>(),
+        //    transform.Find("UIRoot/EventSystem").GetComponent<EventSystem>());
+
+        UIManager.Instance.Init(720, 1280);
         RegisterUI();
     }
 
@@ -44,7 +46,7 @@ public class GameRoot : MonoSingleton<GameRoot>
 
         //GameSceneManager.Instance.Init(this);
 
-        UIManager.Instance.PopUpWnd("HotFixPanel.prefab", bResourceLoad: true);
+        //UIManager.Instance.PopUpWnd("HotFixPanel.prefab", bResourceLoad: true);
 
         //ResourceManager.Instance.AsyncLoadResource("Assets/GameData/Sounds/senlin.mp3", (string path, Object obj, object param1, object parma2, object param3) =>
         //{
@@ -84,7 +86,7 @@ public class GameRoot : MonoSingleton<GameRoot>
 
         ////ObjectManager.Instance.ReleaseResource(tmpObj);
 
-        ////UIManager.Instance.PopUpWnd("MenuPanel.prefab");
+        UIManager.Instance.PopUpWnd("MenuPanel.prefab");
 
         //GameSceneManager.Instance.LoadSceen("MenuScene",
         //() =>

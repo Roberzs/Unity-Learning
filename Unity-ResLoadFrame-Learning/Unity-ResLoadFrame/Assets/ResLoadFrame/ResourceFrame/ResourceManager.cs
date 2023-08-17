@@ -54,15 +54,44 @@ public class ResourceManager :Singleton<ResourceManager>
     /// </summary>
     private const int MAXCACHECOUNT = 500;
 
+    private bool isInitDone = false;
+
     public void Init(MonoBehaviour mono)
     {
+        if (isInitDone)
+        { return; }
+        
         for (int i = 0; i < (int)LoadResPriority.RES_NUM; i++)
         {
             m_LoadingAssetList[i] = new List<AsyncLoadResParam>();
         }
         m_Startmono = mono;
-        m_Startmono.StartCoroutine(AsyncLoadCor()); 
-        
+        m_Startmono.StartCoroutine(AsyncLoadCor());
+
+        OnCreateRoot();
+
+        isInitDone = true;
+    }
+
+    private void OnCreateRoot()
+    {
+        string name = "_ResLoadFrame";
+        if (!GameObject.Find(name))
+        {
+            var root = new GameObject(name);
+            GameObject.DontDestroyOnLoad(root);
+
+            var SceneTrs = new GameObject("SceneTrs");
+            SceneTrs.transform.SetParent(root.transform);
+            var RecyclePoolTrs = new GameObject("RecyclePoolTrs");
+            RecyclePoolTrs.transform.SetParent(root.transform);
+            RecyclePoolTrs.SetActive(false);
+
+            ObjectManager.Instance.Init(RecyclePoolTrs.transform, SceneTrs.transform);
+        }
+
+
+
     }
 
     /// <summary>

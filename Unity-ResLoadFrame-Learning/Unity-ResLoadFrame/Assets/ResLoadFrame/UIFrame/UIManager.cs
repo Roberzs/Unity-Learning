@@ -9,6 +9,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -54,6 +55,8 @@ public class UIManager : Singleton<UIManager>
         get => m_WndRoot;
     }
 
+
+
     /// <summary>
     /// 初始化
     /// </summary>
@@ -70,7 +73,59 @@ public class UIManager : Singleton<UIManager>
 		m_CanvasRate = Screen.height / (m_UICamera.orthographicSize * 2);
     }
 
-	public Window PopUpWnd(string wndName, bool bTop = false, bool bResourceLoad = false, params object[] paramList)
+    public void Init(float width, float height)
+    {
+        var uiRootObj = new GameObject("_UIRoot");
+        GameObject.DontDestroyOnLoad(uiRootObj);
+        uiRootObj.layer = LayerMask.NameToLayer("UI");
+        RectTransform uiRootRectTrans = uiRootObj.AddComponent<RectTransform>();
+
+
+        //uiRootObj.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+        var canvas = uiRootObj.AddComponent<Canvas>();
+        var canvasScaler = uiRootObj.AddComponent<CanvasScaler>();
+        canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        canvasScaler.referenceResolution = new Vector2(width, height);
+        uiRootObj.AddComponent<GraphicRaycaster>();
+
+        var wndRoot = new GameObject("WndRoot");
+        wndRoot.layer = LayerMask.NameToLayer("UI");
+        wndRoot.transform.SetParent(uiRootObj.transform);
+        RectTransform wndRootRectTrans = wndRoot.AddComponent<RectTransform>();
+        wndRootRectTrans.anchorMin = new Vector2(0, 0);
+        wndRootRectTrans.anchorMax = new Vector2(1, 1);
+        wndRootRectTrans.sizeDelta = new Vector2(0, 0);
+        //wndRootRectTrans.si
+
+
+        var eventSystemObj = new GameObject("EventSystem");
+        eventSystemObj.transform.SetParent(uiRootObj.transform);
+        eventSystemObj.layer = LayerMask.NameToLayer("UI");
+        var eventSystem = eventSystemObj.AddComponent<EventSystem>();
+        eventSystemObj.AddComponent<StandaloneInputModule>();
+
+        var UICamera = new GameObject("UICamera");
+        UICamera.layer = LayerMask.NameToLayer("UI");
+        UICamera.transform.SetParent(uiRootObj.transform);
+        var cam = UICamera.AddComponent<Camera>();
+        cam.clearFlags = CameraClearFlags.Depth;
+        cam.cullingMask = 1 << LayerMask.NameToLayer("UI");
+        cam.orthographic = true;
+        cam.orthographicSize = 5f;
+        cam.nearClipPlane = 0f;
+
+        
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = cam;
+
+        m_UIRoot = uiRootRectTrans;
+        m_WndRoot = wndRootRectTrans;
+        m_UICamera = cam;
+        m_EventSystem = eventSystem;
+        m_CanvasRate = Screen.height / (m_UICamera.orthographicSize * 2);
+    }
+
+    public Window PopUpWnd(string wndName, bool bTop = false, bool bResourceLoad = false, params object[] paramList)
     {
 		Window wnd = FindWndByName<Window>(wndName);
 		if (wnd == null)
